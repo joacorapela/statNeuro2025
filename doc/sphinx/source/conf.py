@@ -15,6 +15,7 @@ author = 'Joaquin Rapela'
 
 extensions = [
     'sphinx_gallery.gen_gallery',
+    'sphinx.ext.mathjax',
 ]
 
 sphinx_gallery_conf = {
