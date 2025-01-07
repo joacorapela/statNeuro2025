@@ -108,8 +108,19 @@
 
 \usepackage{setspace}
 
-% \newtheorem{example}{Example}
-% \setbeamertemplate{theorems}[numbered]
+% At the beginning put
+%This custom command allows the number of frames to be stopped at this point
+%(so later slides, eg. appendix do not appear as part of counter)
+\newcommand{\beginappendix}{
+   \newcounter{finalframenumber}
+   \setcounter{finalframenumber}{\value{framenumber}}
+}
+\newcommand{\finishappendix}{
+   \setcounter{framenumber}{\value{finalframenumber}}
+}
+
+\newtheorem{claim}{Claim}
+\setbeamertemplate{theorems}[numbered]
 
 \newenvironment<>{example1}[1][Example 1]{%
   \setbeamercolor{block title}{fg=white,bg=cyan!75!black}%
@@ -141,6 +152,14 @@ Gatsby Computational Neuroscience Unit\\University College London % Your institu
      \begin{frame}<beamer>
      \frametitle{Contents}
          \tableofcontents[currentsection,hideallsubsections]
+     \end{frame}
+  }
+
+\AtBeginSubsection[]
+  {
+     \begin{frame}<beamer>
+     \frametitle{Contents}
+         \tableofcontents[currentsection,currentsubsection]
      \end{frame}
   }
 
@@ -301,21 +320,23 @@ Gatsby Computational Neuroscience Unit\\University College London % Your institu
 
 \end{frame}
 
+\subsection{Generation of time series}
+
 \begin{frame}[fragile]
     \frametitle{Generation of time series: white noise}
 
     The first step to generate time series is to generate \textbf{white noise}
     (i.e., independent Gaussian random variables with zero mean and fixed
-    variance).
+    variance, 
+    \href{https://joacorapela.github.io/statNeuro2025/auto_examples/01_temporalTimeSeriesAnalysis/plot_whiteNoiseExample.html#sphx-glr-auto-examples-01-temporaltimeseriesanalysis-plot-whitenoiseexample-py}{example}).
+
 
     \begin{lstlisting}[language=Python,basicstyle=\small]
         w = np.random.normal(loc=0, scale=sigma, size=N)
     \end{lstlisting}
 
-    \href{}{Example}
-
     \begin{center}
-        \href{}{\includegraphics[width=3in]{../../examples/01_temporalTimeSeriesAnalysis/figures/whiteNoise.png}}
+        \href{http://www.gatsby.ucl.ac.uk/~rapela/statNeuro/2025/lectures/01_temporalTimeSeriesAnalysis/figures/whiteNoise.html}{\includegraphics[width=3in]{../../examples/sphinx_gallery/01_temporalTimeSeriesAnalysis/figures/whiteNoise.png}}
     \end{center}
 
 \end{frame}
@@ -323,38 +344,211 @@ Gatsby Computational Neuroscience Unit\\University College London % Your institu
 \begin{frame}[fragile]
     \frametitle{Generation of time series: moving average model}
 
-            \begin{align*}
-                \nu_t = \frac{1}{3}(w_{t-1} + w_t + w_{t+1})
-            \end{align*}
+    In a white noise stochastic process $x$, for any pairs of time points,
+    $t_1$ and $t_2$, the random variables $x_{t_1}$ and $x_{t_2}$ are
+    uncorrelated. The \textbf{moving average model} adds serial correlation to
+    white noise 
+    (\href{https://joacorapela.github.io/statNeuro2025/auto_examples/01_temporalTimeSeriesAnalysis/plot_movingAverageExample.html#sphx-glr-auto-examples-01-temporaltimeseriesanalysis-plot-movingaverageexample-py}{example}).
+
+
+    \begin{align}
+        \nu_t = \frac{1}{3}(w_{t-1} + w_t + w_{t+1})\label{eq:ma}
+    \end{align}
+
+    \begin{center}
+        \href{http://www.gatsby.ucl.ac.uk/~rapela/statNeuro/2025/lectures/01_temporalTimeSeriesAnalysis/figures/movingAverage.html}{\includegraphics[width=2.75in]{../../examples/sphinx_gallery/01_temporalTimeSeriesAnalysis/figures/movingAverage.png}}
+    \end{center}
 
 \end{frame}
 
 \begin{frame}[fragile]
     \frametitle{Generation of time series: autoregressive model}
 
-    \begin{description}
-        \item[autoregressive models]
+    Many neural time series, like local field potential recordings, exhibit
+    oscillations of the type of sine waves. The \textbf{autoregressive model}
+    generates oscillations
+    (\href{https://joacorapela.github.io/statNeuro2025/auto_examples/01_temporalTimeSeriesAnalysis/plot_autoregressiveExample.html#sphx-glr-auto-examples-01-temporaltimeseriesanalysis-plot-autoregressiveexample-py}{example}).
+    \textcolor{red}{Lecture on linear dynamical systems}.
 
-            \begin{align*}
-                x_t = x_{t-1} - 0.9 x_{t-2} + w_t
-            \end{align*}
+    \begin{align*}
+        x_t = x_{t-1} - 0.9 x_{t-2} + w_t
+    \end{align*}
 
-        \item[random walk with drift]
+    \begin{center}
+        \href{http://www.gatsby.ucl.ac.uk/~rapela/statNeuro/2025/lectures/01_temporalTimeSeriesAnalysis/figures/autoregressive.html}{\includegraphics[width=2.75in]{../../examples/sphinx_gallery/01_temporalTimeSeriesAnalysis/figures/autoregressive.png}}
+    \end{center}
 
-            \begin{align*}
-                x_t = \delta + x_{t-1} + w_t
-            \end{align*}
-
-        \item[signal plus noise]
-
-            \begin{align*}
-                x_t = \delta + x_{t-1} + w_t
-            \end{align*}
-
-    \end{description}
 \end{frame}
 
-\subsection{Measures of dependence}
+\begin{frame}[fragile]
+    \frametitle{Generation of time series: random walk with drift}
+
+    The \textbf{random walk with noise} model is used to characterize trends in
+    time series
+    (\href{https://joacorapela.github.io/statNeuro2025/auto_examples/01_temporalTimeSeriesAnalysis/plot_randomWalkWithDriftExample.html#sphx-glr-auto-examples-01-temporaltimeseriesanalysis-plot-randomwalkwithdriftexample-py}{example}).
+
+    \begin{align}
+        x_t = \delta + x_{t-1} + w_t\label{eq:randomWalkWithDrift}
+    \end{align}
+
+    \begin{center}
+        \href{http://www.gatsby.ucl.ac.uk/~rapela/statNeuro/2025/lectures/01_temporalTimeSeriesAnalysis/figures/randomWalkWithDrift.html}{\includegraphics[width=2.75in]{../../examples/sphinx_gallery/01_temporalTimeSeriesAnalysis/figures/randomWalkWithDrift.png}}
+        \label{fig:randomWalkWithDrift}
+    \end{center}
+
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{Generation of time series: signal plus noise}
+
+    Many realistic models of time series assume an underlying signal with a
+    periodic variation contaminated by adding a random noise
+    (\href{https://joacorapela.github.io/statNeuro2025/auto_examples/01_temporalTimeSeriesAnalysis/plot_signalPlusNoise.html#sphx-glr-auto-examples-01-temporaltimeseriesanalysis-plot-signalplusnoise-py}{example}).
+
+    \begin{align*}
+        x_t &= 2\cos(2\pi\frac{t}{50}+2\pi\frac{15}{50})+w_t
+    \end{align*}
+
+    \begin{align*}
+        A\cos(2\pi\omega t+\phi)
+    \end{align*}
+
+    where $A=2,\omega=1/50,\phi=2\pi 15/50$. \textcolor{red}{Lecture on
+    spectral analysis of time series}.
+
+    \begin{center}
+        \href{http://www.gatsby.ucl.ac.uk/~rapela/statNeuro/2025/lectures/01_temporalTimeSeriesAnalysis/figures/signalPlusNoise.html}{\includegraphics[width=2.00in]{../../examples/sphinx_gallery/01_temporalTimeSeriesAnalysis/figures/signalPlusNoise.png}}
+    \end{center}
+
+\end{frame}
+
+\subsection{Measures used to describe time series}
+
+\begin{frame}
+    \frametitle{Mean function}
+
+    \begin{definition}[Mean function]
+        The mean function, $\mu_t$,  is defined as $\mu_t = E\{x_t\}$.
+    \end{definition}
+
+    \begin{exampleblock}{Example (Mean function of a moving average model)}
+        Calculate the mean function of the moving average model in Eq.~\ref{eq:ma}.
+        \begin{align*}
+            E\{\nu_t\} = \frac{1}{3}(E\{w_{t-1}\} + E\{w_t\} + E\{w_{t+1}\}) = \frac{1}{3}(0 + 0 + 0) = 0
+        \end{align*}
+
+    \end{exampleblock}
+
+\end{frame}
+
+\begin{frame}
+    \frametitle{Mean function}
+
+    \begin{exampleblock}{Example (Mean function of the autoregressive model of
+        order 1)}
+        Calculate the mean function of the autoregressive model of order 1,
+        AR(1), in Eq.~\ref{eq:ar1}.
+        \begin{align}
+            x_t = \phi x_{t-1} + w_t\label{eq:ar1}
+        \end{align}
+
+        An AR(1) model (Eq.~\ref{eq:ar1}) can be represented as a moving average of ininite order MA($\infty$).
+        See \hyperlink{slide:ar1AsMaInfty}{MA($\infty$) representation of AR(1) random process} in Appendix. Then
+        \begin{align*}
+            x_t &= \sum_{i=0}^{\infty}\phi^iw_{t-i}
+        \end{align*}
+
+        \begin{align*}
+            E\{x_t\} &= \sum_{i=0}^{\infty}\phi^iE\{w_{t-i}\}=\sum_{i=0}^{\infty}\phi^i0=0
+        \end{align*}
+
+    \end{exampleblock}
+
+\end{frame}
+
+\begin{frame}
+    \frametitle{Mean function}
+
+    \begin{exampleblock}{Example (Mean function of the random walk with drift model)}
+        Calculate the mean function of the random noise with drift  model, in Eq.~\ref{eq:randomWalkWithDrift}.
+
+        The random noise with drift model in Eq.~\ref{eq:randomWalkWithDrift} can be represented as
+        \begin{align*}
+            x_t &= t \delta + \sum_{i=0}^{\infty}w_{t-i}
+        \end{align*}
+
+        \begin{align*}
+            E\{x_t\} &= \delta t + \sum_{i=0}^{\infty}E\{w_{t-i}\} = \delta t + \sum_{i=0}^{\infty}0 = \delta t
+        \end{align*}
+
+        See the \hyperlink{fig:randomWalkWithDrift}{figure} of samples of the random noise with
+        drift random process.
+
+    \end{exampleblock}
+
+\end{frame}
+
+\begin{frame}
+    \frametitle{Autocovariance function}
+
+    \begin{definition}[Autocovariance function]
+        The autocovariance function is defined as
+        $\gamma(s, t)=cov(x_s,x_t)=E\{(x_s-\mu_s)(x_t-\mu_t)\}$.
+    \end{definition}
+
+    \begin{block}{Note}
+        For $s=t$ the covariance reduces to the variance, because
+        $\gamma(t,t)=E\{(x_t-\mu_t)^2\}=var(x_t)$.
+    \end{block}
+
+\end{frame}
+
+\begin{frame}
+    \frametitle{Autocovariance function}
+
+    \begin{exampleblock}{Example (Autocovariance function of moving average)}
+		\only<1>{
+        Calculate the autocovariance function of the moving average model in Eq.~\ref{eq:ma}.
+		\begin{align*}
+			\gamma_\nu(s,t)=cov(\nu_s,\nu_t)=cov(\frac{1}{3}(w_{s-1}+w_s+w_{s+1}),\frac{1}{3}(w_{t-1}+w_t+w_{t+1}))
+		\end{align*}
+		If s=t:
+		\begin{align*}
+			\gamma_\nu(t,t)&=cov(\nu_t,\nu_t)=cov(\frac{1}{3}(w_{t-1}+w_t+w_{t+1}),\frac{1}{3}(w_{t-1}+w_t+w_{t+1}))\\
+			               &=\frac{1}{9}\left(cov(w_{t-1},w_{t-1})+cov(w_t,w_t)+cov(w_{t+1},w_{t+1})\right)\\
+			               &=\frac{1}{9}\left(\sigma_w^2+\sigma_w^2+\sigma_2^2\right)=\frac{3}{9}\sigma_w^2
+		\end{align*}
+		}
+		\only<2>{
+		If s=t+1:
+		\begin{align*}
+			\gamma_\nu(t+1,t)&=cov(\nu_{t+1},\nu_t)\\
+                             &=cov(\frac{1}{3}(w_t+w_{t+1}+w_{t+2}),\frac{1}{3}(w_{t-1}+w_t+w_{t+1}))\\
+			                 &=\frac{1}{9}\left(cov(w_t,w_t)+cov(w_{t+1},w_{t+1})\right)\\
+			                 &=\frac{1}{9}\left(\sigma_w^2+\sigma_w^2\right)=\frac{2}{9}\sigma_w^2
+		\end{align*}
+		}
+		\only<3>{
+		If s=t+2:
+		\begin{align*}
+			\gamma_\nu(t+2,t)&=cov(\nu_{t+2},\nu_t)\\
+                             &=cov(\frac{1}{3}(w_{t+1}++w_{t+2}+w_{t+3}),\frac{1}{3}(w_{t-1}+w_t+w_{t+1}))\\
+			                 &=\frac{1}{9}\left(cov(w_{t+1},w_{t+1})\right)\\
+			                 &=\frac{1}{9}\sigma_w^2
+		\end{align*}
+		}
+		\only<4>{
+		\begin{align*}
+        	\gamma_\nu(s,t)=\left\{\begin{array}{l l}
+                                       \frac{3}{9}\sigma^2_w & \text{if}\quad s=t,\\
+                                       \frac{2}{9}\sigma^2_w & \text{if}\quad |s-t|=1,\\
+                                       \frac{1}{9}\sigma^2_w & \text{if}\quad |s-t|=2,\\
+                                       0                     & \text{if}\quad  |s-t|>2.
+                                   \end{array}\right.
+		\end{align*}
+		}
+    \end{exampleblock}
+\end{frame}
 
 \begin{comment}
 
@@ -1060,11 +1254,61 @@ sample mean as our test statistic:
 
 \end{comment}
 
-
 \begin{frame}
     \frametitle{Summary}
 
 \end{frame}
+
+% Then use
+\beginappendix
+% after last slide and before first appendix slide, and then
+
+\section{Appendix}
+
+\begin{frame}
+	\frametitle{MA($\infty$) representation of AR(1) random process}
+	\label{slide:ar1AsMaInfty}
+
+	\begin{claim}
+		Let $|\phi|<1$, then
+		\begin{align}
+			x_t &= \phi x_{t-1} + w_t\quad\text{if and only if}\label{eq:ar}\\
+			x_t &= \sum_{i=0}^\infty\phi^iw_{t-i}\label{eq:ma}
+		\end{align}
+	\end{claim}
+\end{frame}
+
+\begin{frame}
+	\frametitle{MA($\infty$) representation of AR(1) random process}
+	\small
+    \begin{proof}
+		\only<1> {
+		We first show that $x_t$, as defined in Eq.~\ref{eq:ma}, satisfies Eq.~\ref{eq:ar}.
+		\begin{align*}
+			\phi x_{t-1}&=\phi\sum_{i=0}^\infty\phi^iw_{t-1-i}=\phi\sum_{j=1}^\infty\phi^{j-1}w_{t-j}=\sum_{j=1}^\infty\phi^jw_{t-j}\\
+        	\phi x_{t-1}+w_t&=\sum_{j=0}^\infty\phi^jw_{t-j}=x_j
+		\end{align*}
+		}
+		\only<2> {
+        We now show that Eq.~\ref{eq:ma} is the unique solution to Eq.~\ref{eq:ar}. Suppose $y_t$ is stationary and satisfies Eq.~\ref{eq:ar}, then
+		\begin{align*}
+			y_t &= \phi y_{t-1}+w_t\\
+			    &= \phi (\phi y_{t-2}+w_{t-1})+w_t=\phi^2y_{t-2}+\phi w_{t-1}+w_t\\
+			    &= \phi^{t+1}y_{t-(t+1)}+\phi^tw_t+\ldots+\phi w_{t-1}+w_t\\
+                &= \phi^{k+1}y_{t-(k+1)}+\sum_{i=0}^k\phi^kw_{t-i}\\
+			E\left\{\left(y_t-\sum_{i=0}^k\phi^iw_{t-i}\right)^2\right\}&=\phi^{2k+2}E\{y_{t-(k+1)}^2\}=\phi^{2k+2}\sigma^2\\
+			E\left\{\left(y_t-\sum_{i=0}^\infty\phi^iw_{t-i}\right)^2\right\}&=\lim_{k\rightarrow\infty}\phi^{2k+2}\sigma^2=0
+		\end{align*}
+		}
+		\only<3> {
+			Thus $y_t$ equals $\sum_{i=0}^\infty\phi^iw_{t-i}$ in the mean-squared sense.
+		}
+		\alt<3>{\qedhere}{\phantom\qedhere}
+    \end{proof}
+\end{frame}
+
+\finishappendix
+% after last appendix slide but before \end{document}
 
 \bibliographystyle{apalike}
 \bibliography{others}
