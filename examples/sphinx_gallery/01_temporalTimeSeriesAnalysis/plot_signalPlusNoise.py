@@ -68,7 +68,7 @@ fig.update_xaxes(title_text="Time (sec)", row=3, col=1)
 if not os.path.exists("figures"):
     os.mkdir("figures")
 
-fig.write_html("figures/signalInNoise.html")
-fig.write_image("figures/signalInNoise.png")
+fig.write_html("figures/signalPlusNoise.html")
+fig.write_image("figures/signalPlusNoise.png")
 
 fig
