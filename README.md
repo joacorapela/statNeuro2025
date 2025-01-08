@@ -1,6 +1,6 @@
 # Statistical Neuroscience 2025 repository
 
-- lectures and practicals will take place at the Sainsbury Wellcome Centre lecture theatre. Lectures will be on Mondays from 10am to 12pm and practicals on Fridays from 2pm to 3:30pm.
+- lectures and practicals will take place at the Sainsbury Wellcome Centre lecture theatre. Lectures will be on Mondays from 1pm to 3pm and practicals on Fridays from 2pm to 3:30pm.
 
 - material related to lectures can be found [here](https://github.com/joacorapela/statsNeuro2025/tree/master/lectures)
 
