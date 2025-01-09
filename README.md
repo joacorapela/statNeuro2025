@@ -18,8 +18,8 @@
     | 02 | Jan 24 | [Power spectra](https://github.com/joacorapela/neuroinformatics24/blob/master/practicals/02_LFPs_spectralAnalysis/spectralAnalysis.pdf) | [Joaquin Rapela](https://www.gatsby.ucl.ac.uk/~rapela) | practical |
     | 03 | Jan 27 | Spectrogram and non-stationary signals, Multiple time series | [Joaquin Rapela](https://www.gatsby.ucl.ac.uk/~rapela) | lecture |
     | 03 | Jan 31 | [Spectrogram and coherence](https://github.com/joacorapela/neuroinformatics24/blob/master/practicals/03_spectralAnalysisForNonStationarySignals/nonStationarySpectralAnalysis.pdf) | [Joaquin Rapela](https://www.gatsby.ucl.ac.uk/~rapela) | practical |
-    | 04 | Feb 03 | Dimensionality reduction | [Sina Tootonian](https://www.linkedin.com/in/sina-tootoonian-99668838/) | lecture |
-    | 04 | Feb 07 | [Singular Value Decomposition](practicals/05_singularValueDecomposition/singularValueDecomposition.pdf) | [Sina Tootonian](https://www.linkedin.com/in/sina-tootoonian-99668838/) | practical |
+    | 04 | Feb 03 | Dimensionality reduction | [Sina Tootoonian](https://www.linkedin.com/in/sina-tootoonian-99668838/) | lecture |
+    | 04 | Feb 07 | [Singular Value Decomposition](practicals/05_singularValueDecomposition/singularValueDecomposition.pdf) | [Sina Toootonian](https://www.linkedin.com/in/sina-tootoonian-99668838/) | practical |
     | 05 | Feb 10 | [Linear Regression](https://github.com/joacorapela/neuroinformatics24/blob/master/lectures/06_linearRegression/swc_neuroinformatics_linreg.pdf) | [Lior Fox](https://liorfox.github.io/) | lecture |
     | 05 | Feb 14 | Linear Regression | [Lior Fox](https://liorfox.github.io/) | practical |
     | 06 | Feb 17 | Circular statistics, The bootstrap | [Kira D&#252;sterwald](https://scholar.google.com/citations?user=U7NxV-MAAAAJ&hl=en) | lecture |
