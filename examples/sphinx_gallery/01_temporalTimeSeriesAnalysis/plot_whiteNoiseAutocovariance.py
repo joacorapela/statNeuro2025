@@ -67,8 +67,8 @@ trace = go.Scatter(x=lags, y=anaAcor, mode="lines+markers", name="analytical")
 fig.add_trace(trace)
 trace = go.Scatter(x=lags, y=estAcor, mode="lines+markers", name="estimated")
 fig.add_trace(trace)
-fig.add_hline(y=sigma/np.sqrt(N), line=dict(dash="dash"))
-fig.add_hline(y=-sigma/np.sqrt(N), line=dict(dash="dash"))
+fig.add_hline(y=1.96/np.sqrt(N), line=dict(dash="dash"))
+fig.add_hline(y=-1.96/np.sqrt(N), line=dict(dash="dash"))
 fig.update_layout(title=f"N={T}", xaxis=dict(title="Lag (samples)"),
                   yaxis=dict(title="Autocorrelation"))
 
