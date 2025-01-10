@@ -325,16 +325,20 @@ Gatsby Computational Neuroscience Unit\\University College London % Your institu
 \begin{frame}[fragile]
     \frametitle{Generation of time series: white noise}
 
-    The first step to generate time series is to generate \textbf{white noise}
+    The first step to generate time series is to generate \textbf{white noise},
+    $\{w_t\}$
     (i.e., independent Gaussian random variables with zero mean and fixed
     variance, 
     \href{https://joacorapela.github.io/statNeuro2025/auto_examples/01_temporalTimeSeriesAnalysis/plot_whiteNoiseExample.html#sphx-glr-auto-examples-01-temporaltimeseriesanalysis-plot-whitenoiseexample-py}{example}).
-
-
-    \begin{lstlisting}[language=Python,basicstyle=\small]
-        w = np.random.normal(loc=0, scale=sigma, size=N)
-    \end{lstlisting}
-
+    \scriptsize
+    \begin{align*}
+        E\{w_t\}&=0\\
+        \text{Cov}\{w_t,w_s\}&=\left\{\begin{array}{l l}
+                                          \sigma^2_w & s=t\\
+                                          0 & s\neq t\\
+                                      \end{array}\right.
+    \end{align*}
+    \normalsize
     \begin{center}
         \href{http://www.gatsby.ucl.ac.uk/~rapela/statNeuro/2025/lectures/01_temporalTimeSeriesAnalysis/figures/whiteNoise.html}{\includegraphics[width=3in]{../../examples/sphinx_gallery/01_temporalTimeSeriesAnalysis/figures/whiteNoise.png}}
     \end{center}
@@ -422,7 +426,7 @@ Gatsby Computational Neuroscience Unit\\University College London % Your institu
 
 \end{frame}
 
-\subsection{Measures used to describe time series}
+\subsection{Population measures used to describe time series}
 
 \begin{frame}
     \frametitle{Mean function}
@@ -432,6 +436,7 @@ Gatsby Computational Neuroscience Unit\\University College London % Your institu
     \end{definition}
 
     \begin{exampleblock}{Example (Mean function of a moving average model)}
+        \label{slide:ma}
         Calculate the mean function of the moving average model in Eq.~\ref{eq:ma}.
         \begin{align*}
             E\{\nu_t\} = \frac{1}{3}(E\{w_{t-1}\} + E\{w_t\} + E\{w_{t+1}\}) = \frac{1}{3}(0 + 0 + 0) = 0
@@ -497,9 +502,14 @@ Gatsby Computational Neuroscience Unit\\University College London % Your institu
     \end{definition}
 
     \begin{block}{Note}
-        For $s=t$ the covariance reduces to the variance, because
+        For $s=t$ the autocovariance reduces to the variance, because
         $\gamma(t,t)=E\{(x_t-\mu_t)^2\}=var(x_t)$.
     \end{block}
+
+    \begin{definition}[Autocorrelation function]
+        The autocorrelation function is defined as
+        $\rho(s, t)=\frac{\gamma(t,s)}{\sqrt{\gamma(t,t)\gamma(s,s)}}$.
+    \end{definition}
 
 \end{frame}
 
@@ -538,6 +548,7 @@ Gatsby Computational Neuroscience Unit\\University College London % Your institu
 		\end{align*}
 		}
 		\only<4>{
+        \label{slide:autocovarMA}
 		\begin{align*}
         	\gamma_\nu(s,t)=\left\{\begin{array}{l l}
                                        \frac{3}{9}\sigma^2_w & \text{if}\quad s=t,\\
@@ -548,6 +559,163 @@ Gatsby Computational Neuroscience Unit\\University College London % Your institu
 		\end{align*}
 		}
     \end{exampleblock}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Autocovariance function}
+
+    \begin{exampleblock}{Example (Autocovariance function of AR(1))}
+		\only<1>{
+        Calculate the autocovariance function of the autoregressive model
+        of order 1 in Eq.~\ref{eq:ar}.
+
+        An AR(1) model (Eq.~\ref{eq:ar1}) can be represented as a moving average of ininite order MA($\infty$).
+        See \hyperlink{slide:ar1AsMaInfty}{MA($\infty$) representation of AR(1) random process} in Appendix.
+        \begin{align*}
+            x_t &= \sum_{i=0}^{\infty}\phi^iw_{t-i}
+        \end{align*}
+        }
+        \only<2>{
+        \scriptsize
+        \begin{align*}
+            \label{slide:autocovarAR1}
+            \gamma(t-h,t)&=E\{(x_{t-h}-\mu_{t-h})(x_t-\mu_t)\}=E\{x_{t-h}x_t\}=E\left\{\left(\sum_{i=0}^{\infty}\phi^iw_{t-h-i}\right)\left(\sum_{j=0}^{\infty}\phi^jw_{t-j}\right)\right\}\\
+                       &=E\left\{\sum_{i=0}^{\infty}\sum_{j=0}^{\infty}\phi^i\phi^jw_{t-h-i}w_{t-j}\right\}=\sum_{i=0}^{\infty}\sum_{j=0}^{\infty}\phi^i\phi^jE\{w_{t-h-i}w_{t-j}\}\\
+                       &=\sum_{i=0}^{\infty}\phi^i\phi^{i+h}E\{w_{t-h-i}^2\}=\phi^h\sigma^2_w\sum_{i=0}^{\infty}\phi^{2i}=\phi^h\sigma^2_w\frac{1}{1-\phi^2},\quad\text{if}\;|\phi|<1
+        \end{align*}
+        \normalsize
+        }
+    \end{exampleblock}
+\end{frame}
+
+\subsection{Stationarity}
+
+\begin{frame}
+    \frametitle{Strictly stationary time series}
+
+    \begin{definition}[Strict stationarity]
+        \small
+        A \textbf{strictly stationary time series} is one for which the probabilistic
+        behavior of every collection of values
+
+        \begin{align*}
+            \{x_{t_1},\ldots,x_{t_n}\}
+        \end{align*}
+
+        is identical to that of any shifted set 
+
+        \begin{align*}
+            \{x_{t_1+h},\ldots,x_{t_n+h}\}
+        \end{align*}
+
+        That is
+
+        \begin{align*}
+            P(x_{t_1}<c_1,\ldots,x_{t_k}<c_k)=P(x_{t_1+h}<c_1,\ldots,x_{t_k+h}<c_k)
+        \end{align*}
+
+        for all $k=1,2,\ldots$, all time points $t_1,t_2,\ldots,t_k$, all
+        numbers $c_1,c_2,\ldots,c_k$, and all time shifts $h=0,\pm 1,\pm
+        2,\ldots$.
+        \normalsize
+    \end{definition}
+
+\end{frame}
+
+\begin{frame}
+    \frametitle{Weakly stationary time series}
+
+    \begin{definition}[Weak or wide-sense stationarity]
+
+        A \textbf{weakly} or \textbf{wide-sense stationary time series} is a
+        finite-variance process such that:
+
+        \begin{enumerate}[i]
+
+            \item the mean function, $\mu_t$, is contant and does not depend on
+                time $t$, and
+
+            \item the autocovariance function, $\gamma(s,t)$, depends on $s$
+                and $t$ only through their difference $|s-t|$.
+
+        \end{enumerate}
+    \end{definition}
+
+\end{frame}
+
+\subsection{Sample measures used to describe time series}
+
+\begin{frame}
+    \frametitle{Sample mean, autocovariance and autocorrelation}
+    \label{slide:estAutocovar}
+
+    \only<1>{
+    \begin{definition}[Sample mean]
+        Let $x_1,\ldots,x_n$ be observations from a time series. The
+        \textbf{sample mean} of $x_1,\ldots,x_n$ is
+        \begin{align*}
+            \bar{x}=\frac{1}{n}\sum_{i=1}^nx_i
+        \end{align*}
+    \end{definition}
+
+    \begin{definition}[Sample autocovariance]
+        The \textbf{sample autocovariance function} is
+        \begin{align*}
+            \hat\gamma(h)=\frac{1}{n}\sum_{i=1}^{n-|h|}(x_{i+|h|}-\bar{x})(x_i-\bar{x}),\quad -n<h<n
+        \end{align*}
+    \end{definition}
+    }
+
+    \only<2>{
+    \begin{definition}[Sample autocorrelation]
+        The \textbf{sample autocorrelation function} is
+        \begin{align*}
+            \hat\rho(h)=\frac{\hat\gamma(h)}{\hat\gamma(0)}
+        \end{align*}
+    \end{definition}
+    \begin{theorem}[Distribution of sample autocorrelation for white noise]
+
+        For white noise, and a sample of size $n$,  the sample
+        autocorrelations, $\hat\gamma(h), h>0$, are approximately independent
+        and identically distributed $N(0,1/\sqrt{n})$, for large $n$
+        \citep{brockwellAndDavis91}.
+        %
+        Hence 95\% of the sample autocorrelations should fall between the bound
+        $\pm 1.96/\sqrt{n}$
+    \end{theorem}
+
+    }
+
+\end{frame}
+
+\begin{frame}
+    \frametitle{Analytical and estimated autocovariance function for MA}
+
+    Simulate the \hyperlink{slide:ma}{previous} moving average time series with N=100 and
+    N=100,000 samples.  For each N, plot the
+    \hyperlink{slide:autocovarMA}{analytical} and
+    \hyperlink{slide:estAutocovar}{estimated} autocovariance function.
+
+    \begin{center}
+        \href{http://www.gatsby.ucl.ac.uk/~rapela/statNeuro/2025/lectures/01_temporalTimeSeriesAnalysis/figures/movingAverageAutoCovN100.html}{\includegraphics[width=2.00in]{../../../mySolutions/01_temporalTimeSeriesAnalysis/figures/movingAverageAutoCovN100.png}}
+        \href{http://www.gatsby.ucl.ac.uk/~rapela/statNeuro/2025/lectures/01_temporalTimeSeriesAnalysis/figures/movingAverageAutoCovN10000.html}{\includegraphics[width=2.00in]{../../../mySolutions/01_temporalTimeSeriesAnalysis/figures/movingAverageAutoCovN10000.png}}
+    \end{center}
+
+\end{frame}
+
+\begin{frame}
+    \frametitle{Analytical and estimated autocovariance function for AR(1)}
+
+    Simulate an AR(1) time series with N=100 and N=100,000 samples, $\phi=0.9$
+    and $\sigma_w=1.0$. For each N, plot the
+    \hyperlink{slide:autocovarAR1}{analytical} and
+    \hyperlink{slide:estAutocovar}{estimated} autocovariance function.
+
+    \begin{center}
+        \href{http://www.gatsby.ucl.ac.uk/~rapela/statNeuro/2025/lectures/01_temporalTimeSeriesAnalysis/figures/autoregressiveAutoCovN100.html}{\includegraphics[width=2.00in]{../../../mySolutions/01_temporalTimeSeriesAnalysis/figures/autoregressiveAutoCovN100.png}}
+        \href{http://www.gatsby.ucl.ac.uk/~rapela/statNeuro/2025/lectures/01_temporalTimeSeriesAnalysis/figures/autoregressiveAutoCovN10000.html}{\includegraphics[width=2.00in]{../../../mySolutions/01_temporalTimeSeriesAnalysis/figures/autoregressiveAutoCovN10000.png}}
+    \end{center}
+
 \end{frame}
 
 \begin{comment}
@@ -1290,7 +1458,9 @@ sample mean as our test statistic:
 		\end{align*}
 		}
 		\only<2> {
-        We now show that Eq.~\ref{eq:ma} is the unique solution to Eq.~\ref{eq:ar}. Suppose $y_t$ is stationary and satisfies Eq.~\ref{eq:ar}, then
+        We now show that Eq.~\ref{eq:ma} is the unique solution to
+        Eq.~\ref{eq:ar1}. Suppose $y_t$ is stationary and satisfies
+        Eq.~\ref{eq:ar1}, then
 		\begin{align*}
 			y_t &= \phi y_{t-1}+w_t\\
 			    &= \phi (\phi y_{t-2}+w_{t-1})+w_t=\phi^2y_{t-2}+\phi w_{t-1}+w_t\\
@@ -1311,6 +1481,6 @@ sample mean as our test statistic:
 % after last appendix slide but before \end{document}
 
 \bibliographystyle{apalike}
-\bibliography{others}
+\bibliography{others,stats}
 
 \end{document}
