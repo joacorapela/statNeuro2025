@@ -38,13 +38,14 @@ anaAcor = np.zeros(len(lags))
 anaAcor[0] = 1
 estAcor = np.zeros(len(lags))
 wMu = np.mean(w)
+wSTD = np.std(w)
 for h in lags:
     if h == 0:
         estAcor[h] = 1.0
     else:
         xs = w[h:] - wMu
         xt = w[:-h] - wMu
-        estAcor[h] = np.mean(xs * xt)
+        estAcor[h] = np.mean(xs * xt)/wSTD
 
 #%%
 # Plot white noise time series, true and estimated autocorrelation
