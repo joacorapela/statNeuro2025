@@ -16,7 +16,7 @@ import plotly.graph_objects as go
 # -----------------
 
 srate = 1
-T = 100
+T = 10000
 sigma = 1.0
 lags = np.arange(20)
 
