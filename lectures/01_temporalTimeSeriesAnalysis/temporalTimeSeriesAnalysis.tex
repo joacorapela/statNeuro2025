@@ -134,6 +134,8 @@
 \newcommand{\conti}{\setcounter{enumi}{\value{saveenumi}}}
 \newcommand{\keepi}{\addtocounter{saveenumi}{-1}\setcounter{enumi}{\value{saveenumi}}}
 
+\DeclareMathOperator*{\argmin}{arg\,min}
+
 %----------------------------------------------------------------------------------------
 %	TITLE PAGE
 %----------------------------------------------------------------------------------------
@@ -689,6 +691,24 @@ Gatsby Computational Neuroscience Unit\\University College London % Your institu
 \end{frame}
 
 \begin{frame}
+    \frametitle{Analytical and estimated autocorrelation function for white
+    noise}
+
+    Simulate a \hyperlink{slide:whiteNoise}{white noise} time series with N=100 and
+    N=100,000 samples. For each N, plot the
+    \hyperlink{slide:autocovarWhiteNoise}{analytical} and
+    \hyperlink{slide:estAutocovar}{estimated} autocorrelation function.
+    Include the 95\% confidence interval of the autocorrelation function.
+    \href{https://joacorapela.github.io/statNeuro2025/auto\_examples/01\_temporalTimeSeriesAnalysis/plot\_whiteNoiseAutocovariance.html\#\#sphx-glr-auto-examples-01-temporaltimeseriesanalysis-plot-whitenoiseautocovariance-py}{Solution}.
+
+    \begin{center}
+        \href{http://www.gatsby.ucl.ac.uk/~rapela/statNeuro/2025/lectures/01_temporalTimeSeriesAnalysis/figures/movingAverageAutoCorN100.html}{\includegraphics[width=2.00in]{../../examples/sphinx_gallery/01_temporalTimeSeriesAnalysis/figures/whiteNoiseAutoCorN100.png}}
+        \href{http://www.gatsby.ucl.ac.uk/~rapela/statNeuro/2025/lectures/01_temporalTimeSeriesAnalysis/figures/movingAverageAutoCorN10000.html}{\includegraphics[width=2.00in]{../../examples/sphinx_gallery/01_temporalTimeSeriesAnalysis/figures/whiteNoiseAutoCorN10000.png}}
+    \end{center}
+
+\end{frame}
+
+\begin{frame}
     \frametitle{Analytical and estimated autocovariance function for MA}
 
     Simulate the \hyperlink{slide:ma}{previous} moving average time series with N=100 and
@@ -715,6 +735,71 @@ Gatsby Computational Neuroscience Unit\\University College London % Your institu
         \href{http://www.gatsby.ucl.ac.uk/~rapela/statNeuro/2025/lectures/01_temporalTimeSeriesAnalysis/figures/autoregressiveAutoCovN100.html}{\includegraphics[width=2.00in]{../../../mySolutions/01_temporalTimeSeriesAnalysis/figures/autoregressiveAutoCovN100.png}}
         \href{http://www.gatsby.ucl.ac.uk/~rapela/statNeuro/2025/lectures/01_temporalTimeSeriesAnalysis/figures/autoregressiveAutoCovN10000.html}{\includegraphics[width=2.00in]{../../../mySolutions/01_temporalTimeSeriesAnalysis/figures/autoregressiveAutoCovN10000.png}}
     \end{center}
+
+\end{frame}
+
+\subsection{Forecasting}
+
+\begin{frame}
+    \frametitle{Forecasting}
+
+    Forecasting is the problem of predicting the value of $X_{n+h}, h>0$, of a
+    stationary time series, in term of the previous $m$
+    values$\{X_n,\ldots,X_{n-(m-1)}\}$.
+    %
+    The mean of such predictor is
+
+    \begin{align*}
+        \text{mean}(\text{pred}(X_{m+h}|X_n,\ldots,X_{n-(m-1)}))=\mu+\mathbf{a_m}^\intercal\left[\begin{array}{c}
+                                                                                          x_n-\mu\\
+                                                                                          \ldots\\
+                                                                                          x_{n-(m-1)}-\mu
+                                                                                      \end{array}\right]
+    \end{align*}
+
+    and its variance is
+
+    \begin{align*}
+        \text{var}(\text{pred}(X_{n+h}|X_n,\ldots,X_{n-(m-1)}))=\gamma(0)-\mathbf{a_m}^\intercal\gamma_m(h)
+        % \text{var}(\text{Pred}(X_{n+h}|X_n,\ldots,X_{n-(m-1)}))=\gamma(0)-\mathbf{a_m}^\intercal\left[\begin{array}{c}
+        %                                                                                       \gamma(h)\\
+        %                                                                                       \vdots\\
+        %                                                                                       \gamma(h+(m-1))
+        %                                                                                     \end{array}\right]
+    \end{align*}
+    %
+    % The goal of forecasting is to find the coefficients $a_0,\ldots,a_{m-1}$ of the
+    % linear combination of $1,X_n,\ldots,X_{n-(m-1)}$ that forecasts $X_{n+h}$ with
+    % minimum mean-squared error.
+    %
+    % That is,
+
+    % \small
+    % \begin{align*}
+    %     a^*_0,\ldots,a^*_{m-1}=\argmin_{a_0,\ldots,a_{m-1}}E\left\{\left(X_{n+h}-\left(a_0X_n+a_1X_{n-1}+\ldots+a_{m-1}X_{n-(m-1)}\right)\right)^2\right\}
+    % \end{align*}
+    % \normalsize
+
+\end{frame}
+
+\begin{frame}
+    \frametitle{Forecasting}
+
+    with
+    \scriptsize
+    \begin{align*}
+        \Gamma_m\mathbf{a_m}&=\gamma_m(h)\\
+        \Gamma_m&=[\gamma(i-j)]_{i,j=1}^m=\left[\begin{array}{c c c c c c}
+                            \gamma(0) & \gamma(1) & \gamma(2) & \gamma(3) & \ldots & \gamma(m-1)\\
+                            \gamma(1) & \gamma(0) & \gamma(1) & \gamma(2) & \ldots & \gamma(m-2)\\
+                            \gamma(2) & \gamma(1) & \gamma(0) & \gamma(1) & \ldots & \gamma(m-3)\\
+                            \vdots    & \vdots    & \vdots    & \vdots    & \vdots & \vdots\\
+                            \gamma(m-1) & \gamma(m-2) & \gamma(m-3) & \gamma(m-4) & \ldots & \gamma(0)\\
+                        \end{array}\right]\\
+        \mathbf{a_m}&=[a_1,\ldots,a_m]^\intercal\\
+        \gamma_m(h)&=[\gamma(h),\gamma(h+1),\ldots,\gamma(h+m-1)]^\intercal
+    \end{align*}
+    \normalsize
 
 \end{frame}
 
