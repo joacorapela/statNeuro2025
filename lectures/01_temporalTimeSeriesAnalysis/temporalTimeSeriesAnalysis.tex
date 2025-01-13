@@ -182,25 +182,38 @@ Gatsby Computational Neuroscience Unit\\University College London % Your institu
     \frametitle{Background}
 
     \begin{itemize}
-        \item Last Spring 2023 I helped in the discussion sessions of this
-            course.
+        \item On Spring 2023 I helped in the discussion sessions of the
+            Neuroinformatics course by Prof.~Ken Harris, for UCL undegraduate
+            students in Neuroscience.
 
-        \item Suggested to Klara Olofsdotter (SWC PhD program coordinator) and Sonja Hofer (SWC PhD program faculty coordinator) to ask SWC PhD students to take this course. They liked the idea.
+        \item Suggested to Klara Olofsdotter (SWC PhD program coordinator) and
+            Sonja Hofer (SWC PhD program faculty coordinator) to ask SWC PhD
+            students to take this course. They liked the idea.
 
-        \item I volunteered to lead discussions and do grading with Gatsby Unit
-            PhD students and postdoctoral scholars.
+        \item With Gatsby Unit PhD students and postdoctoral scholars, as well
+            as researchers from elsewhere, we offered
+            \href{https://github.com/joacorapela/neuroinformatics24}{Neuroinformatics
+            2024},
+            Ken taught the first five lectures and we taught the remaining
+            ones.
+
+        \item On 2025 we renamed the course \emph{Statistical Neuroscience} and
+            to teach all lectures ourselves. We invited lecturers and students
+            from the Francis Crick Institute.
 
     \end{itemize}
 
 \end{frame}
 
 \begin{frame}
-\frametitle{A few motivations to run this course}
+\frametitle{A few of our motivations to run this course}
 
     \begin{enumerate}
+        \item Enjoy learning by teaching.
         \item Gain more teaching experience.
         \item Provide SWC PhD students with essential neural data-analysis tools.
-        \item Contribute to better interactions between the SWC and the Gatsby Unit.
+        \item Contribute to better interactions between the SWC and the Gatsby
+            Unit. Build a common language.
     \end{enumerate}
 
 \end{frame}
@@ -208,50 +221,30 @@ Gatsby Computational Neuroscience Unit\\University College London % Your institu
 \begin{frame}
 \frametitle{Course structure}
 
-    \tiny
-    \begin{center}
-        \begin{tabular} { | l | l | l | l | l | }\hline
-            Week 01 & Jan 11 & The t-test and randomisation tests & Joaquin Rapela &  tutorial \\\hline
-            Week 02 & Jan 18 & Power spectra & Joaquin Rapela & tutorial \\
-                    &        &               & Yousef Mohammadi & \\
-                    &        &               & Joe Zimminski & \\\hline
-            Week 03 & Jan 25 & Spectrograms  & Joaquin Rapela & tutorial \\
-                    &        & and coherence & Yousef Mohammadi & \\
-                    &        &               & Joe Zimminski & \\\hline
-            Week 04 & Feb 01 & Circular statistics & Joaquin Rapela & tutorial \\\hline
-            Week 05 & Feb 08 & Singular value decomposition & Will Dorrell & tutorial \\\hline\hline
-            Week 06 & Feb 15 & Linear regression & Lior Fox & lecture\\
-                    & Feb 16 &                   &          & tutorial\\\hline
-            Week 07 & Feb 22 & Linear dynamical systems & Aniruddh Galgali & lecture \\
-                    &        &                          & Joaquin Rapela & \\
-                    & Feb 23 &                          &                  & tutorial\\\hline
-            Week 08 & Feb 29 & no class (CoSyNe)        &                  & \\\hline
-            Week 09 & Mar 07 & Artificial neural networks & Erin Grant & lecture\\
-                    & Mar 08 &                            &            & tutorial\\\hline
-            Week 10 & Mar 14 & Experimental control with Bonsai & Goncalo Lopes & lecture\\
-                    &        &                                  & Joaquin Rapela & \\
-                    & Mar 15 &                                  & & tutorial\\\hline
-            Week 11 & Mar 21 & Reinforcement learning           & & lecture\\
-                    & Mar 22 &                                  & & tutorial\\\hline
-            Week 12 & Mar 28 & Project development & & \\
-            Week 15 & Apr 25 &                     & & \\\hline 
-            Week 16 & May 02 & Project presentations & & \\\hline
-        \end{tabular}
-    \end {center}
-    Teaching assistants: Kira Dusterwald, Sihao (Daniel) Liu
-    \normalsize
-
-
-
-
+    Refer to the course
+    \href{https://github.com/joacorapela/statNeuro2025}{repo}.
 
 \end{frame}
 
 \begin{frame}
-    \frametitle{Graded worksheets}
+    \frametitle{Course logistics}
 
-    Every Thursday we will assign you a worksheet that is due on the second
-    Monday after the assignment.
+    \begin{description}
+
+        \item[Lectures]: Monday 1-3pm, SWC lecture theathre.
+
+        \item[Practicals]: Friday 2-3:30pm, SWC lecture theathre.
+
+        \item[Office Hours]: Joaquin, Wednesday 4-5pm, or by an arranged appointment.
+
+        \item[Worksheet]: assigned on Mondays, due on the following Monday
+            before 1pm. Workshees by SWC PhD students will be graded. Solutions
+            to all worksheets will be provided.
+
+        \item[Participation]: in-class participation, and off-class
+            participation (e.g., by email) is greatly encouraged.
+
+    \end{description}
 
 \end{frame}
 
@@ -264,11 +257,11 @@ Gatsby Computational Neuroscience Unit\\University College London % Your institu
 
     \begin{itemize}
 
-        \item Time series analysis characterizes \textbf{data that is correlated in
+        \item Time series analysis characterises \textbf{data that is correlated in
             time}.
 
-        \item These correlations serverly \textbf{restrict the applicability of
-            conventional technniques} assuming data samples that are
+        \item These correlations severely \textbf{restrict the applicability of
+            conventional techniques} assuming data samples that are
             independent and identically distributed.
 
         \item These correlations allow to \textbf{forecast} future values of a
@@ -286,9 +279,9 @@ Gatsby Computational Neuroscience Unit\\University College London % Your institu
         \item[economics] daily stock market quotations, monthly unemployment
             figures.
 
-        \item[social scientists] birthrates, school enrollment.
+        \item[social scientists] birthrates, school enrolment.
 
-        \item[epidemology] number of influenza cases observed over some time
+        \item[epidemiology] number of influenza cases observed over some time
             period.
 
         \item[medicine] blood pressure measurements traced over time.
@@ -298,15 +291,33 @@ Gatsby Computational Neuroscience Unit\\University College London % Your institu
 \end{frame}
 
 \begin{frame}
+    \frametitle{Examples of SWC time series analysis}
+
+    \begin{enumerate}
+        \item \href{docs/inference.pdf}{aeon project: kinematic inference}.
+            \begin{center}
+                \href{videos/FrameTop_2021-06-03T17-00-00_end001000.avi}{\includegraphics[width=1.0in]{videos/firstFrmae_FrameTop_2021-06-03T17-00-00_end001000.jpg}}
+            \end{center}
+
+        \item \href{https://www.gatsby.ucl.ac.uk/~rapela/sepi/reports/kfAnalysis/expt01/expt01VisualVestibular.pdf}{integration
+            of visual/vestibular information, with Prof.~Sepi Keshavarsi}.
+            \begin{center}
+                \includegraphics[width=3in]{figures/visVesIntegration.png}
+            \end{center}
+    \end{enumerate}
+
+\end{frame}
+
+\begin{frame}
     \frametitle{Temporal vs spectral time series analysis}
 
     \begin{description}
 
-        \item[termporal time series analysis] focuses on the analysis of lagged
+        \item[temporal time series analysis] focuses on the analysis of lagged
             relationship (e.g., how does what happened today affect what will
             happen tomorrow?).
 
-        \item[spectral time series analysis] centers on the analysis of rhythms
+        \item[spectral time series analysis] centres on the analysis of rhythms
             (e.g., can we observe rhythmic activity in local field potentials
             recorded from human brains?)
 
@@ -314,6 +325,7 @@ Gatsby Computational Neuroscience Unit\\University College London % Your institu
 
 \end{frame}
 
+\begin{comment}
 \begin{frame}
     \frametitle{An example time series}
 
@@ -321,6 +333,7 @@ Gatsby Computational Neuroscience Unit\\University College London % Your institu
     from a human subject \citep{liuEtAl24}.
 
 \end{frame}
+\end{comment}
 
 \subsection{Generation of time series}
 
@@ -389,7 +402,7 @@ Gatsby Computational Neuroscience Unit\\University College London % Your institu
 \begin{frame}[fragile]
     \frametitle{Generation of time series: random walk with drift}
 
-    The \textbf{random walk with noise} model is used to characterize trends in
+    The \textbf{random walk with noise} model is used to characterise trends in
     time series
     (\href{https://joacorapela.github.io/statNeuro2025/auto_examples/01_temporalTimeSeriesAnalysis/plot_randomWalkWithDriftExample.html#sphx-glr-auto-examples-01-temporaltimeseriesanalysis-plot-randomwalkwithdriftexample-py}{example}).
 
@@ -459,7 +472,7 @@ Gatsby Computational Neuroscience Unit\\University College London % Your institu
             x_t = \phi x_{t-1} + w_t\label{eq:ar1}
         \end{align}
 
-        An AR(1) model (Eq.~\ref{eq:ar1}) can be represented as a moving average of ininite order MA($\infty$).
+        An AR(1) model (Eq.~\ref{eq:ar1}) can be represented as a moving average of infinite order MA($\infty$).
         See \hyperlink{slide:ar1AsMaInfty}{MA($\infty$) representation of AR(1) random process} in Appendix. Then
         \begin{align*}
             x_t &= \sum_{i=0}^{\infty}\phi^iw_{t-i}
@@ -571,7 +584,7 @@ Gatsby Computational Neuroscience Unit\\University College London % Your institu
         Calculate the autocovariance function of the autoregressive model
         of order 1 in Eq.~\ref{eq:ar}.
 
-        An AR(1) model (Eq.~\ref{eq:ar1}) can be represented as a moving average of ininite order MA($\infty$).
+        An AR(1) model (Eq.~\ref{eq:ar1}) can be represented as a moving average of infinite order MA($\infty$).
         See \hyperlink{slide:ar1AsMaInfty}{MA($\infty$) representation of AR(1) random process} in Appendix.
         \begin{align*}
             x_t &= \sum_{i=0}^{\infty}\phi^iw_{t-i}
@@ -598,7 +611,7 @@ Gatsby Computational Neuroscience Unit\\University College London % Your institu
     \begin{definition}[Strict stationarity]
         \small
         A \textbf{strictly stationary time series} is one for which the probabilistic
-        behavior of every collection of values
+        behaviour of every collection of values
 
         \begin{align*}
             \{x_{t_1},\ldots,x_{t_n}\}
@@ -634,7 +647,7 @@ Gatsby Computational Neuroscience Unit\\University College London % Your institu
 
         \begin{enumerate}[i]
 
-            \item the mean function, $\mu_t$, is contant and does not depend on
+            \item the mean function, $\mu_t$, is constant and does not depend on
                 time $t$, and
 
             \item the autocovariance function, $\gamma(s,t)$, depends on $s$
@@ -702,8 +715,8 @@ Gatsby Computational Neuroscience Unit\\University College London % Your institu
     \href{https://joacorapela.github.io/statNeuro2025/auto\_examples/01\_temporalTimeSeriesAnalysis/plot\_whiteNoiseAutocovariance.html\#\#sphx-glr-auto-examples-01-temporaltimeseriesanalysis-plot-whitenoiseautocovariance-py}{Solution}.
 
     \begin{center}
-        \href{http://www.gatsby.ucl.ac.uk/~rapela/statNeuro/2025/lectures/01_temporalTimeSeriesAnalysis/figures/movingAverageAutoCorN100.html}{\includegraphics[width=2.00in]{../../examples/sphinx_gallery/01_temporalTimeSeriesAnalysis/figures/whiteNoiseAutoCorN100.png}}
-        \href{http://www.gatsby.ucl.ac.uk/~rapela/statNeuro/2025/lectures/01_temporalTimeSeriesAnalysis/figures/movingAverageAutoCorN10000.html}{\includegraphics[width=2.00in]{../../examples/sphinx_gallery/01_temporalTimeSeriesAnalysis/figures/whiteNoiseAutoCorN10000.png}}
+        \href{http://www.gatsby.ucl.ac.uk/~rapela/statNeuro/2025/lectures/01_temporalTimeSeriesAnalysis/figures/whiteNoiseAutoCorN100.html}{\includegraphics[width=2.00in]{../../examples/sphinx_gallery/01_temporalTimeSeriesAnalysis/figures/whiteNoiseAutoCorN100.png}}
+        \href{http://www.gatsby.ucl.ac.uk/~rapela/statNeuro/2025/lectures/01_temporalTimeSeriesAnalysis/figures/whiteNoiseAutoCorN10000.html}{\includegraphics[width=2.00in]{../../examples/sphinx_gallery/01_temporalTimeSeriesAnalysis/figures/whiteNoiseAutoCorN10000.png}}
     \end{center}
 
 \end{frame}
@@ -796,714 +809,10 @@ Gatsby Computational Neuroscience Unit\\University College London % Your institu
         $n=10,000,m=500,h=1,\ldots,50$).
 
         \begin{center}
-            \href{http://www.gatsby.ucl.ac.uk/~rapela/statNeuro/2025/lectures/01_temporalTimeSeriesAnalysis/figures/autoregressiveAutoCovN100.html}{\includegraphics[width=2.00in]{../../../mySolutions/01_temporalTimeSeriesAnalysis/figures/forecastingAR7.png}}
+            \href{http://www.gatsby.ucl.ac.uk/~rapela/statNeuro/2025/lectures/01_temporalTimeSeriesAnalysis/figures/forecastingAR7.html}{\includegraphics[width=2.00in]{../../../mySolutions/01_temporalTimeSeriesAnalysis/figures/forecastingAR7.png}}
         \end{center}
     \end{exampleblock}
 \end{frame}
-
-\begin{comment}
-
-\section{Statistical remarks}
-
-\begin{frame}
-    \frametitle{Working examples}
-
-    \begin{example1}
-
-        We know that the average running speed of control mice is 1~cm/sec. The
-        sample average running speed of a cohort (n=100) of transgenic mice is
-        $\bar{x}=2.7\,\text{cm/sec}$ and the sample standard deviation is
-        $s=10~\text{cm/sec}$. Is the average running speed of mice in the
-        transgenic cohort larger than that of control mice? Test with a
-        confidence level $\alpha=0.01$.
-
-    \end{example1}
-
-\end{frame}
-
-\begin{frame}
-    \frametitle{Working examples}
-
-    \begin{example2}
-
-        We want to study the effect of a new drug on visual electrophysiology
-        in humans. We know that the mean peak evoked response potential (ERP)
-        over V1 during the first 200~ms after stimuli presentation is 2~mV. The
-        sample mean peak ERP for a group of 50 medicated subjects is
-        $\bar{x}=1.3\,\text{mV}$ and the sample standard deviation is
-        $s=2.6~\text{mV}$. Does taking the new drug change the mean evoked ERP
-        over V1? Provide your test p-value and reject the null hypothesis with
-        a confidence level $\alpha=0.05$.
-
-    \end{example2}
-
-\end{frame}
-
-\begin{frame}
-\frametitle{Statistical remarks}
-
-    \begin{enumerate}
-
-        \item Random data (e.g., observed data) is characterised using
-            probability distributions. For example a:
-
-            \begin{itemize}
-
-                \item Normal distribution with parameters mean $\mu$ and variance
-                    $\sigma^2$, $\mathcal{N}(\mu,\sigma^2)$,
-
-                    \begin{center}
-                        \href{http://www.gatsby.ucl.ac.uk/~rapela/neuroinformatics/2024/htTutorial/figures/gaussians.html}{\includegraphics[width=2in]{figures/gaussians.png}}
-                    \end{center}
-
-                \item Exponential distribution with rate parameter $\lambda$,
-                    $\mathcal{E}(\lambda)$,
-
-                \item Poisson distribution with expected rate parameter $\lambda$,
-                    $\mathcal{P}(\lambda)$,
-
-                \item Binomial distribution with number of observation parameter $n$
-                    and with a success probability parameter $p$,
-                    $\mathcal{B}(n,p)$.
-
-            \end{itemize}
-            \seti
-    \end{enumerate}
-
-
-\end{frame}
-
-\begin{frame}
-\frametitle{Statistical remarks}
-
-    \begin{enumerate}
-
-        \conti
-
-        \item One branch of statistics, \textbf{estimation theory}, provides
-            tools to estimate parameters of distributions from observations.
-
-        \item Another branch of statistics, \textbf{hypothesis testing},
-            provides tools to make statistically-informed decisions about
-            values of parameters of distributions.
-
-            \seti
-
-    \end{enumerate}
-
-\end{frame}
-
-\begin{frame}
-\frametitle{Statistical remarks}
-
-    \begin{enumerate}[<+->]
-
-        \conti
-
-		\item To estimate parameters, or to make decisions about them, we use
-observations, $x_1,\ldots,x_N$, that are \textbf{independent and identically
-distributed}.
-
-            \begin{example1}
-
-				An observation is the average speed of a transgenic mouse
-during an experimental session. We assume that the average speeds of all
-mice are samples from a common probability density function (identically
-distributed) and that average speeds are independent across mice (independent).
-
-            \end{example1}
-
-            \begin{example2}
-
-				An observation is the peak ERP of a medicated cohort
-subject. We assume that these ERPs are samples from the same probability density
-function (identically distributed) and that these ERPs are independent across
-subjects (independent).
-
-            \end{example2}
-
-            \seti
-
-    \end{enumerate}
-
-\end{frame}
-
-\begin{frame}
-\frametitle{Statistical remarks}
-
-    \begin{enumerate}
-
-        \conti
-
-		\item A goal of statistics is to \textbf{infer properties of the
-population} (e.g., the effect of the genetic manipulation on the running speed
-of mice) from \textbf{properties of the sample} (e.g., the effect of the
-manipulation on the running speed of the 100 sampled mice).
-
-		\seti
-
-    \end{enumerate}
-
-\end{frame}
-
-\begin{frame}
-\frametitle{Statistical remarks}
-
-	\begin{theorem}[Central Limit Theorem]
-        Let $X_1,\ldots,X_n$ be independent and identically distributed random
-        variables with mean $\mu$ and finite variance $\sigma^2$. Let $n$ be
-        large. Then the sample mean
-        \begin{align}
-            \bar{X}=\frac{1}{n}\sum_{i=1}^NX_i\label{eq:sampleMean}
-        \end{align}
-        is distributed as $\bar{X}\sim\mathcal{N}(\mu,\frac{\sigma^2}{n})$.
-	\end{theorem}
-
-    Note: if $\sigma^2$ is unknown, we can estimate $\sigma^2$ with the sample
-    variance $s^2=\frac{1}{n-1}\sum_{i=1}^n(x_i-\bar{x})^2$.  Then, for large
-    $n$, $\bar{X}$ is approximately distributed as
-    $\mathcal{N}(\mu,\frac{s^2}{n})$.
-
-\end{frame}
-
-\section{Hypothesis testing}
-
-\begin{frame}
-\frametitle{Main source}
-
-    Chapter 9 ``Large-sample test of hypothesis'' and chapter 10 ``Inference from
-    small samples'' from 
-
-    \begin{center}
-        \includegraphics[height=2.5in]{figures/mendenhall09-introductionToProbabilityAndStatistics-13edition_cover.pdf}
-    \end{center}
-
-\end{frame}
-
-\begin{frame}
-\frametitle{Null and alternative hypothesis}
-
-    \begin{itemize}
-
-        \item In hypothesis testing we work with a \textbf{null hypothesis},
-            $\mathcal{H}_0$, and an \textbf{alternative hypothesis},
-            $\mathcal{H}_a$, collect a sample of data $x_1,\ldots,x_N$, and
-            test if this data provides sufficient statistical evidence in favour
-            of the alternative hypothesis. If this happens we reject the null
-            hypothesis.
-
-        \item However, if the collected data does not provide sufficient
-            statistical evidence in favour of the alternative hypothesis, we do
-            not accept the null hypothesis, but we say that we failed to reject
-            it.  \textbf{Hypothesis tests do not prove null hypothesis, they
-            only provide statistical evidence to reject it, or fail to reject it.}
-
-    \end{itemize}
-
-	\onslide<2->{
-	\begin{alertblock}
-
-		The hypothesis that we aim to prove should be the alternative one.
-
-	\end{alertblock}
-	}
-
-\end{frame}
-
-\begin{frame}
-\frametitle{Null and alternative hypothesis}
-
-    \begin{example1}
-
-        Is the average running speed of the transgenic cohort larger than that of the control cohort (i.e., 2~cm/sec)?
-
-        \begin{description}
-
-            \item[$\mathcal{H}_0$]: the average running speed of the transgenic cohort is 2~cm/sec.
-
-            \item[$\mathcal{H}_a$]: the average running speed of the transgenic cohort is lager than 2~cm/sec.
-
-        \end{description}
-
-    \end{example1}
-
-\end{frame}
-
-\begin{frame}
-\frametitle{Null and alternative hypothesis}
-
-    \begin{example2}
-
-		Is the mean peak visual ERP in the first 200~ms post stimuli different
-in medicated than in control subjects (i.e., 2~mV)?
-
-        \begin{description}
-
-            \item[$\mathcal{H}_0$]: the mean peak visual ERP in medicated subjects is 2~mV.
-
-            \item[$\mathcal{H}_a$]: the mean peak visual ERP in medicated subjects is different from 2~mV.
-
-        \end{description}
-
-    \end{example2}
-
-\end{frame}
-
-\begin{frame}
-\frametitle{One- and two-tailed tests of hypothesis}
-
-	\begin{description}
-
-		\item[One-tailed test of hypothesis] directionality is suggested by the
-alternative hypothesis. 
-
-			\begin{example1}
-
-				It is a one-tailed hypothesis test because the alternative
-hypothesis requires that the mean speed of the transgenic mice be larger
-(directionality) than that of the control mice.
-
-			\end{example1}
-
-		\onslide<2->{
-		\item[Two-tailed test of hypothesis] directionality is not suggested by
-the alternative hypothesis.
-
-			\begin{example2}
-
-				 It is a two-tailed hypothesis test because the alternative
-hypothesis requires that the visual ERP of the medicated subjects be different
-(no directionality) than that of the control subjects.
-
-			\end{example2}
-		}
-	\end{description}
-
-\end{frame}
-
-\begin{frame}
-\frametitle{Test statistic and its sampling distribution}
-
-    \begin{itemize}
-
-        \item To perform a hypothesis test we propose a \textbf{test statistic}, a
-            function of the sample data, like the sample mean in
-            Eq.~\ref{eq:sampleMean}.
-
-        \item Because the sample data is random, the test statistic is also
-            random. To perform hypothesis tests we need to know the
-            distribution of the test statistic, which is called the
-            \textbf{sampling distribution}.
-
-    \end{itemize}
-
-\end{frame}
-
-\begin{frame}
-\frametitle{Test statistic and its sampling distribution for the working
-    examples}
-
-	Because both examples are tests for the population mean, $\mu$, because the
-sample mean, $\bar{x}$, is a good estimator of the population mean, and because
-both examples use a large number of samples, we will use the standardised
-sample mean as our test statistic:
-
-	\begin{align*}
-		Z = \frac{\bar{X}-\mu_0}{s/\sqrt{n}}
-	\end{align*}
-
-	From the central limit theorem, we know the sampling distribution of this
-    test statistic under the null hypothesis:
-
-	\begin{align*}
-		 Z\sim\mathcal{N}(0, 1)
-	\end{align*}
-
-\end{frame}
-
-\begin{frame}
-\frametitle{Rejection region}
-
-    The \textbf{reject region} is a region of low probability under the null
-    hypothesis, which is consistent with alternative hypothesis. The
-    \textbf{non-reject region}, is a region of large probability under the null
-    hypothesis, that is inconsistent with the alternative hypothesis.
-
-\end{frame}
-
-\begin{frame}
-\frametitle{Rejection region}
-
-	\begin{example1}
-
-        We want to reject the null hypothesis that the average running speed of
-        the transgenic mice equals 2~cm/sec if their sample mean speed is much
-        larger than 2~cm/sec.  That is, we want to reject the null hypothesis
-        if $z$ is large and positive. How large is large?
-
-        \vspace{0.1in}
-
-        To answer this question we define the \textbf{Type I error} of a test,
-        as the error of rejecting the null hypothesis when it is valid. We also
-        define the \textbf{significance level of the hypothesis test},
-        $\alpha$, as the probability of Type I error admitted by the test.
-
-        \vspace{0.1in}
-
-        When designing a test we first decide on its significance level
-        $\alpha$.  We then reject the null hypothesis if $z$ is larger than the
-        value $z_\alpha$ that leaves $\alpha$ probability to its right, We call
-        this value the \textbf{critical value} of the test (see figure on next
-        slide).
-
-	\end{example1}
-
-\end{frame}
-
-\begin{frame}
-\frametitle{Rejection region}
-
-	\begin{example1}
-
-    	\begin{center}
-        	\includegraphics[width=4in]{figures/right_tailed_test.png}
-    	\end{center}
-        \hfill Mendenhall et al., 2009
-
-	\end{example1}
-
-\end{frame}
-
-\begin{frame}
-\frametitle{Rejection region}
-
-	\begin{example2}
-
-        We want to reject the null hypothesis that the drug has not effect on
-        the average visually evoked ERP if the sample mean visually evoked ERP
-        of medicated subjects is much smaller or much larger than the mean
-        visually evoked ERP of control subjects (2~mV).
-        How small is small and how large is large?
-
-        \vspace{0.1in}
-
-        We will reject the null hypothesis if the standardised mean, $z$, is
-        larger than the value $z_{\alpha/2}$ that leaves $\alpha/2$ probability
-        to its right or smaller than the value $-z_{\alpha/2}$ that leaves
-        $\alpha/2$ probability to its left (see figure on next slide).
-
-	\end{example2}
-
-\end{frame}
-
-\begin{frame}
-\frametitle{Rejection region}
-
-	\begin{example1}
-
-    	\begin{center}
-        	\includegraphics[width=4in]{figures/two_tailed_test.png}
-    	\end{center}
-        \hfill Mendenhall et al., 2009
-
-	\end{example1}
-
-\end{frame}
-
-\begin{frame}
-    \frametitle{Large-sample hypothesis test for the mean}
-
-    \begin{center}
-        \includegraphics[width=3.5in]{figures/large_sample_hypothesis_test.png}
-    \end{center}
-    \hfill \scriptsize{Mendenhall et al., 2009}
-
-\end{frame}
-
-\begin{frame}
-\frametitle{Complete hypothesis test for example 1}
-
-    \begin{example1}
-
-        We know that the average running speed of control mice is 1~cm/sec. The
-        sample average running speed of a cohort (n=100) of transgenic mice is
-        $\bar{x}=2.7\,\text{cm/sec}$ and the sample standard deviation is
-        $s=10~\text{cm/sec}$. Is the average running speed of mice in the
-        transgenic cohort larger than that of control mice? Test with a
-        confidence level $\alpha=0.01$.
-
-        Relevant quantities: $\mu_0=1$, $n=100$, $\bar{x}=2.7$, $s=10$,
-        $\alpha=0.01$.
-
-        \begin{enumerate}
-
-            \item identify the null hypothesis $H_0$: \textcolor{cyan}{the average running speed of the transgenic cohort is 2 cm/sec.}
-
-            \item identify the alternative hypothesis $H_a$: \textcolor{cyan}{the average running speed of the transgenic cohort is larger than 2 cm/sec}.
-
-            \item select a test statistic: \textcolor{cyan}{standardised sample mean $Z$}.
-
-            \seti
-
-        \end{enumerate}
-
-	\end{example1}
-
-\end{frame}
-
-\begin{frame}
-\frametitle{Complete hypothesis test for example 1}
-
-    \begin{example1}
-
-        \begin{enumerate}
-
-            \conti
-
-            \item set the rejection region: \textcolor{cyan}{right-tailed hypothesis test, with critical value $z_{0.01}=2.3263$}.
-
-            \item calculate the observed value of the test statistic.
-
-                \begin{align*}
-                    \color{cyan}
-                    z_\text{obs}=\frac{\bar{x}-\mu_0}{s/\sqrt{n}}=\frac{2.7-1}{10/\sqrt{100}}=1.7
-                \end{align*}
-
-            \item draw your conclusion: \textcolor{cyan}{$z_\text{obs}=1.7<2.3263=z_{0.01}$. Thus, there is not enough statistical evidence to reject the null hypothesis with a confidence level $\alpha=0.01$.}
-
-        \end{enumerate}
-
-        Would you reject the null hypothesis with  confidence level
-        $\alpha=0.05$?
-
-    \end{example1}
-
-\end{frame}
-
-\begin{frame}
-\frametitle{p-value}
-
-    \begin{definition}[p-value]
-
-        The p-value (or observed significance level of a statistical test) is
-        the probability that the test statistic is as extreme or more extreme
-        than the observed test statistic value, when the null hypothesis is
-        true.
-
-    \end{definition}
-
-    \begin{figure}
-        \centering
-        \begin{subfigure}[b]{0.45\textwidth}
-            \centering
-            \includegraphics[width=2in]{figures/right_sided_pvalue_colored.png}
-            \caption{left-sided test}
-        \end{subfigure}
-        \hfill
-        \begin{subfigure}[b]{0.45\textwidth}
-            \centering
-            \includegraphics[width=2in]{figures/two_sided_pvalue_colored.png}
-            \caption{two-sided test}
-        \end{subfigure}
-        \caption{p-values are the area of the red-coloured regions}
-    \end{figure}
-
-\end{frame}
-
-\begin{frame}
-\frametitle{p-value}
-
-    Notes:
-
-    \begin{itemize}
-
-        \item small p-values indicate that the probability of obtaining a test
-            statistic as extreme or more extreme as the observed test statistic value
-            is small, showing that our data supports the alternative hypothesis.
-
-        \item large p-values show that our data does not support the
-            alternative hypothesis.
-
-        \item if the p-value is smaller than a pre-assigned confidence level
-            $\alpha$, then the null hypothesis can be rejected and you can say
-            that the result is statistically significant at confidence level
-            $\alpha$.
-
-    \end{itemize}
-
-\end{frame}
-
-\begin{frame}
-\frametitle{Complete hypothesis test for example 2}
-
-    \begin{example2}
-        Worksheet problem 1.
-    \end{example2}
-
-\end{frame}
-
-\begin{frame}
-\frametitle{Taxonomy of hypothesis tests for the the mean}
-
-    \begin{itemize}
-        \item The previous tests worked well because the sample statistic for
-            the sample mean was approximately normal. This happens when
-
-            \begin{itemize}
-
-                \item samples, of any size, are Gaussian, with known variance.
-
-                \item the number of samples is sufficiently large (e.g.,
-                    $n>30$) and samples are independent and identically
-                    distributed from any distribution with mean $\mu$ and
-                    finite variance $\sigma^2$, known or estimated by the
-                    sample variance $s^2$ (central limit theorem).
-
-            \end{itemize}
-
-        \item What if samples are Gaussian, with unknown variance and we
-            can only collect a small number $n$ of samples?
-
-            Then the sample distribution of the mean follows a student-t
-            distribution with n-1 degrees of freedom.
-
-        \item What if samples are non-Gaussian and we can only collect a small
-            number $n$ of samples?
-
-            Use a resampling method (e.g., bootstrap of permutation test).
-    \end{itemize}
-
-\end{frame}
-
-\begin{frame}
-    \frametitle{Student-t distribution}
-
-    The Student-t distribution:
-
-    \begin{itemize}
-
-        \item has a similar shape as the standard Normal distribution,
-
-        \item has heavier tails than the standard Normal distribution,
-
-        \item approaches the standard normal distribution as the number of
-            degrees of freedom increase.
-    \end{itemize}
-
-    \begin{center}
-        \href{https://www.gatsby.ucl.ac.uk/~rapela/neuroinformatics/2024/htTutorial/figures/studentTVsgaussians.html}{\includegraphics[width=2.5in]{figures/studentTVsgaussians.png}}
-    \end{center}
-
-\end{frame}
-
-\begin{frame}
-    \frametitle{Small-sample hypothesis test for the mean (t-test)}
-
-    \begin{center}
-        \includegraphics[width=2.5in]{figures/small_sample_hypothesis_test.png}
-    \end{center}
-    \hfill \scriptsize{Mendenhall et al., 2009}
-
-\end{frame}
-
-\begin{frame}
-    \frametitle{Two types of errors}
-
-    \begin{definition}[Type I error]
-
-        The error of rejecting the null hypothesis when it is true is called
-        type I error. The probability of type I error is denoted by the symbol
-        $\alpha$ (Figure~\ref{fig:xBarUnderH0AndHa}).
-
-    \end{definition}
-
-    \begin{definition}[Type II error]
-
-        The error of not rejecting the null hypothesis when the alternative one
-        is true is called type II error. The probability of type II error is
-        denoted by the symbol $\beta$ (Figure~\ref{fig:xBarUnderH0AndHa}).
-
-    \end{definition}
-
-    \begin{definition}[Power of a statistical test]
-
-        The power of a statistical test is the probability of rejecting the
-        null hypothesis when the alternative one is true and it is equal to
-        $1-\beta$.
-
-    \end{definition}
-
-\end{frame}
-
-\begin{frame}
-    \frametitle{Calculation of $\beta$}
-
-    \tiny
-    \begin{example1}
-        Calculate $\beta$ for the alternative hypothesis $\mathcal{H}_a:
-        \mu_a=5.0$ (using, as before, $\mathcal{H}_0: \mu_0=1.0$, $\alpha=0.01$,
-        $\bar{x}=2.7$, $s=10$, and $n=100$). See
-        Figure~\ref{fig:xBarUnderH0AndHa}.
-
-        We will first express the rejection region in terms of $\bar{X}$.
-        Before we calculated the rejection region in terms of $Z$ as
-        $Z>z_{\alpha}$ which is
-
-        \begin{align*}
-            z_\alpha<Z=\frac{\bar{X}-\mu_0}{s/\sqrt{n}}
-        \end{align*}
-
-        Then the rejection region in therms of $\bar{X}$ is
-
-        \begin{align*}
-            \bar{X}>\mu_0+z_\alpha\,s/\sqrt{n}
-        \end{align*}
-
-        Now
-
-        \begin{align*}
-            \beta&=P(\text{not reject}\ \mathcal{H}_0|\mathcal{H}_a\ \text{is
-            true})=P(\bar{X}<\mu_0+z_\alpha\,s/\sqrt{n}|\mu=\mu_a)=P(\frac{\bar{X}-\mu_a}{s/\sqrt{n}}<\frac{\mu_0-\mu_a}{s/\sqrt{n}}+z_\alpha|\mu=\mu_a)\\
-                 &=P(Z<\frac{\mu_0-\mu_a}{s/\sqrt{n}}+z_\alpha)=P(Z<\frac{1.0-2.0}{10/\sqrt{100}}+2.326)=P(Z<-1.6736)=0.047
-        \end{align*}
-
-    \end{example1}
-
-    The worksheet contains an optional exercise illustrating how to find the
-    minimum sample size $n$ to achieve a given probability of type I error
-    $\alpha$ and probability of type II error $\beta$ for a given effect size.
-
-    \normalsize
-\end{frame}
-
-\begin{frame}
-    \frametitle{Calculation of $\beta$}
-    \begin{center}
-        \begin{figure}
-            \includegraphics[width=3in]{figures/xBarUnderH0AndHa_colored.png}
-
-             \caption{Probabilities of type I and type II errors ($\alpha$ and
-             $\beta$, respectively) for the example in the previous page.}
-             \label{fig:xBarUnderH0AndHa}
-
-        \end{figure}
-    \end{center}
-\end{frame}
-
-\begin{frame}
-    \frametitle{Lecture notes and worksheet}
-
-    They can both be found in the class repository at
-    \href{https://github.com/joacorapela/neuroinformatics24}{https://github.com/joacorapela/neuroinformatics24}
-
-    The lecture notes appear
-    \href{https://github.com/joacorapela/neuroinformatics24/blob/master/practicals/01\_tTestAndRandomizationTests/introAndHipothesisTests.pdf}{here}
-    and the worksheets appear
-    \href{https://github.com/joacorapela/neuroinformatics24/blob/master/worsheets/01\_tTestAndRandomizationTests/worksheet\_tTestAndRandomizationTests.pdf}{here}.
-
-\end{frame}
-
-\end{comment}
 
 \begin{frame}
     \frametitle{Summary}
