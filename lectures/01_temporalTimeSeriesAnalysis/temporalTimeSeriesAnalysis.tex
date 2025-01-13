@@ -183,7 +183,7 @@ Gatsby Computational Neuroscience Unit\\University College London % Your institu
 
     \begin{itemize}
         \item On Spring 2023 I helped in the discussion sessions of the
-            Neuroinformatics course by Prof.~Ken Harris, for UCL undegraduate
+            Neuroinformatics course by Prof.~Ken Harris, for UCL undergraduate
             students in Neuroscience.
 
         \item Suggested to Klara Olofsdotter (SWC PhD program coordinator) and
@@ -198,8 +198,7 @@ Gatsby Computational Neuroscience Unit\\University College London % Your institu
             ones.
 
         \item On 2025 we renamed the course \emph{Statistical Neuroscience} and
-            to teach all lectures ourselves. We invited lecturers and students
-            from the Francis Crick Institute.
+            we invited lecturers and students from the Francis Crick Institute.
 
     \end{itemize}
 
@@ -209,9 +208,9 @@ Gatsby Computational Neuroscience Unit\\University College London % Your institu
 \frametitle{A few of our motivations to run this course}
 
     \begin{enumerate}
-        \item Enjoy learning by teaching.
+        \item Learn by teaching.
         \item Gain more teaching experience.
-        \item Provide SWC PhD students with essential neural data-analysis tools.
+        \item Provide SWC PhD students with relevant neural data-analysis tools.
         \item Contribute to better interactions between the SWC and the Gatsby
             Unit. Build a common language.
     \end{enumerate}
@@ -231,18 +230,18 @@ Gatsby Computational Neuroscience Unit\\University College London % Your institu
 
     \begin{description}
 
-        \item[Lectures]: Monday 1-3pm, SWC lecture theathre.
+        \item[Lectures]: Monday 1-3pm, SWC lecture theatre.
 
-        \item[Practicals]: Friday 2-3:30pm, SWC lecture theathre.
+        \item[Practicals]: Friday 2-3:30pm, SWC lecture theatre.
 
         \item[Office Hours]: Joaquin, Wednesday 4-5pm, or by an arranged appointment.
 
-        \item[Worksheet]: assigned on Mondays, due on the following Monday
-            before 1pm. Workshees by SWC PhD students will be graded. Solutions
+        \item[Worksheets]: assigned on Mondays, due on the following Monday
+            before 1pm. Worksheets by SWC PhD students will be graded. Solutions
             to all worksheets will be provided.
 
         \item[Participation]: in-class participation, and off-class
-            participation (e.g., by email) is greatly encouraged.
+            participation (e.g., by email), is greatly encouraged.
 
     \end{description}
 
@@ -338,9 +337,9 @@ Gatsby Computational Neuroscience Unit\\University College London % Your institu
 \subsection{Generation of time series}
 
 \begin{frame}[fragile]
-    \frametitle{Generation of time series: white noise}
+    \frametitle{Generation of time series: white noise process}
 
-    The first step to generate time series is to generate \textbf{white noise},
+    The first step to generate time series is to generate \textbf{white noise process},
     $\{w_t\}$
     (i.e., independent Gaussian random variables with zero mean and fixed
     variance, 
@@ -363,12 +362,11 @@ Gatsby Computational Neuroscience Unit\\University College London % Your institu
 \begin{frame}[fragile]
     \frametitle{Generation of time series: moving average model}
 
-    In a white noise stochastic process $x$, for any pairs of time points,
-    $t_1$ and $t_2$, the random variables $x_{t_1}$ and $x_{t_2}$ are
+    In a white noise process $w_t$, for any pairs of time points,
+    $t_1$ and $t_2$, the random variables $w_{t_1}$ and $w_{t_2}$ are
     uncorrelated. The \textbf{moving average model} adds serial correlation to
     white noise 
     (\href{https://joacorapela.github.io/statNeuro2025/auto_examples/01_temporalTimeSeriesAnalysis/plot_movingAverageExample.html#sphx-glr-auto-examples-01-temporaltimeseriesanalysis-plot-movingaverageexample-py}{example}).
-
 
     \begin{align}
         \nu_t = \frac{1}{3}(w_{t-1} + w_t + w_{t+1})\label{eq:ma}
@@ -377,6 +375,20 @@ Gatsby Computational Neuroscience Unit\\University College London % Your institu
     \begin{center}
         \href{http://www.gatsby.ucl.ac.uk/~rapela/statNeuro/2025/lectures/01_temporalTimeSeriesAnalysis/figures/movingAverage.html}{\includegraphics[width=2.75in]{../../examples/sphinx_gallery/01_temporalTimeSeriesAnalysis/figures/movingAverage.png}}
     \end{center}
+
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{Moving average model of order $q$}
+
+	\begin{definition}
+		An \textbf{moving average model} of order $q$, abbreviated as \textbf{MA}(q), is of the form
+		\begin{align*}
+			X_t = W_t + \theta_1W_{t-1} + \theta_2W_{t-2} + \ldots + \theta_qW_{t-q}
+		\end{align*}
+		where $\{W_t\}$ is a white noise process and $\theta_1,\ldots,\theta_p$
+		are constants ($\theta_p\neq 0$).
+	\end{definition}
 
 \end{frame}
 
@@ -396,6 +408,19 @@ Gatsby Computational Neuroscience Unit\\University College London % Your institu
     \begin{center}
         \href{http://www.gatsby.ucl.ac.uk/~rapela/statNeuro/2025/lectures/01_temporalTimeSeriesAnalysis/figures/autoregressive.html}{\includegraphics[width=2.75in]{../../examples/sphinx_gallery/01_temporalTimeSeriesAnalysis/figures/autoregressive.png}}
     \end{center}
+
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{Autoregressive model of order $p$}
+
+	\begin{definition}
+		An \textbf{autoregressive model} of order $p$, abbreviated as \textbf{AR}(p), is of the form
+		\begin{align*}
+			X_t = \phi_1X_{t-1} + \phi_2X_{t-2} + \ldots + \phi_pX_{t-p} + w_t
+		\end{align*}
+		where ${w_t}$ is a white noise process, $\phi_1,\ldots,\phi_p$ are constants ($\phi_p\neq 0$).
+	\end{definition}
 
 \end{frame}
 
@@ -819,6 +844,18 @@ Gatsby Computational Neuroscience Unit\\University College London % Your institu
 
 \end{frame}
 
+\begin{frame}
+    \frametitle{References}
+
+	\begin{itemize}
+		\item \citet{brockwellAndDavis02}
+		\item \citet{shumwayAndStoffer16}
+		\item \citet{priestley81}
+	\end{itemize}
+
+\end{frame}
+
+% Then use
 % Then use
 \beginappendix
 % after last slide and before first appendix slide, and then
