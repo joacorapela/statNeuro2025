@@ -38,8 +38,8 @@ w1 = np.random.normal(loc=0, scale=sigma, size=N)
 
 rwWithDrift0 = np.empty(N, dtype=np.double)
 rwWithDrift1 = np.empty(N, dtype=np.double)
-rwWithDrift0[0] = delta0 + w0[0]
-rwWithDrift1[0] = delta1 + w1[0]
+rwWithDrift0[0] = 0.0
+rwWithDrift1[0] = 0.0
 for i in range(1, N):
     rwWithDrift0[i] = delta0 + rwWithDrift0[i-1] + w0[i]
     rwWithDrift1[i] = delta1 + rwWithDrift1[i-1] + w1[i]
