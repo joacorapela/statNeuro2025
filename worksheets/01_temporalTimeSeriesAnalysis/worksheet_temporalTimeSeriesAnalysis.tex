@@ -1,0 +1,80 @@
+\documentclass[12pt]{article}
+
+\usepackage{graphicx}
+\usepackage[shortlabels]{enumitem}
+\usepackage[colorlinks=]{hyperref}
+\usepackage[margin=2cm]{geometry}
+\usepackage{amsmath}
+
+\title{Worksheet: temporal time series analysis}
+\author{Joaquin Rapela}
+
+\begin{document}
+
+\maketitle
+
+\begin{enumerate}
+
+    \item Is the $X_t$ random process in Eq.~\ref{eq:randomProcess} wide-sense
+        stationary (WSS)?
+
+        \begin{align}
+            X_t & = \phi X_{t-1} + W_t\label{eq:randomProcess}
+        \end{align}
+
+        where $\{W_t\}$ is a white noise random process with variance
+        $\sigma^2_w$. For this random process to be WSS, can the parameter
+        $\phi$ take any value? Why or why not?
+
+    \item Write code to generate the figures in the
+        \href{https://github.com/joacorapela/statNeuro2025/blob/master/lectures/01_temporalTimeSeriesAnalysis/temporalTimeSeriesAnalysis.pdf}{lecture}
+        slide titled \emph{Analytical and estimated autocovariance function for
+        AR(1)}. Provide the code and the generated figures.
+
+        Hint: you may want to modify the code in the solution of the
+        \href{https://github.com/joacorapela/statNeuro2025/blob/master/lectures/01_temporalTimeSeriesAnalysis/temporalTimeSeriesAnalysis.pdf}{lecture}
+        slide titled \emph{Analytical and estimated autocovariance function for MA}.
+
+    \item (optional) For the random walk with drift model:
+
+        \begin{enumerate}[(a)]
+
+            \item Calculate the covariance function $\gamma(s, t)$ and use it
+                to derive the variance function $var(t)$.
+
+            \item To check that your variance function is correct, complete and
+                execute \href{}{this} python script. It plots 100 samples of
+                the random walk with drift model (colored traces), with the
+                mean (solid line) and 95\%
+                confidence bands (dashed lines). See
+                Figure~\ref{fig:sammplesRandomWalkWithDrift}. At any time point
+                (abscissa) you should observe that 95\% of the traces (5
+                traces) are above the upper line or below the lower line.
+
+            \item Is the random walk with drift process wide-sense stationary?
+
+        \end{enumerate}
+    \item (optional) Forecasting an AR(5) random process.
+
+        \begin{enumerate}[a]
+
+            \item Simulate $n=500$ samples from an AR(5) random process. Set
+                the coefficients, $\phi_i$, of the AR(5) model to values of
+                your choice.
+
+                Hint: use $|\phi_i|<1$ to ensure stationary.
+
+            \item Forecast $X_{n+1},\ldots,X_{n+h}$, with $h=25$ using the last
+                $m=20$ simulated values.
+
+                Hint: you may want to complete the example code provided
+                \href{}{here}.
+
+        \end{enumerate}
+
+        Provide your completed code and the generated figures.
+
+
+\end{enumerate}
+
+\end{document}
