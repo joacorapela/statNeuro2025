@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Forecasting for AR(p) random process &#8212; statsNeuro2025  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../_static/basic.css?v=686e5160" />
+    <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=27fed22d" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="prev" title="Moving average analytical and estimated autocovariance" href="plot_movingAverageAutocovariance.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p><a class="reference internal" href="#sphx-glr-download-auto-examples-01-temporaltimeseriesanalysis-plot-arforecastingywcor-py"><span class="std std-ref">Go to the end</span></a>
+to download the full example code.</p>
+</div>
+<section class="sphx-glr-example-title" id="forecasting-for-ar-p-random-process">
+<span id="sphx-glr-auto-examples-01-temporaltimeseriesanalysis-plot-arforecastingywcor-py"></span><h1>Forecasting for AR(p) random process<a class="headerlink" href="#forecasting-for-ar-p-random-process" title="Link to this heading">¶</a></h1>
+<section id="import-requirements">
+<h2>Import requirements<a class="headerlink" href="#import-requirements" title="Link to this heading">¶</a></h2>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">plotly.graph_objects</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">go</span>
+</pre></div>
+</div>
+</section>
+<section id="define-auxiliary-functions">
+<h2>Define auxiliary functions<a class="headerlink" href="#define-auxiliary-functions" title="Link to this heading">¶</a></h2>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">buildGamma_m</span><span class="p">(</span><span class="n">cov</span><span class="p">,</span> <span class="n">M</span><span class="p">):</span>
+    <span class="n">Gamma_m</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">M</span><span class="p">,</span> <span class="n">M</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">double</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">M</span><span class="p">):</span>
+        <span class="n">Gamma_m</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">cov</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">M</span><span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">M</span><span class="p">):</span>
+                <span class="n">Gamma_m</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">cov</span><span class="p">[</span><span class="n">j</span><span class="o">-</span><span class="n">i</span><span class="p">]</span>
+                <span class="n">Gamma_m</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">Gamma_m</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">Gamma_m</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">buildGamma_h</span><span class="p">(</span><span class="n">cov</span><span class="p">,</span> <span class="n">M</span><span class="p">,</span> <span class="n">h</span><span class="p">):</span>
+    <span class="n">Gamma_h</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">double</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">M</span><span class="p">):</span>
+        <span class="n">Gamma_h</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">cov</span><span class="p">[</span><span class="n">h</span> <span class="o">+</span> <span class="n">i</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">Gamma_h</span>
+</pre></div>
+</div>
+</section>
+<section id="define-variables">
+<h2>Define variables<a class="headerlink" href="#define-variables" title="Link to this heading">¶</a></h2>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">N</span> <span class="o">=</span> <span class="mi">10000</span>
+<span class="n">M</span> <span class="o">=</span> <span class="mi">500</span>
+<span class="n">max_h</span> <span class="o">=</span> <span class="mi">50</span>
+<span class="n">sigma_e</span> <span class="o">=</span> <span class="mf">5.0</span>
+<span class="c1"># ar_coefs = [5.0/6, -1.0/6]</span>
+<span class="n">ar_coefs</span> <span class="o">=</span> <span class="p">[</span><span class="mf">5.0</span><span class="o">/</span><span class="mi">6</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="o">/</span><span class="mi">6</span><span class="p">,</span> <span class="mf">0.5</span><span class="o">/</span><span class="mi">6</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.25</span><span class="o">/</span><span class="mi">6</span><span class="p">,</span> <span class="mf">0.5</span><span class="o">/</span><span class="mi">6</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.1</span><span class="o">/</span><span class="mi">6</span><span class="p">,</span> <span class="mf">0.05</span><span class="o">/</span><span class="mi">6</span><span class="p">]</span>
+
+<span class="n">p</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">ar_coefs</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="simulate-ar-p-time-series">
+<h2>Simulate AR(p) time series<a class="headerlink" href="#simulate-ar-p-time-series" title="Link to this heading">¶</a></h2>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">N</span> <span class="o">=</span> <span class="mi">10000</span>
+<span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">scale</span><span class="o">=</span><span class="n">sigma_e</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">N</span><span class="p">)</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">double</span><span class="p">)</span>
+<span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">w</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">w</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">N</span><span class="p">):</span>
+    <span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">p</span><span class="p">):</span>
+        <span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="n">ar_coefs</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">*</span> <span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">j</span><span class="p">)]</span>
+    <span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="n">w</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+</pre></div>
+</div>
+</section>
+<section id="compute-correlations-using-the-yule-walker-equations">
+<h2>Compute correlations using the Yule-Walker equations<a class="headerlink" href="#compute-correlations-using-the-yule-walker-equations" title="Link to this heading">¶</a></h2>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">mu_hat</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="n">var_hat</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">var</span><span class="p">()</span>
+<span class="n">cor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">M</span><span class="o">+</span><span class="n">max_h</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">double</span><span class="p">)</span>
+<span class="n">cor</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="k">for</span> <span class="n">h</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">p</span><span class="p">):</span>
+    <span class="n">cor</span><span class="p">[</span><span class="n">h</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">((</span><span class="n">x</span><span class="p">[</span><span class="n">h</span><span class="p">:]</span><span class="o">-</span><span class="n">mu_hat</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">x</span><span class="p">[:</span><span class="o">-</span><span class="n">h</span><span class="p">]</span><span class="o">-</span><span class="n">mu_hat</span><span class="p">))</span><span class="o">/</span><span class="n">var_hat</span>
+<span class="k">for</span> <span class="n">h</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">M</span><span class="o">+</span><span class="n">max_h</span><span class="p">):</span>
+    <span class="n">cor</span><span class="p">[</span><span class="n">h</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">p</span><span class="p">):</span>
+        <span class="n">cor</span><span class="p">[</span><span class="n">h</span><span class="p">]</span> <span class="o">+=</span> <span class="n">ar_coefs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">cor</span><span class="p">[</span><span class="n">h</span><span class="o">-</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)]</span>
+<span class="n">cov</span> <span class="o">=</span> <span class="n">cor</span> <span class="o">*</span> <span class="n">var_hat</span>
+</pre></div>
+</div>
+</section>
+<section id="compute-forecasts">
+<h2>Compute forecasts<a class="headerlink" href="#compute-forecasts" title="Link to this heading">¶</a></h2>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">Gamma_m</span> <span class="o">=</span> <span class="n">buildGamma_m</span><span class="p">(</span><span class="n">cov</span><span class="p">,</span> <span class="n">M</span><span class="p">)</span>
+<span class="n">forecasts_means</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">max_h</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">double</span><span class="p">)</span>
+<span class="n">forecasts_vars</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">max_h</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">double</span><span class="p">)</span>
+<span class="n">xMinusMuR</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span><span class="o">-</span><span class="n">mu_hat</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">][:</span><span class="n">M</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">h</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_h</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+    <span class="n">Gamma_h</span> <span class="o">=</span> <span class="n">buildGamma_h</span><span class="p">(</span><span class="n">cov</span><span class="p">,</span> <span class="n">M</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span>
+    <span class="n">a_m</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">Gamma_m</span><span class="p">,</span> <span class="n">Gamma_h</span><span class="p">)</span>
+    <span class="n">forecasts_means</span><span class="p">[</span><span class="n">h</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">mu_hat</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">inner</span><span class="p">(</span><span class="n">a_m</span><span class="p">,</span> <span class="n">xMinusMuR</span><span class="p">)</span>
+    <span class="n">forecasts_vars</span><span class="p">[</span><span class="n">h</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>  <span class="o">=</span> <span class="n">var_hat</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">inner</span><span class="p">(</span><span class="n">a_m</span><span class="p">,</span> <span class="n">cov</span><span class="p">[</span><span class="n">h</span><span class="p">:(</span><span class="n">h</span><span class="o">+</span><span class="n">M</span><span class="p">)])</span>
+</pre></div>
+</div>
+</section>
+<section id="plot-time-series-and-forecast">
+<h2>Plot time series and forecast<a class="headerlink" href="#plot-time-series-and-forecast" title="Link to this heading">¶</a></h2>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">Gamma_m</span> <span class="o">=</span> <span class="n">buildGamma_m</span><span class="p">(</span><span class="n">cov</span><span class="p">,</span> <span class="n">M</span><span class="p">)</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Figure</span><span class="p">()</span>
+<span class="n">trace_x</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Scatter</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">N</span><span class="o">-</span><span class="n">M</span><span class="p">,</span> <span class="n">N</span><span class="p">),</span> <span class="n">y</span><span class="o">=</span><span class="n">x</span><span class="p">[</span><span class="o">-</span><span class="n">M</span><span class="p">:],</span>
+                     <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;AR(</span><span class="si">{</span><span class="n">p</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span><span class="n">trace_x</span><span class="p">)</span>
+
+<span class="c1"># plot forecast mean</span>
+<span class="n">trace_fMean</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Scatter</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">N</span><span class="o">+</span><span class="n">max_h</span><span class="p">),</span> <span class="n">y</span><span class="o">=</span><span class="n">forecasts_means</span><span class="p">,</span>
+                         <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Forecast&quot;</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span><span class="n">trace_fMean</span><span class="p">)</span>
+
+<span class="c1"># plot forecast 95% CI</span>
+<span class="n">indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">N</span><span class="o">+</span><span class="n">max_h</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+<span class="n">error_f</span> <span class="o">=</span> <span class="mf">1.96</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">forecasts_vars</span><span class="p">)</span>
+<span class="n">y_upper</span> <span class="o">=</span> <span class="p">(</span><span class="n">forecasts_means</span> <span class="o">+</span> <span class="n">error_f</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+<span class="n">y_lower</span> <span class="o">=</span> <span class="p">(</span><span class="n">forecasts_means</span> <span class="o">-</span> <span class="n">error_f</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+<span class="n">trace_f95CI</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Scatter</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">indices</span><span class="o">+</span><span class="n">indices</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+                         <span class="n">y</span><span class="o">=</span><span class="n">y_upper</span><span class="o">+</span><span class="n">y_lower</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+                         <span class="n">fill</span><span class="o">=</span><span class="s2">&quot;toself&quot;</span><span class="p">,</span>
+                         <span class="n">fillcolor</span><span class="o">=</span><span class="s2">&quot;rgba(0,100,80,0.2)&quot;</span><span class="p">,</span>
+                         <span class="n">line</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;rgba(255,255,255,0.0)&quot;</span><span class="p">),</span>
+                         <span class="n">hoverinfo</span><span class="o">=</span><span class="s2">&quot;skip&quot;</span><span class="p">,</span>
+                         <span class="n">showlegend</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span><span class="n">trace_f95CI</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span><span class="n">xaxis_title</span><span class="o">=</span><span class="s2">&quot;Sample Index&quot;</span><span class="p">,</span> <span class="n">yaxis_title</span><span class="o">=</span><span class="s2">&quot;Process Value&quot;</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s2">&quot;figures&quot;</span><span class="p">):</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="s2">&quot;figures&quot;</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">write_html</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;figures/forecastingAR</span><span class="si">{</span><span class="n">p</span><span class="si">}</span><span class="s2">.html&quot;</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">write_image</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;figures/forecastingAR</span><span class="si">{</span><span class="n">p</span><span class="si">}</span><span class="s2">.png&quot;</span><span class="p">)</span>
+
+<span class="n">fig</span>
+</pre></div>
+</div>
+<div class="output_subarea output_html rendered_html output_result">
+<div>                        <script type="text/javascript">window.PlotlyConfig = {MathJaxConfig: 'local'};</script>
+        <script charset="utf-8" src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>                <div id="cb686aaa-5c35-4634-83a4-2e838ad6cdde" class="plotly-graph-div" style="height:100%; width:100%;"></div>            <script type="text/javascript">                                    window.PLOTLYENV=window.PLOTLYENV || {};                                    if (document.getElementById("cb686aaa-5c35-4634-83a4-2e838ad6cdde")) {                    Plotly.newPlot(                        "cb686aaa-5c35-4634-83a4-2e838ad6cdde",                        [{"name":"AR(7)","x":[9500,9501,9502,9503,9504,9505,9506,9507,9508,9509,9510,9511,9512,9513,9514,9515,9516,9517,9518,9519,9520,9521,9522,9523,9524,9525,9526,9527,9528,9529,9530,9531,9532,9533,9534,9535,9536,9537,9538,9539,9540,9541,9542,9543,9544,9545,9546,9547,9548,9549,9550,9551,9552,9553,9554,9555,9556,9557,9558,9559,9560,9561,9562,9563,9564,9565,9566,9567,9568,9569,9570,9571,9572,9573,9574,9575,9576,9577,9578,9579,9580,9581,9582,9583,9584,9585,9586,9587,9588,9589,9590,9591,9592,9593,9594,9595,9596,9597,9598,9599,9600,9601,9602,9603,9604,9605,9606,9607,9608,9609,9610,9611,9612,9613,9614,9615,9616,9617,9618,9619,9620,9621,9622,9623,9624,9625,9626,9627,9628,9629,9630,9631,9632,9633,9634,9635,9636,9637,9638,9639,9640,9641,9642,9643,9644,9645,9646,9647,9648,9649,9650,9651,9652,9653,9654,9655,9656,9657,9658,9659,9660,9661,9662,9663,9664,9665,9666,9667,9668,9669,9670,9671,9672,9673,9674,9675,9676,9677,9678,9679,9680,9681,9682,9683,9684,9685,9686,9687,9688,9689,9690,9691,9692,9693,9694,9695,9696,9697,9698,9699,9700,9701,9702,9703,9704,9705,9706,9707,9708,9709,9710,9711,9712,9713,9714,9715,9716,9717,9718,9719,9720,9721,9722,9723,9724,9725,9726,9727,9728,9729,9730,9731,9732,9733,9734,9735,9736,9737,9738,9739,9740,9741,9742,9743,9744,9745,9746,9747,9748,9749,9750,9751,9752,9753,9754,9755,9756,9757,9758,9759,9760,9761,9762,9763,9764,9765,9766,9767,9768,9769,9770,9771,9772,9773,9774,9775,9776,9777,9778,9779,9780,9781,9782,9783,9784,9785,9786,9787,9788,9789,9790,9791,9792,9793,9794,9795,9796,9797,9798,9799,9800,9801,9802,9803,9804,9805,9806,9807,9808,9809,9810,9811,9812,9813,9814,9815,9816,9817,9818,9819,9820,9821,9822,9823,9824,9825,9826,9827,9828,9829,9830,9831,9832,9833,9834,9835,9836,9837,9838,9839,9840,9841,9842,9843,9844,9845,9846,9847,9848,9849,9850,9851,9852,9853,9854,9855,9856,9857,9858,9859,9860,9861,9862,9863,9864,9865,9866,9867,9868,9869,9870,9871,9872,9873,9874,9875,9876,9877,9878,9879,9880,9881,9882,9883,9884,9885,9886,9887,9888,9889,9890,9891,9892,9893,9894,9895,9896,9897,9898,9899,9900,9901,9902,9903,9904,9905,9906,9907,9908,9909,9910,9911,9912,9913,9914,9915,9916,9917,9918,9919,9920,9921,9922,9923,9924,9925,9926,9927,9928,9929,9930,9931,9932,9933,9934,9935,9936,9937,9938,9939,9940,9941,9942,9943,9944,9945,9946,9947,9948,9949,9950,9951,9952,9953,9954,9955,9956,9957,9958,9959,9960,9961,9962,9963,9964,9965,9966,9967,9968,9969,9970,9971,9972,9973,9974,9975,9976,9977,9978,9979,9980,9981,9982,9983,9984,9985,9986,9987,9988,9989,9990,9991,9992,9993,9994,9995,9996,9997,9998,9999],"y":[-6.913611296108012,-8.079180748389637,-5.507964594812352,7.575611526512674,3.1786523929546786,5.1887286728365485,5.358019653210584,0.13491659691199365,0.2496476812965035,-5.070597741744286,4.654689860604283,3.9376933267365946,0.01307510076032159,4.217905082046532,-2.233559805592802,-6.269607890647153,-8.453389486075928,-10.807833284643568,-0.35333837450684147,9.834035439831236,2.4792515789945906,3.4012262084814298,7.289930851543221,-1.1755291650192286,1.2067621329384404,-0.9241207564186125,6.591450629406606,4.424371174039083,5.7426087813646625,7.490544012865974,4.871890354904277,3.901026228156115,-1.5505286076986153,0.33838110807023347,8.615264275650706,12.236810720266163,6.840675592212602,4.299008151531287,-1.8785391391493804,-0.38164267003231456,1.162440886411722,1.100147908878142,6.24212335838354,13.787085105903824,9.777698546803585,-0.4492063232560186,-2.9690910773536308,-4.009984963489687,4.106702286308444,4.422656999608414,2.2255918036221987,-0.9098678040912547,-3.2072863989561022,-2.5006113411238062,-6.780957248381629,-13.388893757608571,-17.08576692582313,-14.787027186450581,-14.484038692914265,-17.561927191641615,-13.007662520658135,-14.15487145672709,-14.323634825053944,-9.322148191621018,-17.18998353048952,-14.372719301391315,-13.842541997041584,-16.28154701748041,-15.55588728039196,-8.792199074645925,-9.765148846177434,-11.40399528150104,-7.381243156126279,-5.200452165779053,-0.6915352168285804,-2.2151673999448036,-4.157245761804982,-0.6800310549366877,2.642699818161342,2.672885634757622,-11.710239230197207,-10.499315274660983,-7.263523158056543,-5.368261558834542,-2.3337122503597247,-2.0318554892963503,5.835402248674525,0.37382089249453987,1.5168474938745329,0.5890981321173867,1.9154633559136116,1.0042190835713751,4.263497518622811,8.680474250553008,4.210191800499464,-1.052861793211715,-8.426010421025081,-5.594162190476332,-8.553974586518086,0.9169725412716359,-6.414405172251054,5.931136371950205,4.32422256327225,4.032824551039749,-1.9699337421032332,7.772595368698079,4.690703770733184,1.7338180693647516,12.233509967658911,8.274998530818154,3.3397923661531035,4.824108749389142,-1.6958497789206475,3.538172716457872,12.29957847830688,7.244578431075206,6.591749775663405,-0.028815200098092575,3.8352084970100453,3.910740916140689,-4.274274882565213,-6.140719278411657,-2.6002252663446472,8.09388220946274,1.345160939415873,-0.22073582942431014,-1.9054151780531805,-0.8160132204492963,-0.7881569791080424,-1.6237234539789418,0.09602152055486846,11.26952053358391,20.267345146855,16.95336055021442,9.212995494202858,5.514469377052535,4.612064960579376,0.9734291226427745,3.2898628191966095,5.841470974679661,-4.844431606358036,-1.3680742180243106,10.7143489498897,9.038778267990233,8.359640114292407,10.647582523450666,8.685289451468929,2.426035396852292,4.99383286510296,5.168642167276234,-0.2661532884873301,0.9941833205665653,0.8072774646689138,-3.493123550720971,-8.4492233249163,-7.1573500765887506,-4.253462749123276,-9.137680814309363,-9.496899253588696,-11.014605389276822,-11.772408445168146,-12.905178633143759,-15.526394183783847,-10.44708027500647,-3.17751325158127,-4.292405403002629,-7.7804431603182955,-3.898072186665571,1.4894266541548138,2.8517630603254487,5.405451548826103,5.769726745543949,7.247476581815924,7.421158038608262,-0.1487275756381905,6.1615605006197,1.2714946302164334,7.820564589193012,3.9115543497411043,1.4801440879878496,15.765078406333272,12.146168413441801,10.784508518583694,11.225144985504157,11.509370623649023,5.94318770548036,0.8317408264450687,-9.828197651629829,0.31205948433744446,-2.0639256585867707,-11.924523073171157,6.893447965528338,13.246949279007767,15.09854478753639,17.800966881167618,13.449240984337214,2.179507837308777,12.084186379709124,5.840215019365651,-0.6778056642053878,-0.6487525598941649,-4.7079208251793805,-4.882074675292849,0.5752450430703635,-1.125081658666102,-9.057246536812842,-1.3549111370452405,4.969470129792936,0.07644211673022117,2.012553966471119,7.770551913227654,3.922708754244932,-5.373986286818683,-0.8597839191195065,6.104402104889059,8.275502146903511,5.969183860018733,3.916844604199168,2.4474070676896362,9.75355257345332,6.464934469802583,8.967305460841434,13.880096075285572,8.545954951673984,4.920384427956824,7.240149210663087,3.581350655735749,-2.169125347446586,-1.924157633488103,-3.12076003526117,-1.9327261540455563,1.5320586082686236,-7.7872323350964425,-8.746256414565936,-4.715466668766891,1.683244905210648,7.984782526678385,-0.3564785691564616,-1.9121189066043556,0.465958952167816,9.006962257245691,11.384410962114469,6.112504548362345,5.387107699944341,-3.871296810216018,-5.042795414994216,-2.8609087043368797,-10.665551587331233,-6.955829908351544,-0.7917472848680567,-8.7612377187858,-2.1004583597058666,3.296501051542532,5.753580551272695,-0.23306383880660686,1.6988513122748399,-1.9705942175883933,-0.37405479937870134,0.4798860493323116,3.5539100099875593,3.4325242255287565,4.758210619822682,6.264574405501257,11.440792959811398,2.542767081998859,4.825217584048027,6.941074010459003,8.664672860898083,5.333243591864649,0.3933188413185458,0.5562982272195496,3.533839609893424,0.7311626555822706,0.19392870479392588,-8.867380245450443,-2.396845376088243,-5.594788437083541,1.8669394889675894,-0.8892107554771402,-10.045457836956126,-10.188547822192675,2.3377256450454738,2.046921478092129,1.414010070945585,0.26307071687394407,-2.030414768958356,-2.402616280939884,-1.757826824194619,5.315569924293228,-0.6972081102965904,-2.374977525510573,-0.7784953724004369,-0.9768139618033579,4.0958996372281735,7.123126039768106,6.021730775664734,13.040719391900172,4.6015052113901636,14.258893898104862,11.822889348913536,4.183873219197438,6.069235944966273,0.4205852922925919,-1.6856226237515457,-5.993232312652397,-0.9633946813741638,2.1576694746082294,0.6067441624524197,0.08846004451916747,-4.93380526796089,-4.510212538054528,6.846685590503869,19.00496949942037,6.155330529944138,0.37360153701967547,-2.045012227508741,1.8694668433132218,4.121087145179367,7.0239661691631685,7.036017554640173,-2.904195862700318,-14.156821597525347,-16.66216102902967,-4.652131445297917,-5.504333236538542,-3.2136159786400755,-9.654470184188142,-6.536030974112679,-9.363708173280102,-16.535971849592407,-10.356411398117563,-5.989742934040156,-5.921072366466179,3.706732648056213,-0.6282435085477176,-5.8503613196298225,6.017223604078098,15.379190883622785,15.202656096529473,11.652928481877264,9.411290630079542,12.121431379907666,3.541197854657222,-0.07502973931160417,-1.1658835145082207,2.8304864536282546,-0.34572167282652355,-6.332572380760202,-0.8802928446020273,1.2876043796054397,1.2978991607606862,3.555953190446667,4.154266404293984,4.529305402767777,6.996420909986232,1.8913519864299015,-10.024058243058786,-3.452371309461789,-8.66868997707778,-4.19873104590374,3.1107833636024314,3.652791565504222,3.57856492521869,6.337736073882145,0.6719088419846333,-6.243766118697001,0.045631895211865725,5.820658119796812,5.800099158881661,1.7013193067590278,-4.5907648987768725,0.9448910157551809,-0.0943764213644731,8.003323831611313,5.4619529096951345,4.634335987993465,5.99364538262647,1.147835585829852,0.5863238502476505,-6.667720128394234,-9.027850447715727,-8.059252810757506,-4.262887723683186,-0.7077298722950423,6.063175754004482,-1.1962285758715367,-0.9003944760137421,-3.517551200923913,-8.083222267050385,-2.780656343112963,-2.756179160027544,-5.352398023098283,-5.791730437635349,-4.736305406844793,-2.375606702300123,3.0960911605386365,2.4354050961646,0.5986328131678941,0.5783702803798443,-6.721201932846084,-0.15335533034576265,-1.7351965234968378,4.968637483409596,0.5147727784774547,0.19775929697156358,1.4512747739598828,0.2136528629153419,2.1555676089426106,-3.342708112530974,-3.8979441980172314,-6.804198264640275,0.832991714868335,2.7662252833915115,9.113122814272003,4.072335782288809,3.649215380045502,0.22877497487171272,-3.990790253627226,-11.74557619620387,-10.40395062414828,-11.050425365982163,-2.4779597380830385,-1.155908797806336,5.853326706959742,6.640994907175962,-0.9775478459126838,-4.075112949941657,-3.4423276763570634,1.7154473699550037,5.18944285258285,4.081795796054868,7.874553392698502,10.404707515157963,5.170063980227722,-1.696579908961204,-7.497862693672122,-8.199485308575598,-5.357838698098821,2.296402522183557,11.80805777048258,6.792576749003042,-8.802444644517777,-12.15846784975248,-7.941046430204121,0.2933641819246047,5.270534665210727,-7.045532805209529,-7.290231162996162,-9.481279198143492,-12.630471268240989,-17.35477980868552,-13.582934756850168,-4.610132893377746,-2.744760948094854,0.01803249104240301,0.045446414430573956,-1.4829003603701385,-1.069746387863923,-1.4806903146835324,-0.2725733041188705,-3.874645240947871,-13.949545202070563,1.797357350709735,2.423244811615599,7.205885915770308,5.03059623608841,0.6632991647124458,6.566971983048256,3.355602428711986,0.8804922610757269,-6.128405949271749,-9.86750842779692,-6.245977791992485,-4.320771447081901,-1.6521644522348127,-1.8951357021424644,-0.781887460019786,6.37943806461253,7.792033049114362,5.471918463215307,4.582265516419101,8.409584893948068,3.8001212101222364,1.125033369719077,5.424502039219226,1.8124396436843844,0.23095258682019482,12.972363861392308,7.950824451471304,0.5243979723264864,-11.58506205217923,-16.912594656235925,-2.06742294201716,3.4380436647381396,4.053359009538046,11.093057678303914,7.5351043897447685,-2.466829978517942,-1.4144748646981935,-2.350939308851512],"type":"scatter"},{"name":"Forecast","x":[10000,10001,10002,10003,10004,10005,10006,10007,10008,10009,10010,10011,10012,10013,10014,10015,10016,10017,10018,10019,10020,10021,10022,10023,10024,10025,10026,10027,10028,10029,10030,10031,10032,10033,10034,10035,10036,10037,10038,10039,10040,10041,10042,10043,10044,10045,10046,10047,10048,10049],"y":[-1.4380583440100823,-0.16456460273384796,-0.19271470495259488,-0.21841367420458288,-0.24684760890820642,-0.27371370443155674,-0.18752591559060958,-0.1284871759748857,-0.08576691633961869,-0.05388051611889008,-0.035078922566875864,-0.016232119285096977,0.0004766880825745473,0.014792034011826244,0.027161040121675736,0.03708113299152335,0.04530604826799352,0.05217604045438908,0.05791303594687506,0.0627523407014069,0.06679854214718273,0.07017880895230519,0.07300364983447577,0.0753619759063779,0.07733444673234356,0.07898401370230854,0.08036331292480488,0.08151669406986915,0.08248085483142023,0.08328690906164511,0.08396081387205548,0.08452423410070323,0.08499530447675885,0.08538915076453774,0.08571842994299951,0.08599372740227551,0.08622389173770684,0.08641632351118188,0.08657720860862901,0.08671171860794785,0.0868241774126491,0.086918199914358,0.08699680854024118,0.0870625302266371,0.08711747763236444,0.08716341708020547,0.08720182531196469,0.0872339369778356,0.08726078432379879,0.08728323037102922],"type":"scatter"},{"fill":"toself","fillcolor":"rgba(0,100,80,0.2)","hoverinfo":"skip","line":{"color":"rgba(255,255,255,0.0)"},"showlegend":false,"x":[10000,10001,10002,10003,10004,10005,10006,10007,10008,10009,10010,10011,10012,10013,10014,10015,10016,10017,10018,10019,10020,10021,10022,10023,10024,10025,10026,10027,10028,10029,10030,10031,10032,10033,10034,10035,10036,10037,10038,10039,10040,10041,10042,10043,10044,10045,10046,10047,10048,10049,10049,10048,10047,10046,10045,10044,10043,10042,10041,10040,10039,10038,10037,10036,10035,10034,10033,10032,10031,10030,10029,10028,10027,10026,10025,10024,10023,10022,10021,10020,10019,10018,10017,10016,10015,10014,10013,10012,10011,10010,10009,10008,10007,10006,10005,10004,10003,10002,10001,10000],"y":[8.378876058122353,12.528830217025208,13.502480360325874,14.002608905576745,14.19105540220757,14.336022615023989,14.582583311305234,14.758376695294734,14.883848160867354,14.969872471976396,15.024703456836141,15.068837444704481,15.103308405648262,15.130198311609353,15.151390021064127,15.167448891601538,15.17995427775951,15.18980956489734,15.197633319780746,15.203932767848219,15.208999862515462,15.21309380309896,15.216417379183405,15.219124235390165,15.221340321814502,15.223160176709612,15.2246585125665,15.225895102071577,15.226917424503037,15.227764133219935,15.228466455175134,15.229049738927273,15.229534693946684,15.229938245607821,15.230274308843152,15.230554348352234,15.230787827375442,15.230982576114156,15.231145080769656,15.231280722839855,15.23139397296194,15.231488548594296,15.231567543858366,15.231633535804756,15.231688672122162,15.231734743619224,15.231773244153365,15.23180542033858,15.231832312783553,15.231854790354982,-15.057288329612922,-15.057310744135954,-15.057337546382909,-15.057369593529435,-15.057407909458814,-15.057453716857433,-15.057508475351481,-15.057573926777883,-15.05765214876558,-15.05774561813664,-15.05785728562396,-15.057990663552397,-15.058149929091792,-15.05834004390003,-15.058566893547683,-15.058837448957151,-15.059159944078745,-15.059544084993165,-15.060001270725866,-15.060544827431023,-15.061190315096646,-15.061955714840197,-15.06286171393184,-15.06393188671689,-15.065192149304995,-15.066671428349814,-15.068400283577411,-15.070410079514453,-15.072736185194351,-15.075402778221097,-15.078428086445406,-15.081807247886996,-15.085457483988561,-15.089342181223522,-15.09328662561849,-15.097067940820775,-15.100614243585701,-15.102355029483112,-15.101301683274677,-15.094861301969894,-15.077633504214175,-15.055381993546591,-15.015351047244506,-14.957635142486454,-14.883450023887104,-14.684750620023983,-14.439436253985912,-13.887909770231063,-12.857959422492902,-11.254992746142518],"type":"scatter"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmapgl":[{"type":"heatmapgl","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"}}},"xaxis":{"title":{"text":"Sample Index"}},"yaxis":{"title":{"text":"Process Value"}}},                        {"responsive": true}                    )                };                            </script>        </div>
+</div>
+<br />
+<br /><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.359 seconds)</p>
+<div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-01-temporaltimeseriesanalysis-plot-arforecastingywcor-py">
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/43649c6194619a8c0fe0fc23078037be/plot_arForecastingYWCor.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_arForecastingYWCor.ipynb</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/9809bb8fb74f899cbd579689508a998c/plot_arForecastingYWCor.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_arForecastingYWCor.py</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-zip docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/6ab3cb71a6e67f4308e1037391157e02/plot_arForecastingYWCor.zip"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">zipped:</span> <span class="pre">plot_arForecastingYWCor.zip</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">statsNeuro2025</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Statistical Neuroscience 2025 Examples</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html#temporal-time-series-analysis">Temporal Time Series Analysis</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Temporal Time Series Analysis</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Statistical Neuroscience 2025 Examples</a><ul>
+  <li><a href="index.html">Temporal Time Series Analysis</a><ul>
+      <li>Previous: <a href="plot_movingAverageAutocovariance.html" title="previous chapter">Moving average analytical and estimated autocovariance</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2025, Joaquin Rapela.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.1.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="../../_sources/auto_examples/01_temporalTimeSeriesAnalysis/plot_arForecastingYWCor.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

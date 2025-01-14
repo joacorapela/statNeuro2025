@@ -1,0 +1,58 @@
+
+:orphan:
+
+.. _sphx_glr_auto_examples_01_temporalTimeSeriesAnalysis_sg_execution_times:
+
+
+Computation times
+=================
+**00:02.716** total execution time for 8 files **from auto_examples/01_temporalTimeSeriesAnalysis**:
+
+.. container::
+
+  .. raw:: html
+
+    <style scoped>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
+    </style>
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+    <script type="text/javascript" class="init">
+    $(document).ready( function () {
+        $('table.sg-datatable').DataTable({order: [[1, 'desc']]});
+    } );
+    </script>
+
+  .. list-table::
+   :header-rows: 1
+   :class: table table-striped sg-datatable
+
+   * - Example
+     - Time
+     - Mem (MB)
+   * - :ref:`sphx_glr_auto_examples_01_temporalTimeSeriesAnalysis_plot_whiteNoiseExample.py` (``plot_whiteNoiseExample.py``)
+     - 00:01.435
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_01_temporalTimeSeriesAnalysis_plot_arForecastingYWCor.py` (``plot_arForecastingYWCor.py``)
+     - 00:00.359
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_01_temporalTimeSeriesAnalysis_plot_signalPlusNoise.py` (``plot_signalPlusNoise.py``)
+     - 00:00.309
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_01_temporalTimeSeriesAnalysis_plot_movingAverageAutocovariance.py` (``plot_movingAverageAutocovariance.py``)
+     - 00:00.147
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_01_temporalTimeSeriesAnalysis_plot_autoregressiveExample.py` (``plot_autoregressiveExample.py``)
+     - 00:00.127
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_01_temporalTimeSeriesAnalysis_plot_randomWalkWithDriftExample.py` (``plot_randomWalkWithDriftExample.py``)
+     - 00:00.120
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_01_temporalTimeSeriesAnalysis_plot_movingAverageExample.py` (``plot_movingAverageExample.py``)
+     - 00:00.120
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_01_temporalTimeSeriesAnalysis_plot_whiteNoiseAutocorrelation.py` (``plot_whiteNoiseAutocorrelation.py``)
+     - 00:00.099
+     - 0.0

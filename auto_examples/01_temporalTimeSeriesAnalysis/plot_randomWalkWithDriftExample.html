@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Generation of a random walk with drift time series &#8212; statsNeuro2025  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../_static/basic.css?v=686e5160" />
+    <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=27fed22d" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Moving average analytical and estimated autocovariance" href="plot_movingAverageAutocovariance.html" />
+    <link rel="prev" title="Generation of a signal plus noise time series" href="plot_signalPlusNoise.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p><a class="reference internal" href="#sphx-glr-download-auto-examples-01-temporaltimeseriesanalysis-plot-randomwalkwithdriftexample-py"><span class="std std-ref">Go to the end</span></a>
+to download the full example code.</p>
+</div>
+<section class="sphx-glr-example-title" id="generation-of-a-random-walk-with-drift-time-series">
+<span id="sphx-glr-auto-examples-01-temporaltimeseriesanalysis-plot-randomwalkwithdriftexample-py"></span><h1>Generation of a random walk with drift time series<a class="headerlink" href="#generation-of-a-random-walk-with-drift-time-series" title="Link to this heading">¶</a></h1>
+<section id="import-requirements">
+<h2>Import requirements<a class="headerlink" href="#import-requirements" title="Link to this heading">¶</a></h2>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">plotly.graph_objects</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">go</span>
+</pre></div>
+</div>
+</section>
+<section id="define-variables">
+<h2>Define variables<a class="headerlink" href="#define-variables" title="Link to this heading">¶</a></h2>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">srate</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">T</span> <span class="o">=</span> <span class="mi">200</span> <span class="c1"># sec</span>
+<span class="n">sigma</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="n">delta0</span> <span class="o">=</span> <span class="mf">0.0</span>
+<span class="n">delta1</span> <span class="o">=</span> <span class="mf">.2</span>
+</pre></div>
+</div>
+</section>
+<section id="create-white-noise">
+<h2>Create white noise<a class="headerlink" href="#create-white-noise" title="Link to this heading">¶</a></h2>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">time</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="mf">1.0</span><span class="o">/</span><span class="n">srate</span><span class="p">)</span>
+<span class="n">N</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">time</span><span class="p">)</span>
+<span class="n">w0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="n">sigma</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">N</span><span class="p">)</span>
+<span class="n">w1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="n">sigma</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">N</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="create-random-walk-with-noise-time-series">
+<h2>Create random walk with noise time series<a class="headerlink" href="#create-random-walk-with-noise-time-series" title="Link to this heading">¶</a></h2>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">rwWithDrift0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">double</span><span class="p">)</span>
+<span class="n">rwWithDrift1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">double</span><span class="p">)</span>
+<span class="n">rwWithDrift0</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+<span class="n">rwWithDrift1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N</span><span class="p">):</span>
+    <span class="n">rwWithDrift0</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">delta0</span> <span class="o">+</span> <span class="n">rwWithDrift0</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">w0</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="n">rwWithDrift1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">delta1</span> <span class="o">+</span> <span class="n">rwWithDrift1</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">w1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+</pre></div>
+</div>
+</section>
+<section id="plot-random-noise-with-drift-time-series">
+<h2>Plot random noise with drift time series<a class="headerlink" href="#plot-random-noise-with-drift-time-series" title="Link to this heading">¶</a></h2>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Figure</span><span class="p">()</span>
+<span class="n">trace</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Scatter</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">time</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">rwWithDrift0</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;lines+markers&quot;</span><span class="p">,</span>
+                   <span class="n">line</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;$\delta=0.0$&quot;</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span><span class="n">trace</span><span class="p">)</span>
+<span class="n">trace</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Scatter</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">time</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">rwWithDrift1</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;lines+markers&quot;</span><span class="p">,</span>
+                   <span class="n">line</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;$\delta=0.2$&quot;</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span><span class="n">trace</span><span class="p">)</span>
+<span class="n">trace</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Scatter</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">T</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">line</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="p">,</span> <span class="n">dash</span><span class="o">=</span><span class="s2">&quot;dot&quot;</span><span class="p">),</span>
+                   <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;lines&quot;</span><span class="p">,</span> <span class="n">showlegend</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span><span class="n">trace</span><span class="p">)</span>
+<span class="n">trace</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Scatter</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">T</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">delta1</span><span class="o">*</span><span class="n">T</span><span class="p">],</span> <span class="n">line</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">dash</span><span class="o">=</span><span class="s2">&quot;dot&quot;</span><span class="p">),</span>
+                   <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;lines&quot;</span><span class="p">,</span> <span class="n">showlegend</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span><span class="n">trace</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span><span class="n">xaxis</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Time (sec)&quot;</span><span class="p">),</span> <span class="n">yaxis</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">))</span>
+
+<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s2">&quot;figures&quot;</span><span class="p">):</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="s2">&quot;figures&quot;</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">write_html</span><span class="p">(</span><span class="s2">&quot;figures/randomWalkWithDrift.html&quot;</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">write_image</span><span class="p">(</span><span class="s2">&quot;figures/randomWalkWithDrift.png&quot;</span><span class="p">)</span>
+
+<span class="n">fig</span>
+</pre></div>
+</div>
+<div class="output_subarea output_html rendered_html output_result">
+<div>                        <script type="text/javascript">window.PlotlyConfig = {MathJaxConfig: 'local'};</script>
+        <script charset="utf-8" src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>                <div id="ccfe4080-364f-4a6b-ba94-532479729411" class="plotly-graph-div" style="height:100%; width:100%;"></div>            <script type="text/javascript">                                    window.PLOTLYENV=window.PLOTLYENV || {};                                    if (document.getElementById("ccfe4080-364f-4a6b-ba94-532479729411")) {                    Plotly.newPlot(                        "ccfe4080-364f-4a6b-ba94-532479729411",                        [{"line":{"color":"blue"},"mode":"lines+markers","name":"$\\delta=0.0$","x":[0.0,1.0,2.0,3.0,4.0,5.0,6.0,7.0,8.0,9.0,10.0,11.0,12.0,13.0,14.0,15.0,16.0,17.0,18.0,19.0,20.0,21.0,22.0,23.0,24.0,25.0,26.0,27.0,28.0,29.0,30.0,31.0,32.0,33.0,34.0,35.0,36.0,37.0,38.0,39.0,40.0,41.0,42.0,43.0,44.0,45.0,46.0,47.0,48.0,49.0,50.0,51.0,52.0,53.0,54.0,55.0,56.0,57.0,58.0,59.0,60.0,61.0,62.0,63.0,64.0,65.0,66.0,67.0,68.0,69.0,70.0,71.0,72.0,73.0,74.0,75.0,76.0,77.0,78.0,79.0,80.0,81.0,82.0,83.0,84.0,85.0,86.0,87.0,88.0,89.0,90.0,91.0,92.0,93.0,94.0,95.0,96.0,97.0,98.0,99.0,100.0,101.0,102.0,103.0,104.0,105.0,106.0,107.0,108.0,109.0,110.0,111.0,112.0,113.0,114.0,115.0,116.0,117.0,118.0,119.0,120.0,121.0,122.0,123.0,124.0,125.0,126.0,127.0,128.0,129.0,130.0,131.0,132.0,133.0,134.0,135.0,136.0,137.0,138.0,139.0,140.0,141.0,142.0,143.0,144.0,145.0,146.0,147.0,148.0,149.0,150.0,151.0,152.0,153.0,154.0,155.0,156.0,157.0,158.0,159.0,160.0,161.0,162.0,163.0,164.0,165.0,166.0,167.0,168.0,169.0,170.0,171.0,172.0,173.0,174.0,175.0,176.0,177.0,178.0,179.0,180.0,181.0,182.0,183.0,184.0,185.0,186.0,187.0,188.0,189.0,190.0,191.0,192.0,193.0,194.0,195.0,196.0,197.0,198.0,199.0],"y":[0.0,1.9268653416639279,2.437573613937821,2.5643015097014343,3.425043433720538,3.570976094262654,3.329415885367194,1.649350782825213,1.5520927389505377,1.7423788983408786,0.8887359610357429,0.10328859372036026,-0.13297445735710559,-0.8043303579043071,0.33839322028993934,0.736953658385532,0.1812618616985353,1.490281140681245,1.1883049202841212,1.298671948795666,1.6472473887835486,1.559746377724401,1.1241009679181058,1.6813214260200864,0.38007622472141156,-1.3232332416376476,1.182817460175298,2.8764904707679317,3.4131209825786857,4.047662479176887,5.911081437125007,7.483163981781166,7.715792452301863,6.950766104877274,5.413671020411763,5.832333843970763,4.64191342677907,2.996457443847068,2.3551321680429234,2.345746393340582,3.1995719670593017,3.72953672106386,4.036921200976558,3.5289434491636613,5.719678643477183,4.9047641001032005,5.200174939970462,3.765938101975225,4.064705723915618,5.014069433802104,6.383758036967254,5.471545467549078,4.266757293392583,4.325116645259318,4.112640083425234,4.480260348220451,4.7465341182645,6.493552395143017,4.858954384097787,3.348871325669034,3.254180475728803,3.1088620140822565,3.433483904061844,2.221590363022994,4.3131785494765005,3.3232201857538803,3.1749034337205493,3.5982199976061904,3.1219921890186324,3.6304737455509595,4.061409520538872,3.6201426119480185,2.0392008688780487,1.5006224756625277,2.043942125412896,2.336566962482976,2.5271234890306844,3.264916221285975,3.4306078078499747,2.5681998487660627,2.5965093777504307,2.265495152402352,0.24528276988230058,0.8894227826134276,1.5117662012303723,3.1336485248039487,1.8278702180872186,3.7292989848549407,4.472199615631743,4.133793531597815,3.309589229445199,2.240436618351998,2.1618114196046156,2.19734837628321,2.3431284882045356,1.840849855919674,0.3048984426070913,-1.3897166090821704,-0.44875336592059556,-0.8770924495020607,-1.150052615684005,-3.0174731047776815,-3.6147821980194315,-3.3839411293752746,-1.9208275623382247,-3.1860368217056756,-2.154444605727458,-2.3943824343798212,-2.399043155954441,-2.7373189809477205,-3.524743604993932,-4.402489374173265,-3.4663528514755417,-3.0516770155610784,-3.3829354545289565,-4.912092574316248,-4.756763491984363,-4.916766003432397,-3.78918389672838,-4.512788642958248,-3.814608510479572,-1.4328639591448096,-0.7954542815150882,1.2414780574122408,1.6794055518097513,2.4729222444164227,3.3855874077719945,1.4878649452724584,3.0274698826161006,4.189904547096076,3.3184288923473986,3.2536967168233715,5.4341635018792065,5.919707326308655,6.7035707989106434,5.076562107448747,4.314309419558906,3.7051959356207504,4.888174201647976,6.491618241847519,6.5322805494853435,6.330366618420831,7.103923039883525,6.160451615939871,6.090502098306937,7.012391084679757,6.015208478457217,5.574157721905432,5.8011579657818535,5.7846126567401654,3.2528526759887435,2.566163820611314,3.0418155515689995,2.811514093480233,1.7696124481870619,1.0774604860713415,-0.1809440318164104,0.422794247535179,-0.031047674535138348,-1.4737329977611888,0.025943512465695928,1.9471726277392667,1.69498240534445,1.0084825656121605,1.3566299652219267,0.18824588580777046,1.1427796630273759,2.9109029065500893,4.014638708645301,5.486354074281088,4.844898302425734,6.375671925109014,6.402009067963446,7.284332680148542,7.447010299700314,7.822757567586695,7.427215513733524,6.939399371671629,8.755010060208988,8.958306163265826,9.656611341065299,8.28924953754624,7.752543435467965,9.636862454561175,10.252257280116503,10.988673963838897,10.47803419649764,10.181510693259918,10.096591752609525,11.058166434968763,10.610782942219611,10.398448192854865,10.404416436960178,12.305102661027869,11.546653823665444,12.076353874486045,11.09936316819036,10.54518526847334,10.554314483159448,11.629255874391252],"type":"scatter"},{"line":{"color":"black"},"mode":"lines+markers","name":"$\\delta=0.2$","x":[0.0,1.0,2.0,3.0,4.0,5.0,6.0,7.0,8.0,9.0,10.0,11.0,12.0,13.0,14.0,15.0,16.0,17.0,18.0,19.0,20.0,21.0,22.0,23.0,24.0,25.0,26.0,27.0,28.0,29.0,30.0,31.0,32.0,33.0,34.0,35.0,36.0,37.0,38.0,39.0,40.0,41.0,42.0,43.0,44.0,45.0,46.0,47.0,48.0,49.0,50.0,51.0,52.0,53.0,54.0,55.0,56.0,57.0,58.0,59.0,60.0,61.0,62.0,63.0,64.0,65.0,66.0,67.0,68.0,69.0,70.0,71.0,72.0,73.0,74.0,75.0,76.0,77.0,78.0,79.0,80.0,81.0,82.0,83.0,84.0,85.0,86.0,87.0,88.0,89.0,90.0,91.0,92.0,93.0,94.0,95.0,96.0,97.0,98.0,99.0,100.0,101.0,102.0,103.0,104.0,105.0,106.0,107.0,108.0,109.0,110.0,111.0,112.0,113.0,114.0,115.0,116.0,117.0,118.0,119.0,120.0,121.0,122.0,123.0,124.0,125.0,126.0,127.0,128.0,129.0,130.0,131.0,132.0,133.0,134.0,135.0,136.0,137.0,138.0,139.0,140.0,141.0,142.0,143.0,144.0,145.0,146.0,147.0,148.0,149.0,150.0,151.0,152.0,153.0,154.0,155.0,156.0,157.0,158.0,159.0,160.0,161.0,162.0,163.0,164.0,165.0,166.0,167.0,168.0,169.0,170.0,171.0,172.0,173.0,174.0,175.0,176.0,177.0,178.0,179.0,180.0,181.0,182.0,183.0,184.0,185.0,186.0,187.0,188.0,189.0,190.0,191.0,192.0,193.0,194.0,195.0,196.0,197.0,198.0,199.0],"y":[0.0,2.098221470305676,1.6170544397029012,2.2004919088361605,3.4819106967541336,4.224355967287702,3.957929422001721,4.223587661747848,4.371036883398085,5.094222551595361,4.263861179160676,5.759691954696466,6.59315011125223,6.865707295776165,7.697286967091472,8.103384371178498,7.596900117478135,7.383108423386957,6.403089559635072,9.051064014792326,9.854308402530963,10.05067986304036,11.48667262644486,12.597860859544447,12.985126128404348,13.013166629186886,13.93972607195195,14.106047320277247,13.0101075189039,12.586572089033652,13.697914097432848,14.697100747069054,14.53606702524868,16.84922501998773,18.695709643083426,19.243390109479602,19.706969575364422,18.064137793433186,17.529413667217188,18.17933913510305,17.81997942765357,18.35208329112248,20.683462716710956,19.622852368340627,18.634563636751935,18.82494188687063,19.5665189809973,18.263844789353286,18.278731972664705,19.494966314338324,18.605599045353053,19.916378736288337,17.84217404146226,17.47951552498431,16.748558922103836,14.860316733392976,14.205469865166334,14.232908246828226,14.727121303990874,14.09086816415198,12.99748577516418,11.053119837374457,10.908410269459214,11.704720143859461,11.32125567014795,11.684745842909646,12.721235705944038,11.473478116104884,12.384931722049522,11.727428616158969,11.35446311137722,12.051444848744955,9.531576173083938,9.8633226281872,9.68214316580926,10.284768552295759,10.255859726667605,8.629344625725164,7.69630879378018,7.7534816481790765,7.633593934349544,6.851295563430561,6.0295455598162375,7.998834390961347,7.144048500330368,6.704217918597124,7.092041526428483,6.431768013058307,5.550220821018133,6.702304593667233,5.015583200505864,4.587169690911043,6.585542049802443,6.999072520946187,5.987456141993802,4.402472057307373,7.165166985787247,6.623773715017768,5.65259562675165,4.486378202932373,5.58367931653689,5.978355625625453,6.236745624391697,8.03923309487612,8.732011341814534,10.156958290363644,10.669958832808726,12.740782209564246,14.250703378950018,14.48108697086174,13.543688517142368,13.15036279076253,13.639591797234662,11.81528716235199,12.043019725600983,11.415798792832437,10.918922384207573,11.299964247413776,11.896103327956189,11.533309770892862,11.502476454023212,10.394297868201255,10.401522016294786,12.747366575642062,13.075065541804067,12.375317416872177,13.34914089238868,12.733048586633306,13.507329003449703,13.167151919087228,13.309412671560388,14.312597695955429,14.832472754534756,15.185476044391814,16.84088276752032,17.85962418838938,17.878876634369494,20.234565014643696,19.999124050659923,20.084476967325497,19.425115946887157,19.259118834477764,19.287608498524154,19.562322108752443,18.546964429461195,18.59859758496993,18.169123522755186,18.776151000365196,18.337076189866874,17.74189716192509,19.081528929146067,17.209991986740025,15.158794945633096,14.518780070595827,15.62143631201084,14.502695944136132,15.806298987780838,14.565354880965046,15.161766880215264,14.856897957980514,14.675885537908936,14.56226458598449,11.717268889895907,10.58234324943775,10.872505803344547,9.538938940762815,10.36414753270235,11.426278565178576,12.423425499735089,10.357571902915295,10.79543576823878,11.36372068105452,13.23178884136939,12.033757366015948,12.518966360124386,13.763886849812172,15.150242180647659,15.081050879038733,14.997382142513574,14.164270483821575,14.685988464138909,16.00726837456053,16.1865209423118,16.41053094539414,15.54737691056448,16.400230916452575,16.36513284294835,16.777209340123832,16.98951356647371,17.87850797641236,18.044573577216696,18.761481666848923,19.30792822695194,18.860326589463615,18.152752238903936,18.6908314541364,19.257359927811475,20.623542688717194,20.063064969496704,18.958154034803197],"type":"scatter"},{"line":{"color":"blue","dash":"dot"},"mode":"lines","showlegend":false,"x":[0,200],"y":[0,0],"type":"scatter"},{"line":{"color":"black","dash":"dot"},"mode":"lines","showlegend":false,"x":[0,200],"y":[0,40.0],"type":"scatter"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmapgl":[{"type":"heatmapgl","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"}}},"xaxis":{"title":{"text":"Time (sec)"}},"yaxis":{"title":{"text":"x"}}},                        {"responsive": true}                    )                };                            </script>        </div>
+</div>
+<br />
+<br /><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.120 seconds)</p>
+<div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-01-temporaltimeseriesanalysis-plot-randomwalkwithdriftexample-py">
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/9587cdef06164702ce2a1ace1143e6ea/plot_randomWalkWithDriftExample.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_randomWalkWithDriftExample.ipynb</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/a2441d5e3d7b67146f2fb77cfbd52e06/plot_randomWalkWithDriftExample.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_randomWalkWithDriftExample.py</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-zip docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/0069bcf9248d1db69f0af2da61cb90a3/plot_randomWalkWithDriftExample.zip"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">zipped:</span> <span class="pre">plot_randomWalkWithDriftExample.zip</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">statsNeuro2025</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Statistical Neuroscience 2025 Examples</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html#temporal-time-series-analysis">Temporal Time Series Analysis</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Temporal Time Series Analysis</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Statistical Neuroscience 2025 Examples</a><ul>
+  <li><a href="index.html">Temporal Time Series Analysis</a><ul>
+      <li>Previous: <a href="plot_signalPlusNoise.html" title="previous chapter">Generation of a signal plus noise time series</a></li>
+      <li>Next: <a href="plot_movingAverageAutocovariance.html" title="next chapter">Moving average analytical and estimated autocovariance</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2025, Joaquin Rapela.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.1.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="../../_sources/auto_examples/01_temporalTimeSeriesAnalysis/plot_randomWalkWithDriftExample.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Generation of Gaussian White Noise &#8212; statsNeuro2025  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../_static/basic.css?v=686e5160" />
+    <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=27fed22d" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Generation of a autoregressive time series" href="plot_autoregressiveExample.html" />
+    <link rel="prev" title="Temporal Time Series Analysis" href="index.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p><a class="reference internal" href="#sphx-glr-download-auto-examples-01-temporaltimeseriesanalysis-plot-whitenoiseexample-py"><span class="std std-ref">Go to the end</span></a>
+to download the full example code.</p>
+</div>
+<section class="sphx-glr-example-title" id="generation-of-gaussian-white-noise">
+<span id="sphx-glr-auto-examples-01-temporaltimeseriesanalysis-plot-whitenoiseexample-py"></span><h1>Generation of Gaussian White Noise<a class="headerlink" href="#generation-of-gaussian-white-noise" title="Link to this heading">¶</a></h1>
+<section id="import-requirements">
+<h2>Import requirements<a class="headerlink" href="#import-requirements" title="Link to this heading">¶</a></h2>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">plotly.graph_objects</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">go</span>
+</pre></div>
+</div>
+</section>
+<section id="define-variables">
+<h2>Define variables<a class="headerlink" href="#define-variables" title="Link to this heading">¶</a></h2>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">srate</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">T</span> <span class="o">=</span> <span class="mi">500</span>
+<span class="n">sigma</span> <span class="o">=</span> <span class="mf">1.0</span>
+</pre></div>
+</div>
+</section>
+<section id="create-white-noise">
+<h2>Create white noise<a class="headerlink" href="#create-white-noise" title="Link to this heading">¶</a></h2>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">time</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="mf">1.0</span><span class="o">/</span><span class="n">srate</span><span class="p">)</span>
+<span class="n">N</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">time</span><span class="p">)</span>
+<span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="n">sigma</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">N</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="plot-white-noise">
+<h2>Plot white noise<a class="headerlink" href="#plot-white-noise" title="Link to this heading">¶</a></h2>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Figure</span><span class="p">()</span>
+<span class="n">trace</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Scatter</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">time</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">w</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;lines+markers&quot;</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span><span class="n">trace</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span><span class="n">xaxis</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Time (sec)&quot;</span><span class="p">),</span> <span class="n">yaxis</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">))</span>
+
+<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s2">&quot;figures&quot;</span><span class="p">):</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="s2">&quot;figures&quot;</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">write_html</span><span class="p">(</span><span class="s2">&quot;figures/whiteNoise.html&quot;</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">write_image</span><span class="p">(</span><span class="s2">&quot;figures/whiteNoise.png&quot;</span><span class="p">)</span>
+
+<span class="n">fig</span>
+</pre></div>
+</div>
+<div class="output_subarea output_html rendered_html output_result">
+<div>                        <script type="text/javascript">window.PlotlyConfig = {MathJaxConfig: 'local'};</script>
+        <script charset="utf-8" src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>                <div id="463d50dd-9600-48b5-98e8-88bc80d29529" class="plotly-graph-div" style="height:100%; width:100%;"></div>            <script type="text/javascript">                                    window.PLOTLYENV=window.PLOTLYENV || {};                                    if (document.getElementById("463d50dd-9600-48b5-98e8-88bc80d29529")) {                    Plotly.newPlot(                        "463d50dd-9600-48b5-98e8-88bc80d29529",                        [{"mode":"lines+markers","x":[0.0,1.0,2.0,3.0,4.0,5.0,6.0,7.0,8.0,9.0,10.0,11.0,12.0,13.0,14.0,15.0,16.0,17.0,18.0,19.0,20.0,21.0,22.0,23.0,24.0,25.0,26.0,27.0,28.0,29.0,30.0,31.0,32.0,33.0,34.0,35.0,36.0,37.0,38.0,39.0,40.0,41.0,42.0,43.0,44.0,45.0,46.0,47.0,48.0,49.0,50.0,51.0,52.0,53.0,54.0,55.0,56.0,57.0,58.0,59.0,60.0,61.0,62.0,63.0,64.0,65.0,66.0,67.0,68.0,69.0,70.0,71.0,72.0,73.0,74.0,75.0,76.0,77.0,78.0,79.0,80.0,81.0,82.0,83.0,84.0,85.0,86.0,87.0,88.0,89.0,90.0,91.0,92.0,93.0,94.0,95.0,96.0,97.0,98.0,99.0,100.0,101.0,102.0,103.0,104.0,105.0,106.0,107.0,108.0,109.0,110.0,111.0,112.0,113.0,114.0,115.0,116.0,117.0,118.0,119.0,120.0,121.0,122.0,123.0,124.0,125.0,126.0,127.0,128.0,129.0,130.0,131.0,132.0,133.0,134.0,135.0,136.0,137.0,138.0,139.0,140.0,141.0,142.0,143.0,144.0,145.0,146.0,147.0,148.0,149.0,150.0,151.0,152.0,153.0,154.0,155.0,156.0,157.0,158.0,159.0,160.0,161.0,162.0,163.0,164.0,165.0,166.0,167.0,168.0,169.0,170.0,171.0,172.0,173.0,174.0,175.0,176.0,177.0,178.0,179.0,180.0,181.0,182.0,183.0,184.0,185.0,186.0,187.0,188.0,189.0,190.0,191.0,192.0,193.0,194.0,195.0,196.0,197.0,198.0,199.0,200.0,201.0,202.0,203.0,204.0,205.0,206.0,207.0,208.0,209.0,210.0,211.0,212.0,213.0,214.0,215.0,216.0,217.0,218.0,219.0,220.0,221.0,222.0,223.0,224.0,225.0,226.0,227.0,228.0,229.0,230.0,231.0,232.0,233.0,234.0,235.0,236.0,237.0,238.0,239.0,240.0,241.0,242.0,243.0,244.0,245.0,246.0,247.0,248.0,249.0,250.0,251.0,252.0,253.0,254.0,255.0,256.0,257.0,258.0,259.0,260.0,261.0,262.0,263.0,264.0,265.0,266.0,267.0,268.0,269.0,270.0,271.0,272.0,273.0,274.0,275.0,276.0,277.0,278.0,279.0,280.0,281.0,282.0,283.0,284.0,285.0,286.0,287.0,288.0,289.0,290.0,291.0,292.0,293.0,294.0,295.0,296.0,297.0,298.0,299.0,300.0,301.0,302.0,303.0,304.0,305.0,306.0,307.0,308.0,309.0,310.0,311.0,312.0,313.0,314.0,315.0,316.0,317.0,318.0,319.0,320.0,321.0,322.0,323.0,324.0,325.0,326.0,327.0,328.0,329.0,330.0,331.0,332.0,333.0,334.0,335.0,336.0,337.0,338.0,339.0,340.0,341.0,342.0,343.0,344.0,345.0,346.0,347.0,348.0,349.0,350.0,351.0,352.0,353.0,354.0,355.0,356.0,357.0,358.0,359.0,360.0,361.0,362.0,363.0,364.0,365.0,366.0,367.0,368.0,369.0,370.0,371.0,372.0,373.0,374.0,375.0,376.0,377.0,378.0,379.0,380.0,381.0,382.0,383.0,384.0,385.0,386.0,387.0,388.0,389.0,390.0,391.0,392.0,393.0,394.0,395.0,396.0,397.0,398.0,399.0,400.0,401.0,402.0,403.0,404.0,405.0,406.0,407.0,408.0,409.0,410.0,411.0,412.0,413.0,414.0,415.0,416.0,417.0,418.0,419.0,420.0,421.0,422.0,423.0,424.0,425.0,426.0,427.0,428.0,429.0,430.0,431.0,432.0,433.0,434.0,435.0,436.0,437.0,438.0,439.0,440.0,441.0,442.0,443.0,444.0,445.0,446.0,447.0,448.0,449.0,450.0,451.0,452.0,453.0,454.0,455.0,456.0,457.0,458.0,459.0,460.0,461.0,462.0,463.0,464.0,465.0,466.0,467.0,468.0,469.0,470.0,471.0,472.0,473.0,474.0,475.0,476.0,477.0,478.0,479.0,480.0,481.0,482.0,483.0,484.0,485.0,486.0,487.0,488.0,489.0,490.0,491.0,492.0,493.0,494.0,495.0,496.0,497.0,498.0,499.0],"y":[1.2422724035009485,0.40512946123054827,0.9504699221097697,0.387370959504655,0.8679807653482191,-1.5466252653427688,-0.2299679493413406,-0.7971787462366204,1.3509501801194004,1.0953386258629914,0.18675404949953903,0.07202023380861337,-0.28886019135922775,2.4214377398099,0.8932179819764094,-0.4270075910563289,-0.17367363237688466,-0.30239613836935414,-0.4499403266810798,-1.0753507095226857,-1.1060030290131067,0.937652287636724,0.4427697312918447,1.16893592596133,-0.06722074184197252,1.1291369187144031,0.5031004866788326,-0.9266674228843635,-1.9462493750804364,-1.4744037708279283,0.15511829205494088,0.03951462248047436,0.3875185119496643,-1.145052256328763,0.8908710415560736,-1.451606481017422,-1.0876856361112772,-0.4528357523589046,2.5941227563742766,-0.3618618701953398,-1.4757095727988316,1.1518940854956223,-1.0986892681904539,-0.6098250541019838,-0.42874797158105343,-0.6203716338441485,-1.547898628597644,-0.5419627690111607,0.8545094774223241,-0.15561852627163952,0.762708982411513,1.397242419242026,0.1256841725720029,1.4029523569733757,-0.5714831456849531,-0.3114949501637191,0.6432282981680992,0.1989337387355153,0.5392978521819681,0.8929152483283459,-1.117082934519097,-1.5991711474040804,-1.7919528424182216,-0.48778167805586603,-1.0953395944790254,0.956562805201236,-1.3431751622111372,1.189126125023912,0.8529601005540962,0.26685185672352235,-0.5954778890923524,-0.5132781948534922,-0.6701895928882109,-0.19996983807269478,0.5629852486574277,0.008019344021109756,-1.437238374599362,-0.12369860142387695,1.3900946735399935,0.07634316728856246,-0.11803316814639092,-0.09378372105382397,0.07695268047965628,0.21871203646690301,-0.4522455421620334,-1.0154059165462723,-0.6068123479031603,0.08637205638807953,-0.5971112614899031,1.216963444295572,-0.3618773224153436,0.45862388660824466,0.31015055652271123,0.07899925233011063,-1.3857790513652257,-0.7757613696479538,-0.34397942364392453,0.7182875197856117,0.6055272160052675,0.22680227928257254,1.7589972062501726,-0.6644918641808144,2.510350753566028,0.5997832227082442,-0.1075456742711306,-0.7314356906563767,-0.9450763334826989,0.7762647752621002,-0.25560641095154374,0.4802767273258123,1.5217551330823145,0.5397321753821704,1.8340371337476709,0.18612281677825854,-0.9739268073255822,0.24511611930601393,-1.453195674718583,-0.7681376622632639,-0.46822481011595163,-1.208208296905858,-0.23926845745748124,-1.4179442103275564,-1.5534969981055369,-0.8527003938415726,1.0952815250074812,0.7122347311184383,-0.48966664314534336,-0.29008970592841526,0.023666096018316197,0.3596121517778042,0.12657671724081337,0.16338674895808195,0.7788348689656347,-0.5327360702441821,-0.7633082136809515,-0.5161189558114215,2.1886380156134213,0.6630751526704375,-0.6622352491189253,0.2038215804113045,-0.4160872677218557,-0.19980705132321414,0.4367987222950599,0.43922322162076405,-0.9582594594133609,-0.9963593551063269,-1.038347914505489,0.8278680762167532,0.6822605155915246,-0.9696115370292924,-0.5933819907854281,-0.5837861775158094,0.5967135995311086,-1.445279037070177,0.6093522350850304,-1.0668087755093971,0.1140988844281033,-0.8163495317093168,0.6522321680471654,-0.1260127607710434,-0.7423356255505513,-0.002396872298796596,2.2402545275493324,1.717522216081891,-1.6478268616737546,-0.2116638598642525,1.3322893501811077,0.5451693543175611,0.5033360312649501,1.500332811097326,2.977796396579999,0.19747595112013658,2.2353344682001435,-0.6300258245905962,-1.0490332827412165,0.5685418753505023,0.40915447347951145,3.082749303974555,-0.18780999900204431,-1.5717583128339752,0.8252156019855525,-1.3416904475379972,0.7751115634348874,0.49558639117298897,0.8353929003603675,-1.416489178651635,-0.18005146584221354,0.5210666102849199,-0.852139450967112,-0.7379326523873547,0.6740448869001247,1.6807305239150299,-1.2244986765751236,-0.7115400498064495,0.03117329636678489,-0.8306709087164627,0.1390399522267628,-0.2927979841640208,-1.0259238252517298,0.5045915563018811,1.4160760516772388,1.0187728558236226,0.7241850388376037,-0.906966674669853,-0.850939022826824,0.11098254347937364,1.888497305903923,-1.4367749819340065,0.44358708573973593,-0.8254726231722898,0.13232908601840443,0.8392303522374451,0.2554735449921069,2.1621375137952734,0.5656803348718766,0.8512300605940383,-1.5531814668828283,1.1675030673913802,-0.9754164759300685,1.0717333484783178,0.05837972411644526,-0.4467982920815803,-1.7743297391528077,-0.10984195679436139,-0.4971878882424095,-0.9459051327606914,-1.3384442291906458,-0.1821271319622633,-0.9095086703558412,-1.6465115443083544,-1.1796254747716768,0.4924963502418188,0.774066333464194,1.3904027494827071,-0.7151200367425555,1.0084454819412458,-0.3970598923247659,1.5228148657686842,1.5531566617211308,0.3469287485855204,-0.47020184370412194,0.9776561670886981,0.38393071499786047,-0.24151249566082322,-0.06741614953630565,0.15887628275052715,0.8726581138237383,-0.7613582023956179,-2.263193826049043,-1.1133216374380377,-0.8171515359083321,1.628824501823508,0.24682674907092036,-1.1773595263759018,0.49134203444719826,1.4351536250079158,0.16993242946147155,-1.0144360420383438,1.565895675892326,-1.5867552166553531,-2.4144112462123455,0.31727635270427684,0.4098397470495095,-1.2239404063936044,-0.38389441959096887,0.25709130041109796,0.031621769923963865,-0.004698019973963589,1.0602776254612425,0.07723311023655119,0.28912558568245517,0.3316541705090343,-0.6054176159655128,-0.7932281162074347,-0.38002761265253315,-1.2062013303581345,0.2778941566684481,-0.018221872939053738,0.8827841540117803,-0.4393573649094186,-0.9495390310585634,0.7206109608847913,-0.8135148380031997,0.5426050928460199,-1.2859030678236594,-1.364531080377633,-2.3828997127024576,-0.3098630641601684,-2.6156934933833846,1.0902177812933438,-1.2381099927617791,-0.8529038156580795,0.4309709303120843,0.36242657276790324,1.382553418505911,-0.5949119643226107,0.10434714909887129,0.9956365791319081,1.4107313642666823,-0.08423915999276392,1.1442367796821495,0.5258267380731727,0.062196894344176704,-1.3856923503393874,0.9944398692170765,-0.10969569464535417,-0.7478040052384566,0.3795409270332778,-0.25592403789949186,-0.01210542286223285,0.7907064302533778,0.04573430791457015,2.279450074150374,-0.9877460719477605,-0.3114275332176119,-0.9394816281614636,0.048868682707408996,1.4327619800957108,-0.84929054384516,0.036468687746985556,-1.0722510242303727,0.08690061643343311,1.6472269024117252,-0.7000070728371253,0.14497116634533969,-0.3464061861937536,0.6288375319017583,1.220444415976105,-0.08980014897340796,-1.3721639997880715,-1.9054442220524854,0.4593494209790153,0.03850093614750204,-0.7578914209472146,0.8794917707076338,-3.0366205244939364,-0.18533520022496341,-1.564701341398303,0.4165940745619306,0.27676352487585504,0.6757325367136819,1.5081829957611148,-0.9490771979953082,0.19450835543783387,-0.5360287469842819,0.5161963971232804,0.06648588838925616,0.3703065418132648,-0.07073122122274877,0.2732774484902793,-0.0021396726239770424,-1.1142311617899947,-0.938473150563222,0.2334292679630829,2.023937072218955,0.3455395760481441,-0.6265059835709212,-1.0653108234152935,0.7923769643579776,1.1289498827448068,0.6871080294739548,1.2643652011525195,-0.9396929921267004,-0.5466817677382854,-0.23534834183856906,-0.8975978152861964,-0.7476949021445383,-0.6969080172232243,0.19892025708120953,-0.2952086977854189,-1.5149710959083882,0.09703810163449,0.14664905126206734,1.4262853289504764,0.43212255668892285,-0.5033080241618545,-1.072668125974695,-1.152649708641556,-1.4039707843244944,-0.45305165448004203,0.6862543042116533,-0.6462535024037405,0.6083110218904654,0.062465176966377496,0.1385412402213256,2.7324339828499813,-2.47614880537812,-2.0007441409542484,1.4894261934813973,-0.03161545882789251,-1.360384056671731,0.7468384619202437,0.32669386786206955,1.1448728193219169,-1.4058050495316834,-0.5688007608444462,1.0834161507657145,0.42241896240566407,1.1118477262139124,0.6885703655264392,0.3297587639547186,0.39108270944426343,1.6448236416986748,0.5592117279822499,0.6733609008170688,-0.43056694200087847,0.3497763737024674,0.9358199450968102,-1.301902266373804,-0.5416181985735441,-0.16682263246385762,-0.04733771291631636,0.25631875347388555,0.5002773102996275,1.2064409253547617,-0.2238377810251306,-0.5158983762063525,-0.08160085029279775,-0.8628263782904967,-0.9026603008296086,0.09020132762896173,-0.743868072468812,0.4381682070114142,-1.210677517853238,1.480392847902432,1.0663269442031629,0.12845822236976148,0.32970043239658464,-1.5708773741104127,0.03638471507950264,0.38686959600589965,-0.11539128529147157,0.3843399815965206,0.10628751030312664,-0.9345623142628456,0.7646345484118358,0.4645089318549791,-0.4215182823184256,-1.2563215666305,0.4929977047757391,-0.03365783248362746,-0.17021213761720538,-0.4344376618182991,1.4486279771830883,-1.756387197608187,0.2133729011392782,-0.24147423518634054,0.1500495760003377,-0.32590548821074883,-1.223152622098367,-0.9014663432132083,1.3220866837470766,-0.7714564732246447,-0.8607919329766374,0.6566664534478526,-2.3163304459696854,-0.17347956943664095,-0.24090112949980047,-0.974739865571799,-0.41990406154664894,-1.8213326841526782,0.4074324504361299,-0.5384060071954242,0.17917012243214744,-0.47463753603132336,0.17079950508450137,-0.33672990944883113,0.0603708194592212,0.5815070438140121,-1.7375465505528624,-0.010573335794631883,-0.024821624808427575,-1.0283768939266653,-1.208206787011555,1.7536344318642543,0.32122160046973125,0.32110449994061646,-0.10547086384671457,0.6654166378348075,-0.08308758797910169,-0.27559998780358785,1.3130200878481877,0.9653494390644748,0.9926229175603964,0.2621863592754515,-0.5141473780851561,1.6353171309451713,0.4031113529095585,1.4438892161770165,-0.05900858279826167,-0.2423087806483656,0.09728763081726358,-0.2686831716966179,1.3172267637227209,1.5063020945040067,3.0110421814658723,-0.7118319505329387,-1.4759619126397692,1.2236593055862979,-0.10432655797401603],"type":"scatter"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmapgl":[{"type":"heatmapgl","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"}}},"xaxis":{"title":{"text":"Time (sec)"}},"yaxis":{"title":{"text":"x"}}},                        {"responsive": true}                    )                };                            </script>        </div>
+</div>
+<br />
+<br /><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 1.435 seconds)</p>
+<div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-01-temporaltimeseriesanalysis-plot-whitenoiseexample-py">
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/98653efe5c1834556976c10f980dbc19/plot_whiteNoiseExample.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_whiteNoiseExample.ipynb</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/0a1416f69737bc02d3858e9aecf2bdd6/plot_whiteNoiseExample.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_whiteNoiseExample.py</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-zip docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/01dea3ba8597e166ecb8ccc683a2ab3b/plot_whiteNoiseExample.zip"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">zipped:</span> <span class="pre">plot_whiteNoiseExample.zip</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">statsNeuro2025</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Statistical Neuroscience 2025 Examples</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html#temporal-time-series-analysis">Temporal Time Series Analysis</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Temporal Time Series Analysis</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Statistical Neuroscience 2025 Examples</a><ul>
+  <li><a href="index.html">Temporal Time Series Analysis</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">Temporal Time Series Analysis</a></li>
+      <li>Next: <a href="plot_autoregressiveExample.html" title="next chapter">Generation of a autoregressive time series</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2025, Joaquin Rapela.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.1.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="../../_sources/auto_examples/01_temporalTimeSeriesAnalysis/plot_whiteNoiseExample.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
