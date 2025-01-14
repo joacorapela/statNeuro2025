@@ -328,6 +328,7 @@ Gatsby Computational Neuroscience Unit\\University College London % Your institu
 
 \begin{frame}[fragile]
     \frametitle{Generation of time series: white noise process}
+    \label{slide:autocovarWhiteNoise}
 
     The first step to generate time series is to generate \textbf{white noise process},
     $\{w_t\}$
@@ -337,7 +338,7 @@ Gatsby Computational Neuroscience Unit\\University College London % Your institu
     \scriptsize
     \begin{align*}
         E\{w_t\}&=0\\
-        \text{Cov}\{w_t,w_s\}&=\left\{\begin{array}{l l}
+        \gamma(t, s)=\text{Cov}(w_t,w_s)&=\left\{\begin{array}{l l}
                                           \sigma^2_w & s=t\\
                                           0 & s\neq t\\
                                       \end{array}\right.
@@ -546,6 +547,7 @@ Gatsby Computational Neuroscience Unit\\University College London % Your institu
 \begin{frame}
     \frametitle{Autocovariance function}
 
+    \label{slide:autocovarMA}
     \begin{exampleblock}{Example (Autocovariance function of moving average)}
 		\only<1>{
         Calculate the autocovariance function of the moving average model in Eq.~\ref{eq:ma}.
@@ -578,7 +580,6 @@ Gatsby Computational Neuroscience Unit\\University College London % Your institu
 		\end{align*}
 		}
 		\only<4>{
-        \label{slide:autocovarMA}
 		\begin{align*}
         	\gamma_\nu(s,t)=\left\{\begin{array}{l l}
                                        \frac{3}{9}\sigma^2_w & \text{if}\quad s=t,\\
@@ -707,12 +708,12 @@ Gatsby Computational Neuroscience Unit\\University College London % Your institu
 
         For white noise, and a sample of size $n$,  the sample
         autocorrelations, $\hat\gamma(h), h>0$, are approximately independent
-        and identically distributed $N(0,1/\sqrt{n})$, for large $n$
+        and identically distributed (with a Normal distribution of mean 0 and
+        standard deviaiton $1/\sqrt{n}$), for large $n$
         \citep{brockwellAndDavis91}.
         %
         Hence 95\% of the sample autocorrelations should fall between the bound
-        $\pm 1.96/\sqrt{n}$
-    \end{theorem}
+    $\pm 1.96/\sqrt{n}$ \end{theorem}
 
     }
 
@@ -727,7 +728,7 @@ Gatsby Computational Neuroscience Unit\\University College London % Your institu
     \hyperlink{slide:autocovarWhiteNoise}{analytical} and
     \hyperlink{slide:estAutocovar}{estimated} autocorrelation function.
     Include the 95\% confidence interval of the autocorrelation function.
-    \href{https://joacorapela.github.io/statNeuro2025/auto\_examples/01\_temporalTimeSeriesAnalysis/plot\_whiteNoiseAutocovariance.html\#\#sphx-glr-auto-examples-01-temporaltimeseriesanalysis-plot-whitenoiseautocovariance-py}{Solution}.
+    \href{https://joacorapela.github.io/statNeuro2025/auto_examples/01_temporalTimeSeriesAnalysis/plot_whiteNoiseAutocorrelation.html\#sphx-glr-auto-examples-01-temporaltimeseriesanalysis-plot-whitenoiseautocorrelation-py}{Solution}.
 
     \begin{center}
         \href{http://www.gatsby.ucl.ac.uk/~rapela/statNeuro/2025/lectures/01_temporalTimeSeriesAnalysis/figures/whiteNoiseAutoCorN100.html}{\includegraphics[width=2.00in]{../../examples/sphinx_gallery/01_temporalTimeSeriesAnalysis/figures/whiteNoiseAutoCorN100.png}}
