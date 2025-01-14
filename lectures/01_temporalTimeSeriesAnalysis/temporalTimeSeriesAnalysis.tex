@@ -375,9 +375,9 @@ Gatsby Computational Neuroscience Unit\\University College London % Your institu
 	\begin{definition}
 		An \textbf{moving average model} of order $q$, abbreviated as \textbf{MA}(q), is of the form
 		\begin{align*}
-			X_t = W_t + \theta_1W_{t-1} + \theta_2W_{t-2} + \ldots + \theta_qW_{t-q}
+			x_t = w_t + \theta_1w_{t-1} + \theta_2w_{t-2} + \ldots + \theta_qw_{t-q}
 		\end{align*}
-		where $\{W_t\}$ is a white noise process and $\theta_1,\ldots,\theta_p$
+		where $\{w_t\}$ is a white noise process and $\theta_1,\ldots,\theta_p$
 		are constants ($\theta_p\neq 0$).
 	\end{definition}
 
@@ -408,7 +408,7 @@ Gatsby Computational Neuroscience Unit\\University College London % Your institu
 	\begin{definition}
 		An \textbf{autoregressive model} of order $p$, abbreviated as \textbf{AR}(p), is of the form
 		\begin{align*}
-			X_t = \phi_1X_{t-1} + \phi_2X_{t-2} + \ldots + \phi_pX_{t-p} + w_t
+			x_t = \phi_1x_{t-1} + \phi_2x_{t-2} + \ldots + \phi_px_{t-p} + w_t
 		\end{align*}
 		where ${w_t}$ is a white noise process, $\phi_1,\ldots,\phi_p$ are constants ($\phi_p\neq 0$).
 	\end{definition}
@@ -426,6 +426,8 @@ Gatsby Computational Neuroscience Unit\\University College London % Your institu
         x_t = \delta + x_{t-1} + w_t\label{eq:randomWalkWithDrift}
     \end{align}
 
+    for $t=1,2,\ldots$, with initial condition $x_0=0$, and where $\{w_t\}$ is
+    a white noise random process.
     \begin{center}
         \href{http://www.gatsby.ucl.ac.uk/~rapela/statNeuro/2025/lectures/01_temporalTimeSeriesAnalysis/figures/randomWalkWithDrift.html}{\includegraphics[width=2.75in]{../../examples/sphinx_gallery/01_temporalTimeSeriesAnalysis/figures/randomWalkWithDrift.png}}
         \label{fig:randomWalkWithDrift}
@@ -510,11 +512,11 @@ Gatsby Computational Neuroscience Unit\\University College London % Your institu
 
         The random noise with drift model in Eq.~\ref{eq:randomWalkWithDrift} can be represented as
         \begin{align*}
-            x_t &= t \delta + \sum_{i=0}^{\infty}w_{t-i}
+            x_t &= t \delta + \sum_{i=0}^tw_i
         \end{align*}
 
         \begin{align*}
-            E\{x_t\} &= \delta t + \sum_{i=0}^{\infty}E\{w_{t-i}\} = \delta t + \sum_{i=0}^{\infty}0 = \delta t
+            E\{x_t\} &= \delta t + \sum_{i=0}^tE\{w_i\} = \delta t + \sum_{i=0}^t0 = \delta t
         \end{align*}
 
         See the \hyperlink{fig:randomWalkWithDrift}{figure} of samples of the random noise with
@@ -533,8 +535,8 @@ Gatsby Computational Neuroscience Unit\\University College London % Your institu
     \end{definition}
 
     \begin{block}{Note}
-        For $s=t$ the autocovariance reduces to the variance, because
-        $\gamma(t,t)=E\{(x_t-\mu_t)^2\}=var(x_t)$.
+        For $s=t$ the autocovariance function reduces to the variance function, because
+        $\gamma(t,t)=E\{(x_t-\mu_t)^2\}=var(t)$.
     \end{block}
 
     \begin{definition}[Autocorrelation function]
@@ -744,6 +746,7 @@ Gatsby Computational Neuroscience Unit\\University College London % Your institu
     N=100,000 samples.  For each N, plot the
     \hyperlink{slide:autocovarMA}{analytical} and
     \hyperlink{slide:estAutocovar}{estimated} autocovariance function.
+    \href{https://joacorapela.github.io/statNeuro2025/auto_examples/01_temporalTimeSeriesAnalysis/plot_movingAverageAutocovariance.html\#sphx-glr-auto-examples-01-temporaltimeseriesanalysis-plot-movingaverageautocovariance-py}{Solution}.
 
     \begin{center}
         \href{http://www.gatsby.ucl.ac.uk/~rapela/statNeuro/2025/lectures/01_temporalTimeSeriesAnalysis/figures/movingAverageAutoCovN100.html}{\includegraphics[width=2.00in]{../../../mySolutions/01_temporalTimeSeriesAnalysis/figures/movingAverageAutoCovN100.png}}
@@ -772,14 +775,14 @@ Gatsby Computational Neuroscience Unit\\University College London % Your institu
 \begin{frame}
     \frametitle{Forecasting}
 
-    Forecasting is the problem of predicting the value of $X_{n+h}, h>0$, of a
+    Forecasting is the problem of predicting the value of $x_{n+h}, h>0$, of a
     stationary time series, in term of the previous $m$
-    values$\{X_n,\ldots,X_{n-(m-1)}\}$.
+    values$\{x_n,\ldots,x_{n-(m-1)}\}$.
     %
     The mean of such predictor is
 
     \begin{align*}
-        \text{mean}(\text{pred}(X_{m+h}|X_n,\ldots,X_{n-(m-1)}))=\mu+\mathbf{a_m}^\intercal\left[\begin{array}{c}
+        \text{mean}(\text{pred}(x_{m+h}|x_n,\ldots,x_{n-(m-1)}))=\mu+\mathbf{a_m}^\intercal\left[\begin{array}{c}
                                                                                           x_n-\mu\\
                                                                                           \ldots\\
                                                                                           x_{n-(m-1)}-\mu
@@ -789,7 +792,7 @@ Gatsby Computational Neuroscience Unit\\University College London % Your institu
     and its variance is
 
     \begin{align*}
-        \text{var}(\text{pred}(X_{n+h}|X_n,\ldots,X_{n-(m-1)}))=\gamma(0)-\mathbf{a_m}^\intercal\gamma_m(h)
+        \text{var}(\text{pred}(x_{n+h}|x_n,\ldots,x_{n-(m-1)}))=\gamma(0)-\mathbf{a_m}^\intercal\gamma_m(h)
     \end{align*}
 
 \end{frame}
