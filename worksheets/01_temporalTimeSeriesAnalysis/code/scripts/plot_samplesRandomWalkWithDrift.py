@@ -75,10 +75,10 @@ trace = go.Scatter(x=time, y=cb_up,
 fig.add_trace(trace)
 fig.update_layout(xaxis=dict(title="Time (sec)"), yaxis=dict(title="x"))
 
-if not os.path.exists("figures"):
-    os.mkdir("figures")
+if not os.path.exists("../../figures"):
+    os.mkdir("../../figures")
 
-fig.write_html("figures/randomNoiseWithDriftSamples.html")
-fig.write_image("figures/randomNoiseWithDriftSamples.png")
+fig.write_html("../../figures/randomNoiseWithDriftSamples.html")
+fig.write_image("../../figures/randomNoiseWithDriftSamples.png")
 
 fig
