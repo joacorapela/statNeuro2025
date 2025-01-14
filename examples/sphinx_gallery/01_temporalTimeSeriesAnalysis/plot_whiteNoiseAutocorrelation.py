@@ -35,7 +35,7 @@ w = np.random.normal(loc=0, scale=sigma, size=N)
 #
 
 anaAcor = np.zeros(len(lags))
-anaAcor[0] = 1
+anaAcor[0] = sigma
 estAcor = np.zeros(len(lags))
 wMu = np.mean(w)
 wSTD = np.std(w)
@@ -48,20 +48,9 @@ for h in lags:
         estAcor[h] = np.mean(xs * xt)/wSTD
 
 #%%
-# Plot white noise time series, true and estimated autocorrelation
-# ----------------------------------------------------------------
+# Plot white noise analytical and estimated autocorrelations plus 95% confidence interval
+# ---------------------------------------------------------------------------------------
 #
-
-fig = go.Figure()
-trace = go.Scatter(x=time, y=w, mode="lines+markers")
-fig.add_trace(trace)
-fig.update_layout(xaxis=dict(title="Time (sec)"), yaxis=dict(title="x"))
-
-if not os.path.exists("figures"):
-    os.mkdir("figures")
-
-fig.write_html(f"figures/whiteNoiseSamplesN{T}.html")
-fig.write_image(f"figures/whiteNoiseSamplesN{T}.png")
 
 fig = go.Figure()
 trace = go.Scatter(x=lags, y=anaAcor, mode="lines+markers", name="analytical")
