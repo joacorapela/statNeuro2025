@@ -13,7 +13,7 @@
     | Week | Date  | Topic | Lecturers | Type |
     |------|-------|-------|-----------|------|
     | 01 | Jan 13 | [Temporal time series analysis](https://github.com/joacorapela/statNeuro2025/blob/master/lectures/01_temporalTimeSeriesAnalysis/temporalTimeSeriesAnalysis.pdf) | [Joaquin Rapela](https://www.gatsby.ucl.ac.uk/~rapela) | lecture |
-    | 01 | Jan 17 | [The t-test and randomisation tests](https://github.com/joacorapela/neuroinformatics24/blob/master/practicals/01_tTestAndRandomizationTests/introAndHipothesisTests.pdf) | [Joaquin Rapela](https://www.gatsby.ucl.ac.uk/~rapela) | practical |
+    | 01 | Jan 17 | Temporal time series analysis | [Joaquin Rapela](https://www.gatsby.ucl.ac.uk/~rapela) | practical |
     | 02 | Jan 20 | LFPs, Spectral analysis | [Joaquin Rapela](https://www.gatsby.ucl.ac.uk/~rapela) | lecture |
     | 02 | Jan 24 | [Power spectra](https://github.com/joacorapela/neuroinformatics24/blob/master/practicals/02_LFPs_spectralAnalysis/spectralAnalysis.pdf) | [Joaquin Rapela](https://www.gatsby.ucl.ac.uk/~rapela) | practical |
     | 03 | Jan 27 | Spectrogram and non-stationary signals, Multiple time series | [Joaquin Rapela](https://www.gatsby.ucl.ac.uk/~rapela) | lecture |
