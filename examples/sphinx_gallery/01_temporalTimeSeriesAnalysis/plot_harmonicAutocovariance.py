@@ -46,6 +46,21 @@ x = np.zeros(shape=len(time), dtype=np.double)
 for k in range(K):
     x += A[k] * np.cos(w[k] * time + phi[k])
 
+fig = go.Figure()
+trace = go.Scatter(x=time, y=x, mode="lines+markers", showlegend=False)
+fig.add_trace(trace)
+fig.update_layout(title=f"N={T*srate}", xaxis=dict(title="Time (sec)"),
+                  yaxis=dict(title="x"))
+
+if not os.path.exists("figures"):
+    os.mkdir("figures")
+
+fig.write_html(f"figures/harmonicAutoCovN{T*srate}x.html")
+fig.write_image(f"figures/harmonicAutoCovN{T*srate}x.png")
+
+fig
+
+
 #%%
 # Estimate autocovariance
 # -----------------------
