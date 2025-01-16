@@ -13,6 +13,7 @@
 .nfs*
 
 __pycache__/
+*.egg-info/
 figures/
 videos/
 old/
