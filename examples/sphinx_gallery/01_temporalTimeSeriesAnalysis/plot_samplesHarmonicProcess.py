@@ -30,8 +30,8 @@ cb_width = 5
 # ------------------------------
 #
 
-A = np.random.uniform(start=min_A, stop=max_A, num=K)
-f = np.random.uniform(start=min_freq, stop=max_freq, num=K)
+A = np.linspace(start=min_A, stop=max_A, num=K)
+f = np.linspace(start=min_freq, stop=max_freq, num=K)
 w = 2*np.pi*f
 phi = np.random.uniform(low=-np.pi, high=np.pi, size=[K, n_time_series_to_plot])
 
