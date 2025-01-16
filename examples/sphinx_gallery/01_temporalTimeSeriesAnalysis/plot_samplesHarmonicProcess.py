@@ -15,13 +15,14 @@ import plotly.graph_objects as go
 # Define variables
 # ----------------
 
-srate = 1000
-T = 1 # sec
+min_freq = 1.0 # Hertz
+max_freq = 50.0 # Hertz
+srate = int(10 * max_freq)
+T = 2 # sec
 K = 20
 min_A = 0.0
 max_A = 20.0
-min_freq = 1.0 # Hertz
-max_freq = 50.0 # Hertz
+
 n_time_series_to_plot = 100
 cb_width = 5
 
