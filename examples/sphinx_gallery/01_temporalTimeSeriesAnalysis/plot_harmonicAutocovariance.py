@@ -15,15 +15,16 @@ import plotly.graph_objects as go
 # Define variables
 # ----------------
 
-srate = 500
-T = 1000 # sec
+min_freq = 1.0 # Hertz
+max_freq = 30.0 # Hertz
+srate = int(10 * max_freq)
+# T = 1.2 # sec
+T = 50 # sec
 K = 20
 # K = 1
 max_A = 20.0
 min_A = 0.0
-min_freq = 1.0 # Hertz
-max_freq = 30.0 # Hertz
-lags_samples = np.arange(500) # samples
+lags_samples = np.arange(srate) # samples
 
 #%%
 # Set harmonic process constants
@@ -77,7 +78,7 @@ trace = go.Scatter(x=lags_secs, y=anaAcov, mode="lines+markers", name="analytica
 fig.add_trace(trace)
 trace = go.Scatter(x=lags_secs, y=estAcov, mode="lines+markers", name="estimated")
 fig.add_trace(trace)
-fig.update_layout(title=f"N={T}", xaxis=dict(title="Lag (sec)"),
+fig.update_layout(title=f"N={T*srate}", xaxis=dict(title="Lag (sec)"),
                   yaxis=dict(title="Autocovariance"))
 
 if not os.path.exists("figures"):
@@ -88,4 +89,3 @@ fig.write_image(f"figures/harmonicAutoCovN{T*srate}.png")
 
 fig
 
-breakpoint()

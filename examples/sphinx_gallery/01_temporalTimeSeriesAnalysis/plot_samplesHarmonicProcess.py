@@ -91,4 +91,3 @@ fig.write_image("figures/harmonicSamples.png")
 
 fig
 
-breakpoint()
