@@ -40,7 +40,7 @@
 
     3. change to the repository directory (`cd statsNeuro2025`)
     4. activate your conda environment (`conda activate statsNeuro`)
-    5. type `pip install -r requirements.txt`
+    5. type `pip install -e .` to install requirements
 
     Then you can run any script by (for example):
 
