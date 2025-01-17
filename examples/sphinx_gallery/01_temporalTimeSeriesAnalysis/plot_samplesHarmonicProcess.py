@@ -59,7 +59,7 @@ cb_up = mean + 1.96 * np.sqrt(var)
 cb_down = mean - 1.96 * np.sqrt(var)
 
 #%%
-# Plot time series with meand and 95% confidence band
+# Plot time series with mean and 95% confidence band
 # ---------------------------------------------------
 #
 
