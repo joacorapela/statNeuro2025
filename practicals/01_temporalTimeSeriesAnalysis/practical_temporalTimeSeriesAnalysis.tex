@@ -1,0 +1,125 @@
+\documentclass[12pt]{article}
+
+\usepackage{graphicx}
+\usepackage[shortlabels]{enumitem}
+\usepackage[colorlinks=]{hyperref}
+\usepackage[margin=2cm]{geometry}
+\usepackage{amsmath}
+\usepackage{amsthm}
+
+\newtheorem{claim}{Claim}
+
+\title{Practical: temporal time series analysis}
+\author{Joaquin Rapela}
+
+\begin{document}
+
+\maketitle
+
+\section{Harmonic process}
+
+Given 
+
+\begin{align*}
+    x_t=\sum_{k=1}^KA_k\cos(w_kt+\phi_k)
+\end{align*}
+
+\noindent with $K, \{A_k\}, \{w_k\}$ constants and $\{\phi_k\}$ independent random
+variables, uniformly distributed in the range $[-\pi,\pi]$
+
+\begin{enumerate}[(a)]
+
+    \item Simulate and plot 100 samples of $x_t$. Does $x_t$ look stationary? I
+        suggest using a large sampling rate, much larger than twice the maximal
+        frequency of the cosines.
+
+    \item Calculate the mean, variance and covariance of $x_t$. Is $x_t$ wide
+        sense stationary?
+
+    \item Add the 95\% confidence band to the samples plotted in (a).
+
+    \item Simulate a long time series from $x_t$ and use it to estimate the
+        autocovariance function. Plot this estimate and the analytical
+        covariance computed in (b).
+
+\end{enumerate}
+
+\pagebreak
+
+\subsection*{Answer}
+
+\begin{enumerate}[(a)]
+
+    \item The code to simulate and plot 100 samples of $x_t$, and the generated
+        plots, are given
+        \href{https://joacorapela.github.io/statNeuro2025/auto_examples/01_temporalTimeSeriesAnalysis/plot_samplesHarmonicProcess.html#sphx-glr-auto-examples-01-temporaltimeseriesanalysis-plot-samplesharmonicprocess-py}{here}. The mean of $x_t$ appears constant and
+        equal to zero. The variance of the samples also appears constant. It is not
+        clear to my eye if the covariances only depend on the time lag. I guess
+        that $x_t$ is WSS.
+
+        \begin{figure}
+            \begin{center}
+                \href{https://www.gatsby.ucl.ac.uk/~rapela/statNeuro/2025/lectures/01_temporalTimeSeriesAnalysis/figures/harmonicSamples.html}{\includegraphics[width=5in]{../../examples/sphinx_gallery/01_temporalTimeSeriesAnalysis/figures/harmonicSamples.png}}
+                \caption{100 samples from an harmonic process, mean (solid line) and 95\% confidence interval (dotted lines).}
+                \label{fig:harmonicProcessSamples}
+            \end{center}
+        \end{figure}
+
+    \item $\mu_t=0$ and $\gamma(t,t-h)=\sum_{k=1}^K\frac{A_k^2}{2}\cos(w_kh)$.
+
+        \begin{claim}
+            \begin{align}
+                \mu_t=0
+            \end{align}
+        \end{claim}
+
+        \begin{proof}
+            \begin{align}
+                \mu_t=E\{x_t\}&=\sum_{k=1}^KA_kE\{\cos(w_kt+\phi_k)\}=\sum_{k=1}^KA_k0=0
+            \end{align}
+        \end{proof}
+
+        \begin{claim}
+            \begin{align}
+                \gamma(t, t-h)=\sum_{i=0}^K\frac{A_i^2}{2}\cos(w_ih)
+            \end{align}
+        \end{claim}
+
+        \begin{proof}
+            \begin{align}
+                \gamma(t,t-h)=&\text{cov}(x_t,x_{t-h})=E\{(x_t-\mu_t)(x_{t-h}-\mu_{t-h})\}=E\{x_tx_{t-h}\}\\
+                             =&E\left\{\left(\sum_{i=0}^KA_i\cos(w_it+\phi_i)\right)\left(\sum_{j=0}^KA_j\cos(w_j(t-h)+\phi_j)\right)\right\}\\
+                             =&E\left\{\sum_{i=0}^K\sum_{j=0}^KA_iA_j\cos(w_it+\phi_i)\cos(w_j(t-h)+\phi_j)\right\}\\
+                             =&\sum_{i=0}^K\sum_{j=0}^KA_iA_jE\left\{\cos(w_it+\phi_i)\cos(w_j(t-h)+\phi_j)\right\}\\
+                             =&\sum_{i=0}^KA_i^2E\left\{\cos(w_it+\phi_i)\cos(w_i(t-h)+\phi_i)\right\}+\\
+                              &\sum_{i=0}^K\sum_{j\neq i}A_iA_jE\left\{\cos(w_it+\phi_i)\cos(w_j(t-h)+\phi_j)\right\}\\
+                             =&\sum_{i=0}^KA_i^2E\left\{\cos(w_it+\phi_i)\cos(w_i(t-h)+\phi_i)\right\}+\\
+                              &\sum_{i=0}^K\sum_{j\neq i}A_iA_jE\left\{\cos(w_it+\phi_i)\right\}E\left\{\cos(w_j(t-h)+\phi_j)\right\}\\
+                             =&\sum_{i=0}^KA_i^2E\left\{\cos(w_it+\phi_i)\cos(w_i(t-h)+\phi_i)\right\}+\\
+                              &\sum_{i=0}^K\sum_{j\neq i}A_iA_j 0\;0\\
+                             =&\sum_{i=0}^KA_i^2E\left\{\cos(w_it+\phi_i)\cos(w_i(t-h)+\phi_i)\right\}\\
+                             =&\sum_{i=0}^K\frac{A_i^2}{2}E\left\{\cos(2w_it++w_ih+2\phi_i)+\cos(w_ih)\right\}\\
+                             =&\sum_{i=0}^K\frac{A_i^2}{2}\cos(w_ih)
+            \end{align}
+        \end{proof}
+
+        Thus $\sigma^2_t=\sum_{k=1}^K\frac{A_k^2}{2}$. Hence $x_t$ is WSS.
+
+    \item See the code
+        \href{https://joacorapela.github.io/statNeuro2025/auto_examples/01_temporalTimeSeriesAnalysis/plot_samplesHarmonicProcess.html#sphx-glr-auto-examples-01-temporaltimeseriesanalysis-plot-samplesharmonicprocess-py}{here}
+        and refer to Figure~\ref{fig:harmonicProcessSamples}.
+
+    \item See the code and generated figures
+        \href{https://joacorapela.github.io/statNeuro2025/auto_examples/01_temporalTimeSeriesAnalysis/plot_harmonicAutocovariance.html#sphx-glr-auto-examples-01-temporaltimeseriesanalysis-plot-harmonicautocovariance-py}{here}.
+
+        \begin{figure}
+            \begin{center}
+                \href{https://www.gatsby.ucl.ac.uk/~rapela/statNeuro/2025/lectures/01_temporalTimeSeriesAnalysis/figures/harmonicAutoCovN15000.html}{\includegraphics[width=5in]{../../examples/sphinx_gallery/01_temporalTimeSeriesAnalysis/figures/harmonicAutoCovN15000.png}}
+                \caption{Analytical and estimated autocovariance of an harmonic process.}
+                \label{fig:harmonicProcessAutocovariance}
+            \end{center}
+        \end{figure}
+
+\end{enumerate}
+
+\end{document}
