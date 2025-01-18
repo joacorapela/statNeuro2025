@@ -116,4 +116,3 @@ fig.write_image(f"figures/coefficientsAR3N{T*srate}.png")
 
 fig
 
-breakpoint()
