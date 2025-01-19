@@ -60,12 +60,10 @@ fig.write_image(f"figures/harmonicAutoCovN{T*srate}x.png")
 
 fig
 
-
 #%%
 # Estimate autocovariance
 # -----------------------
 #
-
 
 estAcov = np.zeros(len(lags_samples))
 anaAcov = np.zeros(len(lags_samples))
