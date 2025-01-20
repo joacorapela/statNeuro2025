@@ -1,6 +1,6 @@
 
 """
-Forecasting for AR(p) random process
+Forecasting for AR(1) random process
 ====================================
 """
 
@@ -17,7 +17,6 @@ import plotly.graph_objects as go
 # Define auxiliary functions
 # --------------------------
 
-import os
 def buildGamma_m(cov, M):
     Gamma_m = np.empty((M, M), dtype=np.double)
     for i in range(M):
@@ -39,73 +38,58 @@ def buildGamma_h(cov, M, h):
 # Define variables
 # -----------------
 
-N = 10000
+N = 1000
 M = 500
 max_h = 50
-sigma_e = 5.0
-# ar_coefs = [5.0/6, -1.0/6]
-ar_coefs = [5.0/6, -1.0/6, 0.5/6, -0.25/6, 0.5/6, -0.1/6, 0.05/6]
-
-p = len(ar_coefs)
+sigma = 1.0
+phi = -5.0/6
 
 #%%
-# Simulate AR(p) time series
+# Simulate AR(1) time series
 # --------------------------
 
 N = 10000
-w = np.random.normal(scale=sigma_e, size=N)
+w = np.random.normal(scale=sigma, size=N)
 x = np.empty(N, dtype=np.double)
 x[0] = w[0]
-x[1] = w[1]
-for i in range(2, N):
-    x[i] = 0
-    for j in range(p):
-        x[i] += ar_coefs[j] * x[i-(1+j)]
-    x[i] += w[i]
+for i in range(1, N):
+    x[i] = phi * x[i-1] + w[i]
 
 #%%
-# Compute correlations using the Yule-Walker equations
-# ----------------------------------------------------
+# Compute covariance
+# ------------------
 
-mu_hat = x.mean()
-var_hat = x.var()
-cor = np.empty(M+max_h, dtype=np.double)
-cor[0] = 1.0
-for h in range(1, p):
-    cor[h] = np.mean((x[h:]-mu_hat)*(x[:-h]-mu_hat))/var_hat
-for h in range(p, M+max_h):
-    cor[h] = 0
-    for i in range(p):
-        cor[h] += ar_coefs[i] * cor[h-(i+1)]
-cov = cor * var_hat
+cov = np.empty(M+max_h, dtype=np.double)
+var = sigma**2 / (1-phi**2)
+for h in range(M+max_h):
+    cov[h] = var * phi**h
 
 #%%
 # Compute forecasts
 # -----------------
 
+mu = 0
 Gamma_m = buildGamma_m(cov, M)
 forecasts_means = np.empty(max_h, dtype=np.double)
 forecasts_vars = np.empty(max_h, dtype=np.double)
-xMinusMuR = (x-mu_hat)[::-1][:M]
+xR = x[::-1][:M]
 for h in range(1, max_h+1):
     Gamma_h = buildGamma_h(cov, M, h)
     a_m = np.linalg.solve(Gamma_m, Gamma_h)
-    forecasts_means[h-1] = mu_hat + np.inner(a_m, xMinusMuR)
-    forecasts_vars[h-1]  = var_hat - np.inner(a_m, cov[h:(h+M)])
+    forecasts_means[h-1] = mu + np.inner(a_m, xR)
+    forecasts_vars[h-1]  = var - np.inner(a_m, cov[h:(h+M)])
 
 #%%
 # Plot time series and forecast
 # -----------------------------
 
-Gamma_m = buildGamma_m(cov, M)
 fig = go.Figure()
-trace_x = go.Scatter(x=np.arange(N-M, N), y=x[-M:],
-                     name=f"AR({p})")
+trace_x = go.Scatter(x=np.arange(N-M, N), y=x[-M:], mode="lines+markers", name="AR({1})")
 fig.add_trace(trace_x)
 
 # plot forecast mean
 trace_fMean = go.Scatter(x=np.arange(N, N+max_h), y=forecasts_means,
-                         name="Forecast")
+                         mode="lines+markers", name="Forecast")
 fig.add_trace(trace_fMean)
 
 # plot forecast 95% CI
@@ -127,7 +111,7 @@ fig.update_layout(xaxis_title="Sample Index", yaxis_title="Process Value")
 if not os.path.exists("figures"):
     os.mkdir("figures")
 
-fig.write_html(f"figures/forecastingAR{p}.html")
-fig.write_image(f"figures/forecastingAR{p}.png")
+fig.write_html("figures/forecastingAR1.html")
+fig.write_image("figures/forecastingAR1.png")
 
 fig
