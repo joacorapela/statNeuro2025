@@ -252,6 +252,75 @@ Gatsby Computational Neuroscience Unit\\University College London % Your institu
 \subsection{Introduction to time series analysis}
 
 \begin{frame}
+    \frametitle{What is a time series?}
+
+    \begin{definition}
+
+        A \textbf{time series} is a set of observations $\{x_t\}$, each observation recorded at
+        a specific time $t$.
+
+    \end{definition}
+
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Key concepts in probability theory}
+
+    \begin{description}
+
+        \item[sample space] The set, $\mathcal{S}$, of all possible outcomes of
+            a particula experiment is called the \textbf{sample space} for this
+            experiment.
+
+        \item[event] An \textbf{event} is any collection of possible outcomes
+            of an experiment, that is, any subset of $\mathcal{S}$ (including
+            $\mathcal{S}$ itself).
+
+        \item[probability function] A \textbf{probability function} is a
+            function that assigns a real number (i.e., the probability) to
+            events.
+
+        \item[random variable] A \textbf{random variable} is a function from
+            the sample space $\mathcal{S}$ into the real numbers. For example
+            in an experiment tossing two dice a random variable X could be the
+            sum of the obtained numbers, or in an experiment tossing a coin 25
+            times a random variable Y could be the number of heads in the 25
+            tosses.
+
+            The probability that a random variable takes a given value is the
+            probability of the event associated with that value.
+
+            \begin{align*}
+                P_X(X=x_i)=P(\{s_j\in\mathcal{S}:X(s_j)=x_i\})
+            \end{align*}
+
+    \end{description}
+
+\end{frame}
+
+\begin{frame}
+    \frametitle{Time series model}
+
+    The purpose of this course is to study techniques to draw inferences from
+    neural time series. Before doing so, it is necessary to set up a
+    hypothetical proability model to represent the time series. Then it is
+    possible to estimate model parameters, check for goodness of fit to the
+    data, and possibly use the estimated model to enhance our understanding of
+    the mechanisms generating the time series.
+
+    \begin{definition}[time series model]
+
+        A \textbf{time series model} for the observed data $\{x_t\}$ is a
+        specification of the joint distribution (or possibly the means and
+        covariances) of a sequence of random variables $\{X_t\}$ of which
+        $\{x_t\}$  is postulated to be a realization.
+
+    \end{definition}
+
+\end{frame}
+
+\begin{frame}
     \frametitle{What is time series analysis?}
 
     \begin{itemize}
