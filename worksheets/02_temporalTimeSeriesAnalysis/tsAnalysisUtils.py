@@ -25,7 +25,7 @@ def buildGammap(acov, p):
     return Gammap
 
 
-def estimateCoefsAndNoisVarARpYW(acov, p, N):
+def estimateCoefsAndNoiseVarARpYW(acov, p, N):
     Gammap = buildGammap(acov=acov, p=p)
     gammaph = acov[1:]
     phiHat = ...
