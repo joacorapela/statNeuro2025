@@ -28,7 +28,7 @@ def buildGammap(acov, p):
 def estimateCoefsAndNoisVarARpYW(acov, p, N):
     Gammap = buildGammap(acov=acov, p=p)
     gammaph = acov[1:]
-    phiHat = np.linalg.solve(Gammap, gammaph)
-    sigma2Hat = acov[0] - np.inner(phiHat, acov[1:])
-    phiCovHat = sigma2Hat/N * np.linalg.inv(Gammap)
+    phiHat = ...
+    sigma2Hat = ...
+    phiCovHat = ...
     return phiHat, phiCovHat, sigma2Hat
