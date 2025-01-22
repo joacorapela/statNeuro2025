@@ -399,12 +399,12 @@ equations}
     and~\ref{eq:ywSigma}, we obtain the Yule-Walker estimators
 
     \begin{align*}
-        \hat\phi&=\hat\Gamma_p^{-1}\hat\gamma_p(h)\\
-        \hat\sigma^2&=\hat\gamma(0)-\hat\phi^\intercal\hat\gamma_p(h)\\
+        \hat\phi&=\hat\Gamma_p^{-1}\hat\gamma_p\\
+        \hat\sigma^2&=\hat\gamma(0)-\hat\phi^\intercal\hat\gamma_p\\
                  &\text{with}\\
         \hat\Gamma_p&=[\hat\gamma(i-j)]_{i,j=1}^p\\
         \hat\phi&=[\hat\phi(1),\ldots,\hat\phi(p)]^\intercal\\
-        \hat\gamma_p(h)&=[\hat\gamma(h-1),\ldots,\hat\gamma(h-p)]^\intercal
+        \hat\gamma_p&=[\hat\gamma(1),\ldots,\hat\gamma(p)]^\intercal
     \end{align*}
 
 \end{frame}
