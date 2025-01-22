@@ -1,4 +1,4 @@
-all: worksheet_temporalTimeSeriesAnalysis.pdf
+all: worksheet_temporalTimeSeriesAnalysis2.pdf
 
 %.pdf: %.tex
 	pdflatex $<
