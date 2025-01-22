@@ -5,6 +5,7 @@
 \usepackage[colorlinks=]{hyperref}
 \usepackage[margin=2cm]{geometry}
 \usepackage{amsmath}
+\usepackage{amssymb}
 
 \title{Worksheet: temporal time series analysis (part II)}
 \author{Joaquin Rapela}
@@ -16,64 +17,35 @@
 \begin{enumerate}
 
     \item Reproduce the figure in the slide \emph{Estimate coefficients of
-        AR(3) model using the Yule-Walker estimators}. You may want to use the
-        sample script available \href{}{here}.
+        AR(3) model using the Yule-Walker estimators} in
+        \href{https://github.com/joacorapela/statNeuro2025/blob/master/lectures/02_temporalTimeSeriesAnalysis/temporalTimeSeriesAnalysis.pdf}{lecture 2}. You may want to use the
+        sample script available
+        \href{https://github.com/joacorapela/statNeuro2025/blob/master/worksheets/02_temporalTimeSeriesAnalysis/plot_estimateCoefsAR3YW.py}{here}.
+        To run this code, you will need to complete the function
+        \href{https://github.com/joacorapela/statNeuro2025/blob/5c570ed3bbb4311d80c280fcb30c4a1ec26f5b53/worksheets/02_temporalTimeSeriesAnalysis/tsAnalysisUtils.py#L28}{estimateCoefsAndNoisVarARpYW} in
+        the module
+        \href{https://github.com/joacorapela/statNeuro2025/blob/master/worksheets/02_temporalTimeSeriesAnalysis/tsAnalysisUtils.py#L28}{tsAnalysisUtils.py},
+        imported in the previous script.
 
-        stationary (WSS)?
+        Hints:
 
-        \begin{align}
-            x_t & = \phi x_{t-1} + w_t\label{eq:randomProcess}
-        \end{align}
+        \begin{description}
 
-        where $\{w_t\}$ is a white noise random process with variance
-        $\sigma^2_w$. For this random process to be WSS, can the parameter
-        $\phi$ take any value? Why or why not?
+            \item[solving the system of equations $A\mathbf{x}=\mathbf{b}$ in
+                Numpy] to estimate the vector $\mathbf{x}$ that best
+                approximates the previous equations in Numpy you can use
+                \texttt{x = np.linealg.solve(A, \textbf{x})}.
 
-    \item Write code to generate the figures in the
-        \href{https://github.com/joacorapela/statNeuro2025/blob/master/lectures/01_temporalTimeSeriesAnalysis/temporalTimeSeriesAnalysis.pdf}{lecture}
-        slide titled \emph{Analytical and estimated autocovariance function for
-        AR(1)}. Provide the code and the generated figures.
+            \item[computing inner products $\mathbf{x}^\intercal\mathbf{y}$ in
+                Numpy] to calculate the previous inner product between vector
+                $\mathbf{x}$ and $\mathbf{y}$ in Numpy you can use
+                \texttt{np.inner(x, y)}.
 
-        Hint: you may want to modify the code in the solution of the
-        \href{https://github.com/joacorapela/statNeuro2025/blob/master/lectures/01_temporalTimeSeriesAnalysis/temporalTimeSeriesAnalysis.pdf}{lecture}
-        slide titled \emph{Analytical and estimated autocovariance function for MA}.
+            \item[computing the inverse $A^{-1}$ of matrix $A$ in Numpy] to
+                calculate the previous inverse of matrix $A$ in Numpy you can
+                use \texttt{np.linalg.inv(A)}.
 
-    \item (optional) For the random walk with drift model:
-
-        \begin{enumerate}[(a)]
-
-            \item Calculate the covariance function $\gamma(s, t)$ and use it
-                to derive the variance function $var(t)$.
-
-            \item To check that your variance function is correct, complete and
-                execute
-                \href{https://github.com/joacorapela/statNeuro2025/blob/master/worksheets/01_temporalTimeSeriesAnalysis/plot_samplesRandomWalkWithDrift.py}{this}
-                python script. It plots 100 samples of the random walk with
-                drift model (coloured traces), with the mean (solid line) and
-                95\% confidence bands (dashed lines). See
-                Figure~\ref{fig:randomWalkWithDriftSamples}. At any time point
-                (abscissa) you should observe that 95\% of the traces (5
-                traces) are above the upper line or below the lower line.
-
-
-                \begin{figure}
-                    \begin{center}
-                        \href{https://www.gatsby.ucl.ac.uk/~rapela/statNeuro/2025/lectures/01_temporalTimeSeriesAnalysis/figures/randomNoiseWithDriftSamples.html}{\includegraphics[width=4.00in]{../../../mySolutions/01_temporalTimeSeriesAnalysis/figures/randomNoiseWithDriftSamples.png}}
-                        \caption{One hundred samples of a random walk with
-                        drift process (colour traces). The solid line is the
-                        mean of the random process and the dotted lines mark
-                        the 95\% confidence interval. At any time point 95\% of
-                        the samples (i.e., 5 samples) should lie above or below
-                        the dotted lines. Click on the figure to see its
-                        interactive version.}
-                        \label{fig:randomWalkWithDriftSamples}
-                    \end{center}
-                \end{figure}
-
-            \item Is the random walk with drift process wide-sense stationary?
-                Why or why not?
-
-        \end{enumerate}
+        \end{description}
 
 \end{enumerate}
 
