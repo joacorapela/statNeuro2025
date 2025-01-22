@@ -1,0 +1,80 @@
+\documentclass[12pt]{article}
+
+\usepackage{graphicx}
+\usepackage[shortlabels]{enumitem}
+\usepackage[colorlinks=]{hyperref}
+\usepackage[margin=2cm]{geometry}
+\usepackage{amsmath}
+
+\title{Worksheet: temporal time series analysis (part II)}
+\author{Joaquin Rapela}
+
+\begin{document}
+
+\maketitle
+
+\begin{enumerate}
+
+    \item Reproduce the figure in the slide \emph{Estimate coefficients of
+        AR(3) model using the Yule-Walker estimators}. You may want to use the
+        sample script available \href{}{here}.
+
+        stationary (WSS)?
+
+        \begin{align}
+            x_t & = \phi x_{t-1} + w_t\label{eq:randomProcess}
+        \end{align}
+
+        where $\{w_t\}$ is a white noise random process with variance
+        $\sigma^2_w$. For this random process to be WSS, can the parameter
+        $\phi$ take any value? Why or why not?
+
+    \item Write code to generate the figures in the
+        \href{https://github.com/joacorapela/statNeuro2025/blob/master/lectures/01_temporalTimeSeriesAnalysis/temporalTimeSeriesAnalysis.pdf}{lecture}
+        slide titled \emph{Analytical and estimated autocovariance function for
+        AR(1)}. Provide the code and the generated figures.
+
+        Hint: you may want to modify the code in the solution of the
+        \href{https://github.com/joacorapela/statNeuro2025/blob/master/lectures/01_temporalTimeSeriesAnalysis/temporalTimeSeriesAnalysis.pdf}{lecture}
+        slide titled \emph{Analytical and estimated autocovariance function for MA}.
+
+    \item (optional) For the random walk with drift model:
+
+        \begin{enumerate}[(a)]
+
+            \item Calculate the covariance function $\gamma(s, t)$ and use it
+                to derive the variance function $var(t)$.
+
+            \item To check that your variance function is correct, complete and
+                execute
+                \href{https://github.com/joacorapela/statNeuro2025/blob/master/worksheets/01_temporalTimeSeriesAnalysis/plot_samplesRandomWalkWithDrift.py}{this}
+                python script. It plots 100 samples of the random walk with
+                drift model (coloured traces), with the mean (solid line) and
+                95\% confidence bands (dashed lines). See
+                Figure~\ref{fig:randomWalkWithDriftSamples}. At any time point
+                (abscissa) you should observe that 95\% of the traces (5
+                traces) are above the upper line or below the lower line.
+
+
+                \begin{figure}
+                    \begin{center}
+                        \href{https://www.gatsby.ucl.ac.uk/~rapela/statNeuro/2025/lectures/01_temporalTimeSeriesAnalysis/figures/randomNoiseWithDriftSamples.html}{\includegraphics[width=4.00in]{../../../mySolutions/01_temporalTimeSeriesAnalysis/figures/randomNoiseWithDriftSamples.png}}
+                        \caption{One hundred samples of a random walk with
+                        drift process (colour traces). The solid line is the
+                        mean of the random process and the dotted lines mark
+                        the 95\% confidence interval. At any time point 95\% of
+                        the samples (i.e., 5 samples) should lie above or below
+                        the dotted lines. Click on the figure to see its
+                        interactive version.}
+                        \label{fig:randomWalkWithDriftSamples}
+                    \end{center}
+                \end{figure}
+
+            \item Is the random walk with drift process wide-sense stationary?
+                Why or why not?
+
+        \end{enumerate}
+
+\end{enumerate}
+
+\end{document}
