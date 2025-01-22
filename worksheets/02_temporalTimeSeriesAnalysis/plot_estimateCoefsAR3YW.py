@@ -58,7 +58,7 @@ acov = tsAnalysisUtils.estimateACov(x=x, lags=lags_samples)
 #
 
 phiHat, phiCovHat, sigma2Hat = \
-    tsAnalysisUtils.estimateCoefsAndNoisVarARpYW(acov=acov, p=p, N=N)
+    tsAnalysisUtils.estimateCoefsAndNoiseVarARpYW(acov=acov, p=p, N=N)
 
 #%%
 # Plot true and estimate coefs with 95% confidence intervals
