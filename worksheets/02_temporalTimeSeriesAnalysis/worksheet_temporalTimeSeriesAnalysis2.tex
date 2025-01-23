@@ -16,15 +16,48 @@
 
 \begin{enumerate}
 
+    \item The goal of this forecasting exercise is to produce a figure similar
+        to that in slide \emph{Example (Forecasting with an AR(1) model)} but
+        for an AR(7) model.
+
+        Simulate $N=10,000$ samples from an AR(7) model with parameters
+
+        \begin{align*}
+            \phi&=[5.0/6,-1.0/6,0.5/6,-0.25/6,0.5/6,-0.1/6,0.05/6]\\
+            \sigma&=5.0
+        \end{align*}
+
+
+        \noindent Use the $m=500$ samples before the last sample to forecast $h=50$ samples into
+        the future.
+
+        You many want to use the script
+        \href{https://github.com/joacorapela/statNeuro2025/blob/master/worksheets/02\_temporalTimeSeriesAnalysis/plot\_arForecastingYWCor.py}{plot\_arForecastingYWCor}
+        and complete the code for the function
+        \href{https://github.com/joacorapela/statNeuro2025/blob/6cfd79b15e698f4522eec97017f5471a4ff67633/worksheets/02\_temporalTimeSeriesAnalysis/tsAnalysisUtils.py\#L53}{forecast}
+        in the module
+        \href{https://github.com/joacorapela/statNeuro2025/blob/master/worksheets/02\_temporalTimeSeriesAnalysis/tsAnalysisUtils.py}{tsAnalysisUtils.py}.
+
+        You should build a plot similar to that in
+        Figure~\ref{fig:forecasting}.
+
+        \begin{figure}
+            \begin{center}
+                \href{}{\includegraphics[width=4.5in]{../../../solutions/examples/sphinx-gallery/02_temporalTimeSeriesAnalysis/figures/forecastingAR7.png}}
+            \end{center}
+            \caption{Forecasting result for an AR(7) model}
+            \label{fig:forecasting}
+        \end{figure}
+
     \item Reproduce the figure in the slide \emph{Estimate coefficients of
         AR(3) model using the Yule-Walker estimators} in
         \href{https://github.com/joacorapela/statNeuro2025/blob/master/lectures/02_temporalTimeSeriesAnalysis/temporalTimeSeriesAnalysis.pdf}{lecture 2}. You may want to use the
         sample script available
         \href{https://github.com/joacorapela/statNeuro2025/blob/master/worksheets/02_temporalTimeSeriesAnalysis/plot_estimateCoefsAR3YW.py}{here}.
         To run this code, you will need to complete the function
-        \href{https://github.com/joacorapela/statNeuro2025/blob/5c570ed3bbb4311d80c280fcb30c4a1ec26f5b53/worksheets/02_temporalTimeSeriesAnalysis/tsAnalysisUtils.py#L28}{estimateCoefsAndNoisVarARpYW} in
+        \href{https://github.com/joacorapela/statNeuro2025/blob/5c570ed3bbb4311d80c280fcb30c4a1ec26f5b53/worksheets/02_temporalTimeSeriesAnalysis/tsAnalysisUtils.py\#L28}{estimateCoefsAndNoisVarARpYW} in
         the module
-        \href{https://github.com/joacorapela/statNeuro2025/blob/master/worksheets/02_temporalTimeSeriesAnalysis/tsAnalysisUtils.py#L28}{tsAnalysisUtils.py},
+        \href{https://github.com/joacorapela/statNeuro2025/blob/master/worksheets/02_temporalTimeSeriesAnalysis/tsAnalysisUtils.py\#L28}{tsAnalysisUtils.py},
         imported in the previous script.
 
         Hints:
