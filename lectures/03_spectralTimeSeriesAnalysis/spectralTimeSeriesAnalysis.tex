@@ -184,7 +184,7 @@ Gatsby Computational Neuroscience Unit\\University College London % Your institu
 \begin{frame}
     \frametitle{Oscillations in nature}
 
-    Today we will characterize oscillations in neural time series. But
+    Today we will characterise oscillations in neural time series. But
     oscillations are everywhere in nature. For example:
 
     \begin{description}
@@ -213,13 +213,13 @@ Gatsby Computational Neuroscience Unit\\University College London % Your institu
     \begin{description}
 
         \item[population dynamics] predator-prey systems exhibit oscillatory
-            behavior. When prey populations rise, predator populations grow,
+            behaviour. When prey populations rise, predator populations grow,
             leading to a decline in prey, and then a subsequent decline in
             predators.
 
         \item[lunar cycles] the moon’s orbit around the Earth (roughly 28 days)
             governs the tides, influencing ecosystems like coral spawning and
-            animal behaviors.
+            animal behaviours.
 
     \end{description}
 \end{frame}
@@ -233,11 +233,11 @@ Gatsby Computational Neuroscience Unit\\University College London % Your institu
 
     \begin{itemize}
 
-        \item Synchronization and Communication:
+        \item Synchronisation and Communication:
 
             \begin{description}
 
-                \item[Binding] Oscillations enable the brain to synchronize the
+                \item[Binding] Oscillations enable the brain to synchronise the
                     activity of neurons across different regions, allowing them
                     to work together as a cohesive unit. This is particularly
                     important for tasks like perception, where information from
@@ -301,14 +301,14 @@ Gatsby Computational Neuroscience Unit\\University College London % Your institu
             \begin{description}
 
                 \item[Defining Sleep Stages] Different sleep stages (NREM and
-                    REM) are characterized by distinct patterns of brain
+                    REM) are characterised by distinct patterns of brain
                     oscillations.
 
                 \begin{description}
 
                     \item[NREM Sleep] Dominated by slow waves (delta) and sleep spindles.
 
-                    \item[REM Sleep] Characterized by fast, low-amplitude waves
+                    \item[REM Sleep] Characterised by fast, low-amplitude waves
                         resembling wakefulness.
 
                 \end{description}
@@ -333,6 +333,8 @@ Gatsby Computational Neuroscience Unit\\University College London % Your institu
     \end{itemize}
 
 \end{frame}
+
+\section{Spectral analysis background}
 
 \begin{frame}
     \frametitle{Describing oscillations}
@@ -381,7 +383,7 @@ Gatsby Computational Neuroscience Unit\\University College London % Your institu
 
         \item[Name] Fourier integral
         \item[Time domain type] continuous aperiodic
-        \item[Frequency domain type] continous aperiodic
+        \item[Frequency domain type] continuous aperiodic
         \item[Formulas]
             \begin{align*}
                 x(j\Omega)&=\int_{-\infty}^{\infty}x(t)e^{-j\Omega t}dt\\
@@ -452,16 +454,65 @@ Gatsby Computational Neuroscience Unit\\University College London % Your institu
         A function $f$ is the \textbf{spectral density} of a stationary time series $\{X_t\}$ with autocovariance function $\gamma(\cdot)$ if
         \begin{enumerate}[(i)]
 
-            \item $f(\lambda)\ge 0$ for all $\lambda\in(-\pi,\pi]$, and
+            \item $f(\omega)\ge 0$ for all $\omega\in(-\pi,\pi]$, and
 
-            \item $\gamma(h)=\int_{-\pi}^\pi e^{ih\lambda}f(\lambda)d\lambda$, for all integers $h$.
+            \item $\gamma(h)=\int_{-\pi}^\pi f(\omega)e^{j\omega h}d\omega$, for all integers $h$.
 
         \end{enumerate}
 
     \end{definition}
 
-        Note: $f(\lambda)$ gives the power of a random process in the frequency
-        range $[\lambda,\lambda+\delta\lambda]$.
+    Note: $\gamma(h)$ is the inverse Fourier transform of $f(\omega)$.
+    Thus, $f(\omega)$ is the Fourier transform of $\gamma(h)$.
+
+\end{frame}
+
+\begin{frame}
+    \frametitle{Spectral density function}
+
+    \begin{claim}[Interpretation of the spectral density function]
+        Given a WSS process $X(t)$, consider the finite support random process
+
+        \begin{align*}
+            X_T(t)\triangleq X(t)I[-T,T](t)
+        \end{align*}
+
+        where $I[-T,T](t)$ is the indicator function equal to one if $-T\le
+        t\le T$ and equal to 0 otherwise. Then
+
+        \begin{align*}
+            f(\omega)=\lim_{T\rightarrow\infty}\frac{1}{2T}E\left\{\left|X(j\omega)\right|^2\right\}
+        \end{align*}
+
+    \end{claim}
+
+    \begin{block}{Estimator of spectral density function}
+        An \textbf{estimator of the spectral density function} is
+        $\hat{f}(\omega)=\left|X(j\omega)\right|^2=X(j\omega)X^*(j\omega)$.
+    \end{block}
+
+\end{frame}
+
+\section{Estimation of the spectral density function}
+
+\begin{frame}
+    \frametitle{Estimation of the spectral density function}
+
+    Please refer to the lecture
+    \href{https://mark-kramer.github.io/Case-Studies-Python/03.html}{The Power Spectrum (Part 1)} in the
+    repository
+    \href{https://mark-kramer.github.io/Case-Studies-Python/intro.html}{Case Studies in Neural Data Analysis}.
+
+\end{frame}
+
+\section{Sampling theorem}
+
+\begin{frame}
+    \frametitle{Sampling theorem}
+
+    Please refer to the lecture
+    \href{https://github.com/joacorapela/neuroinformatics24/blob/master/practicals/02_LFPs_spectralAnalysis/spectralAnalysis.pdf}{Sampling
+    Theorem}.
 
 \end{frame}
 
