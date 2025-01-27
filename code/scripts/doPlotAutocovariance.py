@@ -11,6 +11,8 @@ def main(argv):
     parser.add_argument("--channel_label", type=str, help="channels label",
                         default="Cz")
     parser.add_argument("--max_lag", type=int, help="maximul lag", default=100)
+    parser.add_argument("--data_field", type=str,
+                        help="data field inside the mat file", default="data")
     parser.add_argument("--data_filename", type=str, help="data filename",
                         default="../../../data/D_01_cleaned.mat")
     args = parser.parse_args()
@@ -18,11 +20,12 @@ def main(argv):
     # trial_index = args.trial_index
     channel_label = args.channel_label
     max_lag = args.max_lag
+    data_field = args.data_field
     data_filename = args.data_filename
 
     mat = scipy.io.loadmat(data_filename)
     srate = mat["srate"].squeeze()
-    data = mat["data"]
+    data = mat[data_field]
     # times = mat["times"]
     n_channels = len(mat["chanlabels"][0])
 
