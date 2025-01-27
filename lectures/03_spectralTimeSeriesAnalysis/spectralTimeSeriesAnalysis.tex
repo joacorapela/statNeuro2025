@@ -1,0 +1,1062 @@
+
+\documentclass{beamer}
+
+\hypersetup{colorlinks=true}
+
+\mode<presentation> {
+
+% The Beamer class comes with a number of default slide themes
+% which change the colors and layouts of slides. Below this is a list
+% of all the themes, uncomment each in turn to see what they look like.
+
+%\usetheme{default}
+%\usetheme{AnnArbor}
+%\usetheme{Antibes}
+%\usetheme{Bergen}
+%\usetheme{Berkeley}
+%\usetheme{Berlin}
+%\usetheme{Boadilla}
+%\usetheme{CambridgeUS}
+%\usetheme{Copenhagen}
+%\usetheme{Darmstadt}
+%\usetheme{Dresden}
+%\usetheme{Frankfurt}
+%\usetheme{Goettingen}
+%\usetheme{Hannover}
+%\usetheme{Ilmenau}
+%\usetheme{JuanLesPins}
+%\usetheme{Luebeck}
+\usetheme{Madrid}
+%\usetheme{Malmoe}
+%\usetheme{Marburg}
+%\usetheme{Montpellier}
+%\usetheme{PaloAlto}
+%\usetheme{Pittsburgh}
+%\usetheme{Rochester}
+%\usetheme{Singapore}
+%\usetheme{Szeged}
+%\usetheme{Warsaw}
+
+% As well as themes, the Beamer class has a number of color themes
+% for any slide theme. Uncomment each of these in turn to see how it
+% changes the colors of your current slide theme.
+
+%\usecolortheme{albatross}
+%\usecolortheme{beaver}
+%\usecolortheme{beetle}
+%\usecolortheme{crane}
+%\usecolortheme{dolphin}
+%\usecolortheme{dove}
+%\usecolortheme{fly}
+%\usecolortheme{lily}
+%\usecolortheme{orchid}
+%\usecolortheme{rose}
+%\usecolortheme{seagull}
+%\usecolortheme{seahorse}
+%\usecolortheme{whale}
+%\usecolortheme{wolverine}
+
+%\setbeamertemplate{footline} % To remove the footer line in all slides uncomment this line
+%\setbeamertemplate{footline}[page number] % To replace the footer line in all slides with a simple slide count uncomment this line
+
+%\setbeamertemplate{navigation symbols}{} % To remove the navigation symbols from the bottom of all slides uncomment this line
+}
+
+% remove title and author from left panel
+%  \makeatletter
+%   \setbeamertemplate{sidebar \beamer@sidebarside}%{sidebar theme}
+%   {
+%     \beamer@tempdim=\beamer@sidebarwidth%
+%     \advance\beamer@tempdim by -6pt%
+%     \insertverticalnavigation{\beamer@sidebarwidth}%
+%     \vfill
+%     \ifx\beamer@sidebarside\beamer@lefttext%
+%     \else%
+%       \usebeamercolor{normal text}%
+%       \llap{\usebeamertemplate***{navigation symbols}\hskip0.1cm}%
+%       \vskip2pt%
+%     \fi%
+%   }%
+% \makeatother
+% done remove title and author from left panel 
+
+\usepackage{graphicx} % Allows including images
+\usepackage{booktabs} % Allows the use of \toprule, \midrule and \bottomrule in tables
+\usepackage{natbib}
+\usepackage{apalike}
+\usepackage{comment}
+\usepackage{listings,lstautogobble}
+% \usepackage{enumitem}
+% \setlist[itemize]{topsep=0pt,before=\leavevmode\vspace{-1.5em}}
+% \setlist[description]{style=nextline}
+\usepackage{amsthm}
+\usepackage{media9}
+% \usepackage{multimedia}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{verbatim}
+% \usepackage{hyperref}
+
+% \usepackage{tikz}
+% \tikzset{
+%      arrow/.style={-{Stealth[]}}
+%      }
+% \usetikzlibrary{positioning,arrows.meta}
+% \usetikzlibrary{shapes.geometric}
+
+\setbeamertemplate{navigation symbols}{}%remove navigation symbols
+\setbeamertemplate{caption}[numbered]%allow figure numbers
+
+\usepackage{setspace}
+
+% At the beginning put
+%This custom command allows the number of frames to be stopped at this point
+%(so later slides, eg. appendix do not appear as part of counter)
+\newcommand{\beginappendix}{
+   \newcounter{finalframenumber}
+   \setcounter{finalframenumber}{\value{framenumber}}
+}
+\newcommand{\finishappendix}{
+   \setcounter{framenumber}{\value{finalframenumber}}
+}
+
+\newtheorem{claim}{Claim}
+\newtheorem{exercise}{Exercise}
+\setbeamertemplate{theorems}[numbered]
+
+\newenvironment<>{example1}[1][Example 1]{%
+  \setbeamercolor{block title}{fg=white,bg=cyan!75!black}%
+  \begin{block}{#1}}{\end{block}}
+\newenvironment<>{example2}[1][Example 2]{%
+  \setbeamercolor{block title}{fg=white,bg=magenta!75!black}%
+  \begin{block}{#1}}{\end{block}}
+
+\newcounter{saveenumi}
+\newcommand{\seti}{\setcounter{saveenumi}{\value{enumi}}}
+\newcommand{\conti}{\setcounter{enumi}{\value{saveenumi}}}
+\newcommand{\keepi}{\addtocounter{saveenumi}{-1}\setcounter{enumi}{\value{saveenumi}}}
+
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
+
+%----------------------------------------------------------------------------------------
+%	TITLE PAGE
+%----------------------------------------------------------------------------------------
+
+\title{Spectral Time Series Analysis}
+
+\author{Joaqu\'{i}n Rapela} % Your name
+\institute[Gatsby Unit, UCL] % Your institution as it will appear on the bottom of every slide, may be shorthand to save space
+{
+Gatsby Computational Neuroscience Unit\\University College London % Your institution for the title page
+}
+\date{\today} % Date, can be changed to a custom date
+
+\AtBeginSection[]
+  {
+     \begin{frame}<beamer>
+     \frametitle{Contents}
+         \tableofcontents[currentsection,hideallsubsections]
+     \end{frame}
+  }
+
+\AtBeginSubsection[]
+  {
+     \begin{frame}<beamer>
+     \frametitle{Contents}
+         \tableofcontents[currentsection,currentsubsection]
+     \end{frame}
+  }
+
+\begin{document}
+
+\begin{frame}
+\titlepage % Print the title page as the first slide
+\end{frame}
+
+\begin{frame}
+\frametitle{Contents} % Table of contents slide, comment this block out to remove it
+\tableofcontents % Throughout your presentation, if you choose to use \section{} and \subsection{} commands, these will automatically be printed on this slide as an overview of your presentation
+\end{frame}
+
+\section{Introduction}
+
+\begin{frame}
+    \frametitle{Oscillations in nature}
+
+    Today we will characterize oscillations in neural time series. But
+    oscillations are everywhere in nature. For example:
+
+    \begin{description}
+
+        \item[circadian rhythm] the 24~hour cycle that governs sleep, hormone
+            release, body temperature and other physiological processes.
+
+        \item[menstrual cycle] a roughly 28-day hormonal cycle regulating
+            ovulation and fertility in females, driven by oscillations in
+            estrogen and progesterone levels.
+
+        \item[ultradian rhythms of physical performance] these are cycles
+            shorter than a day that governs periods of focus and fatigue.
+            Athletes often perform better at specific times of the day due to
+            oscillatory patterns in physical strength and endurance.
+
+        \item[animal migration] many animal migrations are governed by
+            oscillatory patterns linked to seasonal changes (e.g., birds
+            migrating during spring and autumn).
+    \end{description}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Oscillations in nature}
+
+    \begin{description}
+
+        \item[population dynamics] predator-prey systems exhibit oscillatory
+            behavior. When prey populations rise, predator populations grow,
+            leading to a decline in prey, and then a subsequent decline in
+            predators.
+
+        \item[lunar cycles] the moon’s orbit around the Earth (roughly 28 days)
+            governs the tides, influencing ecosystems like coral spawning and
+            animal behaviors.
+
+    \end{description}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Oscillations in the brain}
+
+    Oscillations, measured in different frequency bands (e.g., delta, theta,
+    alpha, beta, gamma), play a crucial role in various cognitive functions,
+    including:
+
+    \begin{itemize}
+
+        \item Synchronization and Communication:
+
+            \begin{description}
+
+                \item[Binding] Oscillations enable the brain to synchronize the
+                    activity of neurons across different regions, allowing them
+                    to work together as a cohesive unit. This is particularly
+                    important for tasks like perception, where information from
+                    different senses needs to be integrated.   
+
+                \item[Information Transfer] Oscillations can act as a "clock"
+                    to coordinate the timing of neuronal firing, facilitating
+                    efficient communication between brain areas.
+
+            \end{description}
+
+    \end{itemize}
+
+\end{frame}
+
+\begin{frame}
+    \frametitle{Oscillations in the brain}
+
+    \begin{itemize}
+
+        \item  Cognitive Functions:
+
+            \begin{description}
+
+                \item[Attention] Different frequency bands are associated with different
+            attentional states. For example, alpha waves are prominent during
+            relaxed wakefulness, while beta waves are associated with focused
+            attention.
+
+                \item[Memory] Oscillations have been implicated in memory processes,
+            particularly in the consolidation of information from short-term to
+            long-term memory.
+
+            \end{description}
+
+        \item Sensory Processing:
+
+            \begin{description}
+
+                \item[Sensory Perception] Oscillations help to filter out
+                    irrelevant sensory information and enhance the processing
+                    of relevant stimuli.
+
+                \item[Motor Control] Oscillations play a role in coordinating
+                    the timing of muscle movements, ensuring smooth and
+                    efficient motor actions.
+
+            \end{description}
+
+    \end{itemize}
+
+\end{frame}
+
+\begin{frame}
+    \frametitle{Oscillations in the brain}
+
+    \begin{itemize}
+
+        \item  Sleep:
+
+            \begin{description}
+
+                \item[Defining Sleep Stages] Different sleep stages (NREM and
+                    REM) are characterized by distinct patterns of brain
+                    oscillations.
+
+                \begin{description}
+
+                    \item[NREM Sleep] Dominated by slow waves (delta) and sleep spindles.
+
+                    \item[REM Sleep] Characterized by fast, low-amplitude waves
+                        resembling wakefulness.
+
+                \end{description}
+
+                \item[Sleep Functions]
+
+                \begin{description}
+
+                    \item[Memory Consolidation] Slow waves and sleep spindles are crucial for
+            strengthening memories.
+
+                    \item[Synaptic Plasticity] Sleep oscillations contribute to the
+            strengthening and weakening of connections between neurons.
+
+                    \item[Brain Rest and Recovery] Slow waves may help the brain recover from
+            the demands of wakefulness.
+
+                \end{description}
+
+            \end{description}
+
+    \end{itemize}
+
+\end{frame}
+
+\begin{frame}
+    \frametitle{Describing oscillations}
+
+    \begin{align*}
+        x(t) = A\cos(2\pi\,f\,t+\phi)
+    \end{align*}
+
+    \begin{description}
+        \item[A] amplitude ($\mu V$)
+        \item[f] frequency (Hertz -- 1/sec)
+        \item[$\phi$] phase (radians)
+    \end{description}
+
+    \begin{center}
+        \includegraphics[width=2.5in]{figures/sinusoid}
+    \end{center}
+
+\end{frame}
+
+\begin{frame}
+    \frametitle{Example EEG time series}
+
+    \begin{center}
+        \includegraphics[width=4.5in]{../../figures/D_01_cleaned_Cz_trial0.png}
+    \end{center}
+    \hfill\citet{liuEtAl24}
+
+\end{frame}
+
+\begin{frame}
+    \frametitle{Complex exponential}
+
+    We will use complex exponentials to represent oscillations.
+
+    \begin{align*}
+        e^{j\Omega t}=\cos(\Omega t)+j\sin(\Omega t)\quad\text{with}\,j^2=-1
+    \end{align*}
+
+\end{frame}
+
+\begin{frame}
+    \frametitle{Fourier transforms for deterministic signals (1/4)}
+
+    \begin{description}
+
+        \item[Name] Fourier integral
+        \item[Time domain type] continuous aperiodic
+        \item[Frequency domain type] continous aperiodic
+        \item[Formulas]
+            \begin{align*}
+                x(j\Omega)&=\int_{-\infty}^{\infty}x(t)e^{-j\Omega t}dt\\
+                x(t)&=\frac{1}{2\pi}\int_{-\infty}^{\infty}X(j\Omega)e^{j\Omega t}d\Omega
+            \end{align*}
+        \item[Existence (sufficient condition)]
+            \begin{align*}
+                \int_{-\infty}^{\infty}|x(t)|dt<\infty
+            \end{align*}
+    \end{description}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Fourier transforms for deterministic signals (2/4)}
+
+    \begin{description}
+
+        \item[Name] Fourier series
+        \item[Time domain type] continuous periodic
+        \item[Frequency domain type] discrete infinite
+        \item[Formulas]
+            \begin{align*}
+                x[k]&=\int_{-T/2}^{T/2}x(t)e^{-j\frac{2\pi}{T}kt}dt\\
+                x(t)&=\sum_{k=-\infty}^\infty X[k]e^{\frac{2\pi}{T}kt}
+            \end{align*}
+
+    \end{description}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Fourier transforms for deterministic signals (3/4)}
+
+    \begin{description}
+
+        \item[Name] Discrete Fourier transform
+        \item[Time domain type] discrete infinite
+        \item[Frequency domain type] continuous periodic
+        \item[Formulas]
+            \begin{align*}
+                x(j\omega)&=\sum_{n=-\infty}^\infty x[n]e^{-j\omega n}\\
+                x[n]&=\frac{1}{2\pi}\int_{-\pi}^{\pi}X(j\omega)e^{j\omega n}d\omega
+            \end{align*}
+
+    \end{description}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Fourier transforms for deterministic signals (4/4)}
+
+    \begin{description}
+
+        \item[Name] Discrete Time Fourier transform
+        \item[Time domain type] discrete finite
+        \item[Frequency domain type] discrete finite
+        \item[Formulas]
+            \begin{align*}
+                x[k]&=\sum_{n=1}^N x[n]e^{-j\frac{2\pi}{N}nk}\\
+                x[n]&=\sum_{k=1}^N x[k]e^{j\frac{2\pi}{N}nk}
+            \end{align*}
+
+    \end{description}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Spectral density function}
+
+    \begin{definition}[spectral density function]
+        A function $f$ is the \textbf{spectral density} of a stationary time series $\{X_t\}$ with autocovariance function $\gamma(\cdot)$ if
+        \begin{enumerate}[(i)]
+
+            \item $f(\lambda)\ge 0$ for all $\lambda\in(-\pi,\pi]$, and
+
+            \item $\gamma(h)=\int_{-\pi}^\pi e^{ih\lambda}f(\lambda)d\lambda$, for all integers $h$.
+
+        \end{enumerate}
+
+    \end{definition}
+
+        Note: $f(\lambda)$ gives the power of a random process in the frequency
+        range $[\lambda,\lambda+\delta\lambda]$.
+
+\end{frame}
+
+\begin{comment}
+\begin{frame}
+    \frametitle{Cramer-Khinchin decomposition of a WSS random process (simplified)}
+
+    \begin{theorem}[Cramer-Khinchin decomposition of a WSS random process
+        (simplified)]
+        If $X_t$ is wide-sense stationary (WSS) random process with zero mean, then
+
+        \begin{align*}
+            X_t=\sum_{j=1}^JA_j\cos(w_jt)+B_j\sin(w_jt),\quad w_1<\ldots<w_J
+        \end{align*}
+
+        where $A_1,B_1,\ldots,A_J,B_J$ are uncorrelated random variables with
+        $E\{A_j\}=E\{A_j\}=0$ and
+        $Var\{A_j\}=VarE\{A_j\}=\sigma^2_j,\quad\j=1,\ldots,N$
+    \end{theorem}
+
+    \small
+    \textcolor{red}{That is, any WSS random process is a linear combination of sines and
+    cosines with uncorrelated random amplitudes}.
+
+    The (non-simplified) Cramer-Khinchin theorem considers the decomposition of
+    $X_t$ as an infinite linear combination of sines as cosines (i.e.,
+    $\lim_{J\rightarrow\infty})$.
+    \normalsize
+
+\end{frame}
+
+\begin{frame}
+    \frametitle{Today's lecture}
+
+    Today we will
+
+    \begin{itemize}
+
+        \item discuss statistical methods to infer the spectral density function.
+
+        \item present methods to estimate the amplitude of oscillations on
+            neural recordings.
+
+        \item perform spectral filtering (e.g., lowpass and highpass
+            filtering).
+
+    \end{itemize}
+
+\end{frame}
+\end{comment}
+
+\begin{comment}
+
+\begin{frame}
+    \frametitle{Forecasting}
+
+    with
+    \scriptsize
+    \begin{align*}
+        \Gamma_m\mathbf{a_m}&=\gamma_m(h)\\
+        \Gamma_m&=[\gamma(i-j)]_{i,j=1}^m=\left[\begin{array}{c c c c c c}
+                            \gamma(0) & \gamma(1) & \gamma(2) & \gamma(3) & \ldots & \gamma(m-1)\\
+                            \gamma(1) & \gamma(0) & \gamma(1) & \gamma(2) & \ldots & \gamma(m-2)\\
+                            \gamma(2) & \gamma(1) & \gamma(0) & \gamma(1) & \ldots & \gamma(m-3)\\
+                            \vdots    & \vdots    & \vdots    & \vdots    & \vdots & \vdots\\
+                            \gamma(m-1) & \gamma(m-2) & \gamma(m-3) & \gamma(m-4) & \ldots & \gamma(0)\\
+                        \end{array}\right]\\
+        \mathbf{a_m}&=[a_1,\ldots,a_m]^\intercal\\
+        \gamma_m(h)&=[\gamma(h),\gamma(h+1),\ldots,\gamma(h+m-1)]^\intercal
+    \end{align*}
+    \normalsize
+
+\end{frame}
+
+\begin{frame}
+    \frametitle{AR(1) forecasting example}
+
+    \begin{exampleblock}{Example (Forecasting with an AR(1) model)}
+        Simulate N=1,000 samples from an AR(1) stochastic process with
+        $\phi=-0.9$ and
+        $\sigma_w=1.0$. Use the last 500 samples to forecast 50 samples (i.e.,
+        $n=1,000,m=500,h=1,\ldots,50$).
+        \href{https://joacorapela.github.io/statNeuro2025/auto_examples/01_temporalTimeSeriesAnalysis/plot_ar1ForecastingTrueCor.html\#sphx-glr-auto-examples-01-temporaltimeseriesanalysis-plot-ar1forecastingtruecor-py}{Solution}.
+
+        \begin{center}
+            \href{http://www.gatsby.ucl.ac.uk/~rapela/statNeuro/2025/lectures/01_temporalTimeSeriesAnalysis/figures/forecastingAR1.html}{\includegraphics[width=2.00in]{../../examples/sphinx_gallery/01_temporalTimeSeriesAnalysis/figures/forecastingAR1.png}}
+        \end{center}
+    \end{exampleblock}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Marginals and conditionals of Gaussians are Gaussians}
+
+	\small
+	\begin{theorem}[Marginals and conditionals of Gaussians are Gaussians]
+		\label{thm:marginalOrConditionalOfGaussianIsGaussian}
+
+		Given $\mathbf{x}=\left[\begin{array}{c}
+									\mathbf{x}_a\\
+									\mathbf{x}_b\\
+								\end{array}\right]$ such that
+
+		\begin{align*}
+			p(\mathbf{x})&=\mathcal{N}\left(\mathbf{x}\left|
+				\left[\begin{array}{c}
+					      \boldsymbol{\mu}_a\\
+						  \boldsymbol{\mu}_b\\
+				   	  \end{array}\right],
+				\left[\begin{array}{cc}
+					      \Sigma_{aa} & \Sigma_{ab}\\
+						  \Sigma_{ba} & \Sigma_{bb}\\
+					  \end{array}\right]
+			\right.\right)\\
+			            &=\mathcal{N}\left(\mathbf{x}\left|
+				\left[\begin{array}{c}
+					      \boldsymbol{\mu}_a\\
+						  \boldsymbol{\mu}_b\\
+				   	  \end{array}\right],
+				\left[\begin{array}{cc}
+					      \Lambda_{aa} & \Lambda_{ab}\\
+						  \Lambda_{ba} & \Lambda_{bb}\\
+					  \end{array}\right]^{-1}
+			\right.\right)
+		\end{align*}
+		Then
+		\begin{align}
+			p(\mathbf{x}_a|\mathbf{x}_b)&=\mathcal{N}\left(\mathbf{x}_a\left|\boldsymbol{\mu}_a-\Lambda_{aa}^{-1}\Lambda_{ab}(\mathbf{x}_b-\boldsymbol{\mu}_b),\Lambda_{aa}^{-1}\right.\right)\label{eq:gaussianCond1}\\
+			                            &=\mathcal{N}\left(\mathbf{x}_a\left|\boldsymbol{\mu}_a+\Sigma_{ab}\Sigma_{bb}^{-1}(\mathbf{x}_b-\boldsymbol{\mu}_b),\Sigma_{aa}-\Sigma_{ab}\Sigma_{bb}^{-1}\Sigma_{ba}\right.\right)\label{eq:gaussianCond2}\\
+            p(\mathbf{x}_b)&=\mathcal{N}\left(\mathbf{x}_b\left|\boldsymbol{\mu}_b,\Sigma_{bb}\right.\right)\label{eq:gaussianMarginal}
+		\end{align}
+
+	\end{theorem}
+    Proof in the \hyperlink{slide:proofCondGaussians}{Appendix}.
+	\normalsize
+\end{frame}
+
+\begin{frame}
+    \frametitle{Relevance of the conditional density of Gaussians}
+
+	The expression of the conditional density of jointly Gaussian random
+    variables is used in the derivation of
+
+	\begin{enumerate}
+
+		\item Bayesian linear regression~\citep{bishop06},
+
+		\item Gaussian process regression~\citep{williamsAndRasmussen06},
+
+		\item Gaussian process factor analysis~\citep{yuEtAl09},
+
+		\item linear dynamical systems~\citep{durbinAndKoopman12}.
+
+	\end{enumerate}
+
+\end{frame}
+
+\begin{frame}
+    \frametitle{Derivation of the forecasting equations using the expression of the conditional of Gaussians}
+
+    Take $\mathbf{x}_a=[x_{m+h}]$ and
+    $\mathbf{x}_b=[x_n,\ldots,x_{n-m+1}]^\intercal$ in
+    Eq.~\ref{eq:gaussianCond2}.
+
+\end{frame}
+
+\begin{frame}
+    \frametitle{Derivation of estimator of missing values using the expression
+    of the conditional of Gaussians}
+
+    \begin{exercise}
+
+        You are given an AR(1) time series with missing values
+        $[x_{n+1},\dots,x_{n+h}]$.  Use the expression of the conditional of
+        Gaussians to find the optimal estimator, in the mean square error
+        sense, of the missing values using observations
+        $[x_n,\ldots,x_{n-(m-1)}]$ and $[x_{n+h+1},\ldots,x_{n+h+m}]$.
+
+    \end{exercise}
+
+        Hint: take $\mathbf{x}_a=[x_{n+1},\dots,x_{n+h}]$ and
+        $\mathbf{x}_b=[x_{n+h+1},\ldots,x_{n+h+m},x_n,\ldots,x_{n-(m-1)}]$
+        Eq.~\ref{eq:gaussianCond2}.
+
+\end{frame}
+
+\section{Estimation of coefficients of AR(p) models using the Yule-Walker
+equations}
+
+\begin{frame}
+    \frametitle{Yule-Walker equations}
+
+    \small
+    \begin{claim}[Yule-Walker equations for AR(p) model]
+        If $\{x_t\}$ is and AR(p) random process
+
+        \begin{align*}
+            x_t=\phi_1x_{t-1}+\cdots+\phi_px_{t-p}+w_t\quad\text{with}\;w_t\sim N(0,\sigma^2)
+        \end{align*}
+
+        then
+
+        \begin{align}
+            \gamma(h)&=\phi_1\gamma(h-1)+\cdots+\phi_p\gamma(h-p)\quad h=1,\ldots,p\label{eq:ywh}\\
+            \gamma(0)&=\phi_1\gamma(h-1)+\cdots+\phi_p\gamma(h-p)+\sigma^2\label{eq:yw0}
+        \end{align}
+
+    \end{claim}
+
+    \begin{proof}
+        See board.
+    \end{proof}
+    \normalsize
+\end{frame}
+
+\begin{frame}
+    \frametitle{Yule-Walker equations}
+
+    In matrix form the Yule-Walker equations~\ref{eq:ywh} and~\ref{eq:yw0} can
+    be written as:
+
+    \scriptsize
+    \begin{align}
+        \Gamma_p\phi&=\gamma_p(h)\label{eq:ywPhi}\\
+        \gamma(0)&=\phi^\intercal\gamma_p(h)+\sigma^2\label{eq:ywSigma}\\
+                 &\text{with}\nonumber\\
+        \Gamma_p&=[\gamma(i-j)]_{i,j=1}^p=\left[\begin{array}{c c c c c c}
+                            \gamma(0) & \gamma(1) & \gamma(2) & \gamma(3) & \ldots & \gamma(p-1)\\
+                            \gamma(1) & \gamma(0) & \gamma(1) & \gamma(2) & \ldots & \gamma(p-2)\\
+                            \gamma(2) & \gamma(1) & \gamma(0) & \gamma(1) & \ldots & \gamma(p-3)\\
+                            \vdots    & \vdots    & \vdots    & \vdots    & \vdots & \vdots\\
+                            \gamma(p-1) & \gamma(p-2) & \gamma(p-3) & \gamma(p-4) & \ldots & \gamma(0)\\
+                        \end{array}\right]\nonumber\\
+        \phi&=[\phi(1),\ldots,\phi(p)]^\intercal\nonumber\\
+        \gamma_p(h)&=[\gamma(h-1),\ldots,\gamma(h-p)]^\intercal\nonumber
+    \end{align}
+    \normalsize
+
+\end{frame}
+
+\begin{frame}
+    \frametitle{Yule-Walker estimators}
+
+    Replacing $\gamma$ by its estimate $\hat\gamma$ in Eqs.~\ref{eq:ywPhi}
+    and~\ref{eq:ywSigma}, we obtain the Yule-Walker estimators
+
+    \begin{align*}
+        \hat\phi&=\hat\Gamma_p^{-1}\hat\gamma_p(h)\\
+        \hat\sigma^2&=\hat\gamma(0)-\hat\phi^\intercal\hat\gamma_p(h)\\
+                 &\text{with}\\
+        \hat\Gamma_p&=[\hat\gamma(i-j)]_{i,j=1}^p\\
+        \hat\phi&=[\hat\phi(1),\ldots,\hat\phi(p)]^\intercal\\
+        \hat\gamma_p(h)&=[\hat\gamma(h-1),\ldots,\hat\gamma(h-p)]^\intercal
+    \end{align*}
+
+\end{frame}
+
+\begin{frame}
+    \frametitle{Large-sample distribution of Yule-Walker estimators}
+
+    \begin{theorem}[Large-sample distribution of Yule-Walker estimators]
+        For a large sample from an AR(p) random process
+
+        \begin{align*}
+            \hat\phi\sim N\left(\phi,n^{-1}\sigma^2\Gamma_p^{-1}\right).
+        \end{align*}
+
+    \end{theorem}
+    \begin{proof}
+        See~\citet[][Section 8.10]{brockwellAndDavis91}
+    \end{proof}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Estimate coefficients of AR(3) model using the Yule-Walker estimators}
+
+    Sample a time series of length $N=1000$ from an AR(3) model. Estimate the
+    coefficients of this model, and the variance of the noise, using the
+    Yule-Walker estimators. Also, calculate the large sample estimates of the
+    coefficients' variance. Plot the true and estimated coefficients. Add a
+    95\% confidence bounds to the estimated coefficients.
+
+    \begin{center}
+        \href{http://www.google.com}{\includegraphics[width=2.5in]{../../../mySolutions/01_temporalTimeSeriesAnalysis/figures/coefficientsAR3N1000.png}}
+    \end{center}
+
+\end{frame}
+
+\section{Likelihood function (for the estimation of coefficients)}
+
+\begin{frame}
+    \frametitle{Likelihood function}
+
+    \begin{definition}[Likelihood function]
+
+    Consider a random process $\{x_t\}$ with a probability density function
+        parameterised by parameters $\theta$, $f(\{x_t\}|\theta)$.  Given a
+        sample $\{x_i\}_{i=1}^N$, the \textbf{likelihood function} of $\theta$,
+        $\mathcal{L}(\theta)$, assigns to $\theta$ the value $f(\{x_i\}_{i=1}^N|\theta)$.
+
+    \end{definition}
+
+\end{frame}
+
+\begin{frame}
+    \frametitle{Likelihood function}
+
+    \begin{claim}[Likelihood function for an AR(1) random process]
+        The log likelihood function for the parameters
+        $\theta=\{\phi,\sigma^2\}$ of an AR(1) random process, given
+        observations $\{x_1,\ldots,x_N\}$ is
+
+        \begin{align*}
+            \log\mathcal{L}(\phi,\sigma^2)=&-\frac{N-1}{2}\log(2\pi\sigma^2)-\frac{1}{2\sigma^2}\sum_{n-2}^N(x_n-\phi x_{n-1})^2\\
+                                           &-\frac{1}{2}\log(2\pi\gamma(0))-\frac{x_i^2}{2\gamma(0)}
+        \end{align*}
+
+    \end{claim}
+
+    \begin{proof}[Likelihood function for an AR(1) random process]
+        See board
+    \end{proof}
+
+\end{frame}
+
+\begin{frame}
+    \frametitle{Maximum likelihood parameter estimates}
+
+    \begin{definition}[Maximum likelihood parameters estimates]
+        Given a data sample $\{x_t\}$, the \textbf{maximum likelihood
+        parameters estimates} are $\hat\theta_{ML}=\argmax_\theta\mathcal{L}(\theta)$.
+    \end{definition}
+
+\end{frame}
+
+\begin{frame}
+    \frametitle{Maximum likelihood estimates of parameters of AR(1) process}
+
+    \begin{example}
+        Simulate a time series of length $N=10,000$ from an AR(1) random
+        process with $\phi=0.3$ and $\sigma=1$. Calculate the log-likelihood
+        function on the simulated time series in the grid of parameters
+        $0.85\le\sigma\le 1.10$ (spacing $\delta_\sigma=0.01$ and
+        $-0.95\le\phi\le 0.95$ (spacing $\delta_\phi=0.05$. Verify that the
+        calculated log likelihood is maximised at the simulated parameter
+        values.
+    \end{example}
+
+    \begin{center}
+        \href{http://www.google.com}{\includegraphics[width=2.0in]{../../../mySolutions/01_temporalTimeSeriesAnalysis/figures/logLikesAR1.png}}
+    \end{center}
+
+\end{frame}
+
+\begin{frame}
+    \frametitle{Maximum likelihood estimates of parameters of AR(1) process}
+
+    \begin{center}
+        \href{http://www.google.com}{\includegraphics[width=2.0in]{../../../mySolutions/01_temporalTimeSeriesAnalysis/figures/logLikesAR1_phi.png}}
+    \end{center}
+
+    \begin{center}
+        \href{http://www.google.com}{\includegraphics[width=2.0in]{../../../mySolutions/01_temporalTimeSeriesAnalysis/figures/logLikesAR1_sigma.png}}
+    \end{center}
+
+\end{frame}
+
+\begin{frame}
+    \frametitle{Summary}
+
+\end{frame}
+
+\begin{frame}
+    \frametitle{References}
+
+    \textbf{time series analysis}
+        \begin{itemize}
+            \item \citet{brockwellAndDavis02}
+            \item \citet{shumwayAndStoffer16}
+            \item \citet{priestley81}
+     \end{itemize}
+
+    \textbf{machine learning}
+        \begin{itemize}
+            \item \citet{bishop06}
+            \item \citet{murphyIntro22}
+        \end{itemize}
+
+\end{frame}
+
+% Then use
+% Then use
+\beginappendix
+% after last slide and before first appendix slide, and then
+
+\section{Appendix}
+
+\begin{frame}
+    \frametitle{Proof: the conditional of a Gaussian is a Gaussian (Theorem~\ref{thm:marginalOrConditionalOfGaussianIsGaussian}, Eq.~\ref{eq:gaussianCond1})}
+    \label{slide:proofCondGaussians}
+
+	\begin{claim}[Quadratic form of Gaussian log pdf]
+		\label{claim:quadratricFormOfGaussianPDF}
+
+		$p(\mathbf{x})$ is a Gaussian pdf with mean $\boldsymbol{\mu}$ and precision matrix $\Lambda$ if and only if $\int p(\mathbf{x}) d\mathbf{x}=1$ and
+
+		\begin{align}
+			\log p(\mathbf{x})=-\frac{1}{2}(\mathbf{x}^\intercal\Lambda\mathbf{x}-2\mathbf{x}^\intercal\Lambda\boldsymbol{\mu})+K\label{eq:gaussianQuadratic}
+		\end{align}
+
+		where $K$ is a constant that does not depend on $\mathbf{x}$.
+
+	\end{claim}
+
+\end{frame}
+
+\begin{frame}
+    \frametitle{Proof: the conditional of a Gaussian is a Gaussian (Theorem~\ref{thm:marginalOrConditionalOfGaussianIsGaussian}, Eq.~\ref{eq:gaussianCond1})}
+
+	\begin{proof}[Proof of Claim~\ref{claim:quadratricFormOfGaussianPDF}]
+
+		\scriptsize
+		\begin{description}
+			\item[$\rightarrow)$]
+
+				\begin{align*}
+					p(\mathbf{x})&=\frac{1}{(2\pi)^{D/2}\Lambda^{-\frac{1}{2}}}\exp\left\{-\frac{1}{2}(\mathbf{x}-\boldsymbol{\mu})^\intercal\Lambda(\mathbf{x}-\boldsymbol{\mu})\right\}\\
+					\log p(\mathbf{x})&=-\frac{1}{2}(\mathbf{x}-\boldsymbol{\mu})^\intercal\Lambda(\mathbf{x}-\boldsymbol{\mu})-\log ((2\pi)^{D/2}\Lambda^{-\frac{1}{2}})\\
+					                  &=-\frac{1}{2}(\mathbf{x}^\intercal\Lambda\mathbf{x}-2\mathbf{x}^\intercal\Lambda\boldsymbol{\mu})-\frac{1}{2}\boldsymbol{\mu}^\intercal\Lambda\boldsymbol{\mu}-\log ((2\pi)^{D/2}\Lambda^{-\frac{1}{2}})\\
+					                  &=-\frac{1}{2}(\mathbf{x}^\intercal\Lambda\mathbf{x}-2\mathbf{x}^\intercal\Lambda\boldsymbol{\mu})+K
+				\end{align*}
+				with $K=-\frac{1}{2}\boldsymbol{\mu}^\intercal\Lambda\boldsymbol{\mu}-\log ((2\pi)^{D/2}\Lambda^{-\frac{1}{2}})$.
+				\phantom\qedhere
+		\end{description}
+		\normalsize
+	\end{proof}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Proof: the conditional of a Gaussian is a Gaussian (Theorem~\ref{thm:marginalOrConditionalOfGaussianIsGaussian}, Eq.~\ref{eq:gaussianCond1})}
+
+	\begin{proof}[Proof of Claim~\ref{claim:quadratricFormOfGaussianPDF}]
+
+		\scriptsize
+		\begin{description}
+			\item[$\leftarrow)$]
+
+				\begin{align}
+					\log p(\mathbf{x})=&-\frac{1}{2}(\mathbf{x}^\intercal\Lambda\mathbf{x}-2\mathbf{x}^\intercal\Lambda\boldsymbol{\mu})+K\nonumber\\
+					\log p(\mathbf{x})=&-\frac{1}{2}(\mathbf{x}^\intercal\Lambda\mathbf{x}-2\mathbf{x}^\intercal\Lambda\boldsymbol{\mu})-\frac{1}{2}\boldsymbol{\mu}^\intercal\Lambda\boldsymbol{\mu}-\log ((2\pi)^{D/2}\Lambda^{-\frac{1}{2}})\nonumber\\
+					                   &+K+\frac{1}{2}\boldsymbol{\mu}^\intercal\Lambda\boldsymbol{\mu}+\log ((2\pi)^{D/2}\Lambda^{-\frac{1}{2}})\nonumber\\
+					                  =&-\frac{1}{2}(\mathbf{x}-\boldsymbol{\mu})^\intercal\Lambda(\mathbf{x}-\boldsymbol{\mu})-\log ((2\pi)^{D/2}\Lambda^{-\frac{1}{2}})\nonumber\\
+					                   &+K+\frac{1}{2}\boldsymbol{\mu}^\intercal\Lambda\boldsymbol{\mu}+\log ((2\pi)^{D/2}\Lambda^{-\frac{1}{2}})\nonumber\\
+					                  =&\log N(\mathbf{x}|\boldsymbol{\mu},\Lambda)+K+\frac{1}{2}\boldsymbol{\mu}^\intercal\Lambda\boldsymbol{\mu}+\log ((2\pi)^{D/2}\Lambda^{-\frac{1}{2}})\nonumber\\
+					     p(\mathbf{x})=&N(\mathbf{x}|\boldsymbol{\mu},\Lambda)\exp\left(K+\frac{1}{2}\boldsymbol{\mu}^\intercal\Lambda\boldsymbol{\mu}+\log ((2\pi)^{D/2}\Lambda^{-\frac{1}{2}})\right)\label{eq:quadratricFormOfGaussianPDF_almostFinal}
+				\end{align}
+				\phantom\qedhere
+		\end{description}
+		\normalsize
+	\end{proof}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Proof: the conditional of a Gaussian is a Gaussian (Theorem~\ref{thm:marginalOrConditionalOfGaussianIsGaussian}, Eq.~\ref{eq:gaussianCond1})}
+
+	\begin{proof}[Proof of Claim~\ref{claim:quadratricFormOfGaussianPDF}]
+
+		\scriptsize
+		\begin{description}
+			\item[$\leftarrow)$ cont]
+				\begin{align*}
+					1&=\int p(\mathbf{x})d\mathbf{x}\\
+					 &=\int N(\mathbf{x}|\boldsymbol{\mu},\Lambda)\exp\left(K+\frac{1}{2}\boldsymbol{\mu}^\intercal\Lambda\boldsymbol{\mu}+\log ((2\pi)^{D/2}\Lambda^{-\frac{1}{2}})\right)d\mathbf{x}\\
+					 &=\exp\left(K+\frac{1}{2}\boldsymbol{\mu}^\intercal\Lambda\boldsymbol{\mu}+\log ((2\pi)^{D/2}\Lambda^{-\frac{1}{2}})\right)\int N(\mathbf{x}|\boldsymbol{\mu},\Lambda)d\mathbf{x}\\
+					 &=\exp\left(K+\frac{1}{2}\boldsymbol{\mu}^\intercal\Lambda\boldsymbol{\mu}+\log ((2\pi)^{D/2}\Lambda^{-\frac{1}{2}})\right)
+				\end{align*}
+				From Eq.~\ref{eq:quadratricFormOfGaussianPDF_almostFinal} then $p(\mathbf{x})=N(\mathbf{x}|\boldsymbol{\mu},\Lambda)$.
+		\end{description}
+		\normalsize
+	\end{proof}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Proof: the conditional of a Gaussian is a Gaussian (Theorem~\ref{thm:marginalOrConditionalOfGaussianIsGaussian}, Eq.~\ref{eq:gaussianCond1})}
+
+	\begin{proof}[Proof of Theorem~\ref{thm:marginalOrConditionalOfGaussianIsGaussian}, Eq.~\ref{eq:gaussianCond1}]
+
+		\scriptsize
+		\begin{align*}
+			p(\mathbf{x}_a|\mathbf{x}_b)&=\frac{p(\mathbf{x}_a,\mathbf{x}_b)}{p(\mathbf{x}_b)}=\frac{p(\mathbf{x})}{p(\mathbf{x}_b)}\\
+			\log p(\mathbf{x}_a|\mathbf{x}_b)&=\log p(\mathbf{x})-\log p(\mathbf{x}_b)=\log p(\mathbf{x})+K
+		\end{align*}
+
+		Therefore, the terms of $\log p(\mathbf{x}_a|\mathbf{x}_b)$ that depend on $\mathbf{x}_a$ are those of $\log p(\mathbf{x})$.
+
+		Steps for the proof:
+
+		\begin{enumerate}
+			\item isolate the terms of $\log p(\mathbf{x})$ that depend on $\mathbf{x}_a$,
+			\item notice that these term has the quadratic form of Claim~\ref{claim:quadratricFormOfGaussianPDF}, therefore $p(\mathbf{x}_a|\mathbf{x}_b)$ is Gaussian,
+			\item identify $\boldsymbol{\mu}$ and $\Lambda$ in this quadratic form.
+		\end{enumerate}
+
+		\phantom\qedhere
+		\normalsize
+	\end{proof}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Proof: the conditional of a Gaussian is a Gaussian (Theorem~\ref{thm:marginalOrConditionalOfGaussianIsGaussian}, Eq.~\ref{eq:gaussianCond1})}
+
+	\begin{proof}[Proof of Theorem~\ref{thm:marginalOrConditionalOfGaussianIsGaussian}, Eq.~\ref{eq:gaussianCond1}]
+
+		\scriptsize
+		\begin{align*}
+			p(\mathbf{x})&=\frac{1}{(2\pi)^{D/2}|\Lambda|^{1/2}}\exp\left(-\frac{1}{2}(\mathbf{x}-\boldsymbol{\mu})^\intercal\Lambda(\mathbf{x}-\boldsymbol{\mu})\right)\\
+			\log p(\mathbf{x})=&-\frac{1}{2}(\mathbf{x}-\boldsymbol{\mu})^\intercal\Lambda(\mathbf{x}-\boldsymbol{\mu})+K_1\\
+			                  =&-\frac{1}{2}[(\mathbf{x}_a-\boldsymbol{\mu}_a)^\intercal,(\mathbf{x}_b-\boldsymbol{\mu}_b)^\intercal]\left[\begin{array}{cc}
+							                                                                                                                   \Lambda_{aa} & \Lambda_{ab}\\
+							                                                                                                                   \Lambda_{ba} & \Lambda_{bb}
+																																	       \end{array}\right]
+																																	 \left[\begin{array}{c}
+																																	           \mathbf{x}_a-\boldsymbol{\mu}_a\\
+																																	           \mathbf{x}_b-\boldsymbol{\mu}_b\\
+																																			\end{array}\right]
+																																	 +K_1\\
+			                  =&-\frac{1}{2}\left\{(\mathbf{x}_a-\boldsymbol{\mu}_a)^\intercal\Lambda_{aa}(\mathbf{x}_a-\boldsymbol{\mu}_a)+2(\mathbf{x}_a-\boldsymbol{\mu}_a)^\intercal\Lambda_{ab}(\mathbf{x}_b-\boldsymbol{\mu}_b)\right.\\
+							   &\left.+(\mathbf{x}_b-\boldsymbol{\mu}_b)^\intercal\Lambda_{bb}(\mathbf{x}_b-\boldsymbol{\mu}_b)\right\}+K_1\\
+			                  =&-\frac{1}{2}\left\{\mathbf{x}_a^\intercal\Lambda_{aa}\mathbf{x}_a-2\mathbf{x}_a^\intercal(\Lambda_{aa}\boldsymbol{\mu}_a-\Lambda_{ab}(\mathbf{x}_b-\boldsymbol{\mu}_b))\right\}+K_2\\
+			                  =&-\frac{1}{2}\left\{\mathbf{x}_a^\intercal\Lambda_{aa}\mathbf{x}_a-2\mathbf{x}_a^\intercal\Lambda_{aa}(\boldsymbol{\mu}_a-\Lambda_{aa}^{-1}\Lambda_{ab}(\mathbf{x}_b-\boldsymbol{\mu}_b))\right\}+K_2
+		\end{align*}
+		Comparing the last equation with Eq.~\ref{eq:gaussianQuadratic} we see that $\Lambda=\Lambda_{aa}$, $\boldsymbol{\mu}=\boldsymbol{\mu}_a-\Lambda_{aa}^{-1}\Lambda_{ab}(\mathbf{x}_b-\boldsymbol{\mu}_b)$ and conclude that $p(\mathbf{x}_a|\mathbf{x}_b)=\mathcal{N}(\mathbf{x}_a|\boldsymbol{\mu}_a-\Lambda_{aa}^{-1}\Lambda_{ab}(\mathbf{x}_b-\boldsymbol{\mu}_b),\Lambda_{aa})$
+		\normalsize
+	\end{proof}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Proof: the conditional of a Gaussian is a Gaussian (Theorem~\ref{thm:marginalOrConditionalOfGaussianIsGaussian}, Eq.~\ref{eq:gaussianCond2})}
+
+	\begin{claim}[Inverse of a partitioned matrix]
+		\begin{align}
+			\left(\begin{array}{cc}
+				      A & B\\
+				      C & D
+				  \end{array}\right)^{-1}=
+			\left(\begin{array}{cc}
+				      M         & -MBD^{-1}\\
+					  -D^{-1}CM & D^{-1} + D^{-1}CMBD^{-1}
+				  \end{array}\right)\label{eq:inversePartitionedMatrix}
+		\end{align}
+		where
+		\begin{align*}
+			M = (A - BD^{-1}C)^{-1}
+		\end{align*}
+	\end{claim}
+	\begin{proof}
+		\scriptsize
+		Exercise. Hint: verify that the multiplication of the inverse of the matrix in the right hand side of Eq.~\ref{eq:inversePartitionedMatrix} with the matrix in the left hand side of the same equation is the identity matrix.
+		\phantom\qedhere
+		\normalsize
+	\end{proof}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Proof: the conditional of a Gaussian is a Gaussian (Theorem~\ref{thm:marginalOrConditionalOfGaussianIsGaussian}, Eq.~\ref{eq:gaussianCond2})}
+
+	\begin{proof}[Proof of Theorem~\ref{thm:marginalOrConditionalOfGaussianIsGaussian}, Eq.~\ref{eq:gaussianCond2}]
+		\scriptsize
+		Using the definition
+		\begin{align*}
+			\left(\begin{array}{cc}
+				      \Sigma_{aa} & \Sigma_{ab}\\
+				      \Sigma_{ba} & \Sigma_{bb}
+                  \end{array}\right)^{-1}=
+			\left(\begin{array}{cc}
+				      \Lambda_{aa} & \Lambda_{ab}\\
+				      \Lambda_{ba} & \Lambda_{bb}
+                  \end{array}\right)
+		\end{align*}
+		and using Eq.~\ref{eq:inversePartitionedMatrix}, we obtain
+		\begin{align*}
+			\Lambda_{aa}&=(\Sigma_{aa}-\Sigma_{ab}\Sigma_{bb}^{-1}\Sigma_{ba})^{-1}\\
+			\Lambda_{ab}&=-(\Sigma_{aa}-\Sigma_{ab}\Sigma_{bb}^{-1}\Sigma_{ba})^{-1}\Sigma_{ab}\Sigma_{bb}^{-1}
+		\end{align*}
+		Replacing the above equations in Eq.~\ref{eq:gaussianCond1} we obtain Eq.~\ref{eq:gaussianCond2}.
+		\normalsize
+	\end{proof}
+
+\end{frame}
+
+\finishappendix
+% after last appendix slide but before \end{document}
+
+\end{comment}
+
+\bibliographystyle{apalike}
+\bibliography{others}
+
+\end{document}
