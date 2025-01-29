@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Generation of a random walk with drift time series &#8212; statsNeuro2025  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../_static/basic.css?v=686e5160" />
+    <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=27fed22d" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Moving average analytical and estimated autocovariance" href="plot_movingAverageAutocovariance.html" />
+    <link rel="prev" title="Generation of a signal plus noise time series" href="plot_signalPlusNoise.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p><a class="reference internal" href="#sphx-glr-download-auto-examples-01-temporaltimeseriesanalysis-plot-randomwalkwithdriftexample-py"><span class="std std-ref">Go to the end</span></a>
+to download the full example code.</p>
+</div>
+<section class="sphx-glr-example-title" id="generation-of-a-random-walk-with-drift-time-series">
+<span id="sphx-glr-auto-examples-01-temporaltimeseriesanalysis-plot-randomwalkwithdriftexample-py"></span><h1>Generation of a random walk with drift time series<a class="headerlink" href="#generation-of-a-random-walk-with-drift-time-series" title="Link to this heading">¶</a></h1>
+<section id="import-requirements">
+<h2>Import requirements<a class="headerlink" href="#import-requirements" title="Link to this heading">¶</a></h2>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">plotly.graph_objects</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">go</span>
+</pre></div>
+</div>
+</section>
+<section id="define-variables">
+<h2>Define variables<a class="headerlink" href="#define-variables" title="Link to this heading">¶</a></h2>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">srate</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">T</span> <span class="o">=</span> <span class="mi">200</span> <span class="c1"># sec</span>
+<span class="n">sigma</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="n">delta0</span> <span class="o">=</span> <span class="mf">0.0</span>
+<span class="n">delta1</span> <span class="o">=</span> <span class="mf">.2</span>
+</pre></div>
+</div>
+</section>
+<section id="create-white-noise">
+<h2>Create white noise<a class="headerlink" href="#create-white-noise" title="Link to this heading">¶</a></h2>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">time</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="mf">1.0</span><span class="o">/</span><span class="n">srate</span><span class="p">)</span>
+<span class="n">N</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">time</span><span class="p">)</span>
+<span class="n">w0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="n">sigma</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">N</span><span class="p">)</span>
+<span class="n">w1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="n">sigma</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">N</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="create-random-walk-with-noise-time-series">
+<h2>Create random walk with noise time series<a class="headerlink" href="#create-random-walk-with-noise-time-series" title="Link to this heading">¶</a></h2>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">rwWithDrift0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">double</span><span class="p">)</span>
+<span class="n">rwWithDrift1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">double</span><span class="p">)</span>
+<span class="n">rwWithDrift0</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+<span class="n">rwWithDrift1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N</span><span class="p">):</span>
+    <span class="n">rwWithDrift0</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">delta0</span> <span class="o">+</span> <span class="n">rwWithDrift0</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">w0</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="n">rwWithDrift1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">delta1</span> <span class="o">+</span> <span class="n">rwWithDrift1</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">w1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+</pre></div>
+</div>
+</section>
+<section id="plot-random-noise-with-drift-time-series">
+<h2>Plot random noise with drift time series<a class="headerlink" href="#plot-random-noise-with-drift-time-series" title="Link to this heading">¶</a></h2>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Figure</span><span class="p">()</span>
+<span class="n">trace</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Scatter</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">time</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">rwWithDrift0</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;lines+markers&quot;</span><span class="p">,</span>
+                   <span class="n">line</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;$\delta=0.0$&quot;</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span><span class="n">trace</span><span class="p">)</span>
+<span class="n">trace</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Scatter</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">time</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">rwWithDrift1</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;lines+markers&quot;</span><span class="p">,</span>
+                   <span class="n">line</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;$\delta=0.2$&quot;</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span><span class="n">trace</span><span class="p">)</span>
+<span class="n">trace</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Scatter</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">T</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">line</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="p">,</span> <span class="n">dash</span><span class="o">=</span><span class="s2">&quot;dot&quot;</span><span class="p">),</span>
+                   <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;lines&quot;</span><span class="p">,</span> <span class="n">showlegend</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span><span class="n">trace</span><span class="p">)</span>
+<span class="n">trace</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Scatter</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">T</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">delta1</span><span class="o">*</span><span class="n">T</span><span class="p">],</span> <span class="n">line</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">dash</span><span class="o">=</span><span class="s2">&quot;dot&quot;</span><span class="p">),</span>
+                   <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;lines&quot;</span><span class="p">,</span> <span class="n">showlegend</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span><span class="n">trace</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span><span class="n">xaxis</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Time (sec)&quot;</span><span class="p">),</span> <span class="n">yaxis</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">))</span>
+
+<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s2">&quot;figures&quot;</span><span class="p">):</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="s2">&quot;figures&quot;</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">write_html</span><span class="p">(</span><span class="s2">&quot;figures/randomWalkWithDrift.html&quot;</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">write_image</span><span class="p">(</span><span class="s2">&quot;figures/randomWalkWithDrift.png&quot;</span><span class="p">)</span>
+
+<span class="n">fig</span>
+</pre></div>
+</div>
+<div class="output_subarea output_html rendered_html output_result">
+<div>                        <script type="text/javascript">window.PlotlyConfig = {MathJaxConfig: 'local'};</script>
+        <script charset="utf-8" src="https://cdn.plot.ly/plotly-3.0.0.min.js"></script>                <div id="4c4e25f1-2561-4176-b856-0ebf75bc01c0" class="plotly-graph-div" style="height:100%; width:100%;"></div>            <script type="text/javascript">                window.PLOTLYENV=window.PLOTLYENV || {};                                if (document.getElementById("4c4e25f1-2561-4176-b856-0ebf75bc01c0")) {                    Plotly.newPlot(                        "4c4e25f1-2561-4176-b856-0ebf75bc01c0",                        [{"line":{"color":"blue"},"mode":"lines+markers","name":"$\\delta=0.0$","x":{"dtype":"f8","bdata":"AAAAAAAAAAAAAAAAAADwPwAAAAAAAABAAAAAAAAACEAAAAAAAAAQQAAAAAAAABRAAAAAAAAAGEAAAAAAAAAcQAAAAAAAACBAAAAAAAAAIkAAAAAAAAAkQAAAAAAAACZAAAAAAAAAKEAAAAAAAAAqQAAAAAAAACxAAAAAAAAALkAAAAAAAAAwQAAAAAAAADFAAAAAAAAAMkAAAAAAAAAzQAAAAAAAADRAAAAAAAAANUAAAAAAAAA2QAAAAAAAADdAAAAAAAAAOEAAAAAAAAA5QAAAAAAAADpAAAAAAAAAO0AAAAAAAAA8QAAAAAAAAD1AAAAAAAAAPkAAAAAAAAA\u002fQAAAAAAAAEBAAAAAAACAQEAAAAAAAABBQAAAAAAAgEFAAAAAAAAAQkAAAAAAAIBCQAAAAAAAAENAAAAAAACAQ0AAAAAAAABEQAAAAAAAgERAAAAAAAAARUAAAAAAAIBFQAAAAAAAAEZAAAAAAACARkAAAAAAAABHQAAAAAAAgEdAAAAAAAAASEAAAAAAAIBIQAAAAAAAAElAAAAAAACASUAAAAAAAABKQAAAAAAAgEpAAAAAAAAAS0AAAAAAAIBLQAAAAAAAAExAAAAAAACATEAAAAAAAABNQAAAAAAAgE1AAAAAAAAATkAAAAAAAIBOQAAAAAAAAE9AAAAAAACAT0AAAAAAAABQQAAAAAAAQFBAAAAAAACAUEAAAAAAAMBQQAAAAAAAAFFAAAAAAABAUUAAAAAAAIBRQAAAAAAAwFFAAAAAAAAAUkAAAAAAAEBSQAAAAAAAgFJAAAAAAADAUkAAAAAAAABTQAAAAAAAQFNAAAAAAACAU0AAAAAAAMBTQAAAAAAAAFRAAAAAAABAVEAAAAAAAIBUQAAAAAAAwFRAAAAAAAAAVUAAAAAAAEBVQAAAAAAAgFVAAAAAAADAVUAAAAAAAABWQAAAAAAAQFZAAAAAAACAVkAAAAAAAMBWQAAAAAAAAFdAAAAAAABAV0AAAAAAAIBXQAAAAAAAwFdAAAAAAAAAWEAAAAAAAEBYQAAAAAAAgFhAAAAAAADAWEAAAAAAAABZQAAAAAAAQFlAAAAAAACAWUAAAAAAAMBZQAAAAAAAAFpAAAAAAABAWkAAAAAAAIBaQAAAAAAAwFpAAAAAAAAAW0AAAAAAAEBbQAAAAAAAgFtAAAAAAADAW0AAAAAAAABcQAAAAAAAQFxAAAAAAACAXEAAAAAAAMBcQAAAAAAAAF1AAAAAAABAXUAAAAAAAIBdQAAAAAAAwF1AAAAAAAAAXkAAAAAAAEBeQAAAAAAAgF5AAAAAAADAXkAAAAAAAABfQAAAAAAAQF9AAAAAAACAX0AAAAAAAMBfQAAAAAAAAGBAAAAAAAAgYEAAAAAAAEBgQAAAAAAAYGBAAAAAAACAYEAAAAAAAKBgQAAAAAAAwGBAAAAAAADgYEAAAAAAAABhQAAAAAAAIGFAAAAAAABAYUAAAAAAAGBhQAAAAAAAgGFAAAAAAACgYUAAAAAAAMBhQAAAAAAA4GFAAAAAAAAAYkAAAAAAACBiQAAAAAAAQGJAAAAAAABgYkAAAAAAAIBiQAAAAAAAoGJAAAAAAADAYkAAAAAAAOBiQAAAAAAAAGNAAAAAAAAgY0AAAAAAAEBjQAAAAAAAYGNAAAAAAACAY0AAAAAAAKBjQAAAAAAAwGNAAAAAAADgY0AAAAAAAABkQAAAAAAAIGRAAAAAAABAZEAAAAAAAGBkQAAAAAAAgGRAAAAAAACgZEAAAAAAAMBkQAAAAAAA4GRAAAAAAAAAZUAAAAAAACBlQAAAAAAAQGVAAAAAAABgZUAAAAAAAIBlQAAAAAAAoGVAAAAAAADAZUAAAAAAAOBlQAAAAAAAAGZAAAAAAAAgZkAAAAAAAEBmQAAAAAAAYGZAAAAAAACAZkAAAAAAAKBmQAAAAAAAwGZAAAAAAADgZkAAAAAAAABnQAAAAAAAIGdAAAAAAABAZ0AAAAAAAGBnQAAAAAAAgGdAAAAAAACgZ0AAAAAAAMBnQAAAAAAA4GdAAAAAAAAAaEAAAAAAACBoQAAAAAAAQGhAAAAAAABgaEAAAAAAAIBoQAAAAAAAoGhAAAAAAADAaEAAAAAAAOBoQA=="},"y":{"dtype":"f8","bdata":"AAAAAAAAAAC0FCLEsrHiv8ZRMRwqSPA\u002f1M3X1gTV8j\u002fu8mnJaRnuP3F++c\u002fwRfA\u002f2raJXq+N7z8kbAYXBKQEQCItJaCAOPo\u002fbH4qhy+q4D96B4ZfiYDQv\u002fou5Sq0z\u002fk\u002fyamkCKDK8z+KUk9qHJ\u002f0P\u002fch2XYBZABA9eHzMXH8+T9xGyiDCef4P3UUQjbZV\u002fU\u002f6cmAke\u002fR4z+jgYa7ot\u002f1P3BZUDbG5AlAxYYdrZQpBkDam\u002fNmE1b6P15KBrACEeA\u002fcu0jYAP92L8DikGv2qLlP+Kur4AN3uE\u002fji\u002f3Msm78D+sj1T2mAzSvy4kZtwmfPG\u002fp7wmW8iP8L+QWZw\u002fRHoCwDArxKH62AjA9o7cReWrBMDMhu5i4FEEwHJmUPs8lAzAipTq1UewCcAe7G7cpgMBwF3cpYdi0wPACGSokMld9L+FFEuoW\u002fz\u002fv8S7RcvgjQXA1NLVnfHqCcAgJy5OLEgGwPLbuNyyBgLAKE0M\u002fibqAsC7wNvDjq4AwNrPocTaQwXAE56v0RGv8b9lJNga0Uj3v+xdmAOpU\u002fW\u002fsDUx6cS99b\u002fGQLemVsgFwFdMXH4ACwHA73F8MbzO\u002fL8281HZ0HHxvxpnk6TE6wDA1YVThHW\u002fDcBko\u002fOUUdUdwEMqxUTWIBnAGNDldngMEMBEWBpK1tkGwNzuq3Tb0APA2LtaPoBRBsCG0ICvlYQKwNYkwChelwrA5FB6rxhMAsBrwpXe8moPwHx0mh4QEBTAR+7NCdlcEsCQvRJxcoMLwJVLl4oMmw3A9iVKOrKRDsBYtIDXMB8RwOhWkkmsARLAsGlrxbFuC8AfQc7s8d0NwETiCjBTRxDA\u002fHo2AGjjCcAG5kQnvvcAwA7oINYiufq\u002fOcVL+\u002fzE\u002fL96WbYHBlMEwIPNAXjdkg3AzDSVskyZEMBkLtcPZHkNwP33qMBp4hHAalPHSj0dFsDE4ufr6FkWwOj9RCy7hBrAUhQhWlzQGMC8hypGEMkVwN2l0ohXmRnABRwfMKx3HsAiCGUDiQsZwH4u0vuCux3AqYXL6jWnHsAWp6tGJHMgwNDU+uB9CBzAyh+FxfNMFMBcZu6S\u002fs8TwNg71P+4OxrAjHPCqxCfGMBIdyPXzA8ZwP0nkRw\u002fGx3A4SL+xNaEIcDiZfYPS6kmwPFrTvO9qCnAc2qIr8B9KcClyptIV18owMGXFFDZHyvALfE\u002fYbHcLcDKMejd+9AtwIWkuGpvJSvAXEw3ahuSKsBx6PPMEXAmwDnvSK3UhCrAbWkfHN53K8CJKZg5m4YswMJrGabxjCvAlbGrHrsDK8Dj7rDT+JUqwI3b\u002fH1sdynAEP6nk7C9K8CTWmteUhApwPb1UMsOhynAWM4fNh2jJsB7E4HiZmAnwOBgIcEKiiXATMGo4s\u002fKJcCXIOemOqomwPpUlEmGzSbAnlkXIA+BJsAg9LvI\u002fzYmwLCzv6KVNyPAunTpQDPuI8AAN66kK\u002fskwHfQkBlyDibA5+3e+z+0I8DWF4g4zOcjwN0DYOaKQiTASgiVHDOAJ8CnDWsJI6gowOr38Wjs+CnAUbMn81cwKMAYBF7aVjQnwHxWIXdpGyXA0vxXz2JtI8BuPxUBcloiwBZu8RwWqCLAuyfkSM1OIMA+IB3UGDEgwE3zhAHw3RvAFhlFqLboH8DLq\u002fQ2ZlkhwMP20d\u002f7BSDABOU7VTrMIMBAqIKWF4UfwGhNmfNUph7A\u002fyzT65KNIMBD4cvLD9shwE01H3EcyCDAb5nCS2XsIcCN84hclqQhwIXpQCqSGh3ABoVFf6yIFcCM5dDQMUsVwBMuHkQHaRnAXFX6CeZUHsDDFzdd1C4ewPHIS\u002fqSjxrA4OaeKQTwHcDbLHBNRFshwHWWMA7vOCTAuoEBJeaWIsAlJmN2DoQkwJdmG1VjHCHAx0iin1qbIMAMLJCGd4cewJNIxuj+ZSDAcpekMhV5HMARcCO7IdUewIy5bUkifBPAcKSb5dZCDcCfP0D0KI8HwHDrXG3osfy\u002fI20EN+G0BcDwDeKL7t\u002fHvy+DlwsRD\u002fG\u002fRUYCF7r4+L+1wH\u002fgw7P0v0SI4jEuMQbAgHBJmqYcA8DCYi4bV9T0v+DrKZQb0gTA7loB1i77\u002fr8zVFvmTUv+v2yGF9AiHwXAvKrnf2rZCcDmvet6N\u002fwSwA=="},"type":"scatter"},{"line":{"color":"black"},"mode":"lines+markers","name":"$\\delta=0.2$","x":{"dtype":"f8","bdata":"AAAAAAAAAAAAAAAAAADwPwAAAAAAAABAAAAAAAAACEAAAAAAAAAQQAAAAAAAABRAAAAAAAAAGEAAAAAAAAAcQAAAAAAAACBAAAAAAAAAIkAAAAAAAAAkQAAAAAAAACZAAAAAAAAAKEAAAAAAAAAqQAAAAAAAACxAAAAAAAAALkAAAAAAAAAwQAAAAAAAADFAAAAAAAAAMkAAAAAAAAAzQAAAAAAAADRAAAAAAAAANUAAAAAAAAA2QAAAAAAAADdAAAAAAAAAOEAAAAAAAAA5QAAAAAAAADpAAAAAAAAAO0AAAAAAAAA8QAAAAAAAAD1AAAAAAAAAPkAAAAAAAAA\u002fQAAAAAAAAEBAAAAAAACAQEAAAAAAAABBQAAAAAAAgEFAAAAAAAAAQkAAAAAAAIBCQAAAAAAAAENAAAAAAACAQ0AAAAAAAABEQAAAAAAAgERAAAAAAAAARUAAAAAAAIBFQAAAAAAAAEZAAAAAAACARkAAAAAAAABHQAAAAAAAgEdAAAAAAAAASEAAAAAAAIBIQAAAAAAAAElAAAAAAACASUAAAAAAAABKQAAAAAAAgEpAAAAAAAAAS0AAAAAAAIBLQAAAAAAAAExAAAAAAACATEAAAAAAAABNQAAAAAAAgE1AAAAAAAAATkAAAAAAAIBOQAAAAAAAAE9AAAAAAACAT0AAAAAAAABQQAAAAAAAQFBAAAAAAACAUEAAAAAAAMBQQAAAAAAAAFFAAAAAAABAUUAAAAAAAIBRQAAAAAAAwFFAAAAAAAAAUkAAAAAAAEBSQAAAAAAAgFJAAAAAAADAUkAAAAAAAABTQAAAAAAAQFNAAAAAAACAU0AAAAAAAMBTQAAAAAAAAFRAAAAAAABAVEAAAAAAAIBUQAAAAAAAwFRAAAAAAAAAVUAAAAAAAEBVQAAAAAAAgFVAAAAAAADAVUAAAAAAAABWQAAAAAAAQFZAAAAAAACAVkAAAAAAAMBWQAAAAAAAAFdAAAAAAABAV0AAAAAAAIBXQAAAAAAAwFdAAAAAAAAAWEAAAAAAAEBYQAAAAAAAgFhAAAAAAADAWEAAAAAAAABZQAAAAAAAQFlAAAAAAACAWUAAAAAAAMBZQAAAAAAAAFpAAAAAAABAWkAAAAAAAIBaQAAAAAAAwFpAAAAAAAAAW0AAAAAAAEBbQAAAAAAAgFtAAAAAAADAW0AAAAAAAABcQAAAAAAAQFxAAAAAAACAXEAAAAAAAMBcQAAAAAAAAF1AAAAAAABAXUAAAAAAAIBdQAAAAAAAwF1AAAAAAAAAXkAAAAAAAEBeQAAAAAAAgF5AAAAAAADAXkAAAAAAAABfQAAAAAAAQF9AAAAAAACAX0AAAAAAAMBfQAAAAAAAAGBAAAAAAAAgYEAAAAAAAEBgQAAAAAAAYGBAAAAAAACAYEAAAAAAAKBgQAAAAAAAwGBAAAAAAADgYEAAAAAAAABhQAAAAAAAIGFAAAAAAABAYUAAAAAAAGBhQAAAAAAAgGFAAAAAAACgYUAAAAAAAMBhQAAAAAAA4GFAAAAAAAAAYkAAAAAAACBiQAAAAAAAQGJAAAAAAABgYkAAAAAAAIBiQAAAAAAAoGJAAAAAAADAYkAAAAAAAOBiQAAAAAAAAGNAAAAAAAAgY0AAAAAAAEBjQAAAAAAAYGNAAAAAAACAY0AAAAAAAKBjQAAAAAAAwGNAAAAAAADgY0AAAAAAAABkQAAAAAAAIGRAAAAAAABAZEAAAAAAAGBkQAAAAAAAgGRAAAAAAACgZEAAAAAAAMBkQAAAAAAA4GRAAAAAAAAAZUAAAAAAACBlQAAAAAAAQGVAAAAAAABgZUAAAAAAAIBlQAAAAAAAoGVAAAAAAADAZUAAAAAAAOBlQAAAAAAAAGZAAAAAAAAgZkAAAAAAAEBmQAAAAAAAYGZAAAAAAACAZkAAAAAAAKBmQAAAAAAAwGZAAAAAAADgZkAAAAAAAABnQAAAAAAAIGdAAAAAAABAZ0AAAAAAAGBnQAAAAAAAgGdAAAAAAACgZ0AAAAAAAMBnQAAAAAAA4GdAAAAAAAAAaEAAAAAAACBoQAAAAAAAQGhAAAAAAABgaEAAAAAAAIBoQAAAAAAAoGhAAAAAAADAaEAAAAAAAOBoQA=="},"y":{"dtype":"f8","bdata":"AAAAAAAAAABDhg1F+MDZv16H+U53WuW\u002fIWqO22EQ0T\u002fmSjxSao3Wv4KAgOdyIfa\u002fy1cPW2LG47++3Akb7G3bvw6ml0CRNOg\u002fB\u002f9c0KSF3j9DLKeIzvj3P5\u002fpkb1MXvc\u002fiz5bOlj6AUCox44j5k0FQDwjVxpfB\u002fw\u002fS+RnUZhMBUCoE0A+CvbnPzZ6REZOpAFAPiDIWJRiBUCjo+WXb2r9P3BKey6q+rA\u002fzidHoJVK9j\u002fozVFjYmcDQC5mTTomdgFAMSKJIYVwCEDEQ9cj5pYSQNE+V06M\u002fRJAEYqBYMAcFEBt87Q+7SsRQARUw9TGMRJAngPsUBgwCEAuzHXWsmQEQFwnbfhu+RJAft+L0PETEkCvPMUtKZYTQMPBXsoN7w5ANV8vDBh1CUBMh47npcwUQGV5bS5eHhJATXsWYAygE0A+EZCoyn4UQCAB\u002f0kzwBZAlU6w5TVfFEC2MptWKDIeQMjhzcijPRpA5J5Ot8pMHEC25Lae8VsfQK5l9NZnHCJAkbCwxpHNJkB\u002f+t++mgkpQIYpJkqHwyhAtB4gMLQSKUDwyGyYEp8qQBqWEeKgWytA8M7BxqytKUDMk6eAUbAqQP\u002fi5SjfLitAmtuk9l9eKUCRZ2JJzc4sQLB4XeeCai5Ac6hLhyzNLECNmdVFaMcrQPys5NdX+ytAqdPoipfWKkB34z\u002fspOMtQKhWk1xjti9ABmyOy8m4L0DM3z2bEp8vQMsmtMKEvS9ALwsWjBWuMEBIV0AiYUwvQGE40Nl24C9A1Nlsu2c0MECg\u002f5ZyGR0vQIxg7XiYTTBAL7Tt3qcEMEAERUlBMyMwQAjVBlgcEjFAdST+FiJIMUBB7pydZmIyQAFsndU3TjJAajSHDPT2MUDGFP1V8foxQBQkYmD63TFACRZARwO+MUAklv2s57UxQBMLyQpzLjJAfrg9N\u002fF1MUBjWTO6aqYyQGyIQ6CfGjJAjQyyNYVzMkAwFAQ6DoIzQKPrWVZhCzRAKcFNqQTWNEBj7HpfkvAzQJLR+vm6XDVA2FZoSEAbNkDUjqNcTWk3QHVGBC+zWzdASlzNeGoOOEBDNzOxI006QP79Qm93sDpAkvkwprCgOkAZP1biFAM8QHMyga\u002fctj1A8+hIsIPdPUB7b+r4dqc+QAZBa\u002fnH5D1AoD4C5tb2PkAifZ\u002fKc68\u002fQK4Xd+Vm70BAwzosntr+QEDlVrIVK+dAQEIhg390bUBA3FXJz2FUQEBlQQAFsO0\u002fQKtMY4nDdEBAmlrRlClrQECVnvW3xABAQJZnUV8Z\u002fj1AbxDLeBUiPUB0HHFWXTg9QEo8QHkCoj1AYtoI8+1LPkC87djgbF48QF4DkBVPeT1A3BRyF6raO0Dys2QcEFY7QCr+G64wIjxARPb11W6OPUBlBgm6Jps9QCgFS\u002fRflD9AvS1cvBBzQECXNMuF8+o+QFl0c513yD1AeHqUrVBNPUA1OF1KycA+QCS3LepQfD1A8nkEFQ\u002fPPUBBsFfuK+o+QLAV1wc1Vj5AIu2BpawWP0B+34FEjz4\u002fQHxXk3qN3DxAy4udXNqGPEB+uDETMmU9QERZLfBvQz5A8Dncus8cPkBuE7JZHPw9QDcc36qd8j5AwlvrBYC1P0AczUDQwnJAQNCcbZ2p50BAx2RkMiEwQUBKwFSVKE9AQIB7urA7ZUBATBfqiSWyQEBEunpzRv9AQC\u002fThKj7j0FA+T2XcsHRQUCtrYns33VBQNy3pdpQnkFAIlvGcFz7QUBmNFdqkrpCQNgBqnyKPENAJb+qENzfQkC52ofFg8NCQGYvY6HBZUJAIplMIWSwQkAFgeZ4II9CQOEeesRRFEJA4r041rvpQUAOhJXlV0FBQIxHqOSeQkFA7xqs4NIvQkCODkc8dO1BQAF95+Z7vkFAAyDMMSgmQkAcdzth22lCQIxpi5OhqUJApfo1YLk9Q0Db6ndEnhRDQDtHkcPz\u002fENAb0S83+BIREDMNSqnJRtEQEs7Sy+Ma0NASkhKQXViREC2hxYxq9NDQGZelfw5lERAhQT1uD6IREBmkpKQB5JEQCIA3KxuWERAvRkJ6oCkREBgUEquCPlEQEyTobsN2UNAJ0r36O2eQ0BwyAelgZNDQALf4A\u002fTp0NASPyZBD9CQ0Bim4F4JvhDQA=="},"type":"scatter"},{"line":{"color":"blue","dash":"dot"},"mode":"lines","showlegend":false,"x":[0,200],"y":[0,0],"type":"scatter"},{"line":{"color":"black","dash":"dot"},"mode":"lines","showlegend":false,"x":[0,200],"y":[0,40.0],"type":"scatter"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermap":[{"type":"scattermap","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"}}},"xaxis":{"title":{"text":"Time (sec)"}},"yaxis":{"title":{"text":"x"}}},                        {"responsive": true}                    )                };            </script>        </div>
+</div>
+<br />
+<br /><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.118 seconds)</p>
+<div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-01-temporaltimeseriesanalysis-plot-randomwalkwithdriftexample-py">
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/9587cdef06164702ce2a1ace1143e6ea/plot_randomWalkWithDriftExample.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_randomWalkWithDriftExample.ipynb</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/a2441d5e3d7b67146f2fb77cfbd52e06/plot_randomWalkWithDriftExample.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_randomWalkWithDriftExample.py</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-zip docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/0069bcf9248d1db69f0af2da61cb90a3/plot_randomWalkWithDriftExample.zip"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">zipped:</span> <span class="pre">plot_randomWalkWithDriftExample.zip</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">statsNeuro2025</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Statistical Neuroscience 2025 Examples</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html#temporal-time-series-analysis">Temporal Time Series Analysis</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Temporal Time Series Analysis</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Statistical Neuroscience 2025 Examples</a><ul>
+  <li><a href="index.html">Temporal Time Series Analysis</a><ul>
+      <li>Previous: <a href="plot_signalPlusNoise.html" title="previous chapter">Generation of a signal plus noise time series</a></li>
+      <li>Next: <a href="plot_movingAverageAutocovariance.html" title="next chapter">Moving average analytical and estimated autocovariance</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2025, Joaquin Rapela.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.1.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="../../_sources/auto_examples/01_temporalTimeSeriesAnalysis/plot_randomWalkWithDriftExample.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

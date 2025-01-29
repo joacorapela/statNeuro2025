@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Generation of a autoregressive time series &#8212; statsNeuro2025  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../_static/basic.css?v=686e5160" />
+    <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=27fed22d" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Generation of a moving average time series" href="plot_movingAverageExample.html" />
+    <link rel="prev" title="Generation of Gaussian White Noise" href="plot_whiteNoiseExample.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p><a class="reference internal" href="#sphx-glr-download-auto-examples-01-temporaltimeseriesanalysis-plot-autoregressiveexample-py"><span class="std std-ref">Go to the end</span></a>
+to download the full example code.</p>
+</div>
+<section class="sphx-glr-example-title" id="generation-of-a-autoregressive-time-series">
+<span id="sphx-glr-auto-examples-01-temporaltimeseriesanalysis-plot-autoregressiveexample-py"></span><h1>Generation of a autoregressive time series<a class="headerlink" href="#generation-of-a-autoregressive-time-series" title="Link to this heading">¶</a></h1>
+<section id="import-requirements">
+<h2>Import requirements<a class="headerlink" href="#import-requirements" title="Link to this heading">¶</a></h2>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">plotly.graph_objects</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">go</span>
+</pre></div>
+</div>
+</section>
+<section id="define-variables">
+<h2>Define variables<a class="headerlink" href="#define-variables" title="Link to this heading">¶</a></h2>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">srate</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">T</span> <span class="o">=</span> <span class="mi">500</span>
+<span class="n">sigma</span> <span class="o">=</span> <span class="mf">1.0</span>
+</pre></div>
+</div>
+</section>
+<section id="create-white-noise">
+<h2>Create white noise<a class="headerlink" href="#create-white-noise" title="Link to this heading">¶</a></h2>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">time</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="mf">1.0</span><span class="o">/</span><span class="n">srate</span><span class="p">)</span>
+<span class="n">N</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">time</span><span class="p">)</span>
+<span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="n">sigma</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">N</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="create-autoregressive-time-series">
+<h2>Create autoregressive time series<a class="headerlink" href="#create-autoregressive-time-series" title="Link to this heading">¶</a></h2>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">ar</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">w</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">double</span><span class="p">)</span>
+<span class="n">ar</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">w</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">ar</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">ar</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">w</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">w</span><span class="p">)):</span>
+    <span class="n">ar</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">ar</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mf">0.9</span> <span class="o">*</span> <span class="n">ar</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">w</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+</pre></div>
+</div>
+</section>
+<section id="plot-autoregressive-time-series">
+<h2>Plot autoregressive time series<a class="headerlink" href="#plot-autoregressive-time-series" title="Link to this heading">¶</a></h2>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Figure</span><span class="p">()</span>
+<span class="n">trace</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Scatter</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">time</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">ar</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;lines+markers&quot;</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span><span class="n">trace</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span><span class="n">xaxis</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Time (sec)&quot;</span><span class="p">),</span> <span class="n">yaxis</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">))</span>
+
+<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s2">&quot;figures&quot;</span><span class="p">):</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="s2">&quot;figures&quot;</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">write_html</span><span class="p">(</span><span class="s2">&quot;figures/autoregressive.html&quot;</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">write_image</span><span class="p">(</span><span class="s2">&quot;figures/autoregressive.png&quot;</span><span class="p">)</span>
+
+<span class="n">fig</span>
+</pre></div>
+</div>
+<div class="output_subarea output_html rendered_html output_result">
+<div>                        <script type="text/javascript">window.PlotlyConfig = {MathJaxConfig: 'local'};</script>
+        <script charset="utf-8" src="https://cdn.plot.ly/plotly-3.0.0.min.js"></script>                <div id="9993e6eb-e2db-4b45-b664-1d9eff9325d0" class="plotly-graph-div" style="height:100%; width:100%;"></div>            <script type="text/javascript">                window.PLOTLYENV=window.PLOTLYENV || {};                                if (document.getElementById("9993e6eb-e2db-4b45-b664-1d9eff9325d0")) {                    Plotly.newPlot(                        "9993e6eb-e2db-4b45-b664-1d9eff9325d0",                        [{"mode":"lines+markers","x":{"dtype":"f8","bdata":"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AAABwQAAAAAAAEHBAAAAAAAAgcEAAAAAAADBwQAAAAAAAQHBAAAAAAABQcEAAAAAAAGBwQAAAAAAAcHBAAAAAAACAcEAAAAAAAJBwQAAAAAAAoHBAAAAAAACwcEAAAAAAAMBwQAAAAAAA0HBAAAAAAADgcEAAAAAAAPBwQAAAAAAAAHFAAAAAAAAQcUAAAAAAACBxQAAAAAAAMHFAAAAAAABAcUAAAAAAAFBxQAAAAAAAYHFAAAAAAABwcUAAAAAAAIBxQAAAAAAAkHFAAAAAAACgcUAAAAAAALBxQAAAAAAAwHFAAAAAAADQcUAAAAAAAOBxQAAAAAAA8HFAAAAAAAAAckAAAAAAABByQAAAAAAAIHJAAAAAAAAwckAAAAAAAEByQAAAAAAAUHJAAAAAAABgckAAAAAAAHByQAAAAAAAgHJAAAAAAACQckAAAAAAAKByQAAAAAAAsHJAAAAAAADAckAAAAAAANByQAAAAAAA4HJAAAAAAADwckAAAAAAAABzQAAAAAAAEHNAAAAAAAAgc0AAAAAAADBzQAAAAAAAQHNAAAAAAABQc0AAAAAAAGBzQAAAAAAAcHNAAAAAAACAc0AAAAAAAJBzQAAAAAAAoHNAAAAAAACwc0AAAAAAAMBzQAAAAAAA0HNAAAAAAADgc0AAAAAAAPBzQAAAAAAAAHRAAAAAAAAQdEAAAAAAACB0QAAAAAAAMHRAAAAAAABAdEAAAAAAAFB0QAAAAAAAYHRAAAAAAABwdEAAAAAAAIB0QAAAAAAAkHRAAAAAAACgdEAAAAAAALB0QAAAAAAAwHRAAAAAAADQdEAAAAAAAOB0QAAAAAAA8HRAAAAAAAAAdUAAAAAAABB1QAAAAAAAIHVAAAAAAAAwdUAAAAAAAEB1QAAAAAAAUHVAAAAAAABgdUAAAAAAAHB1QAAAAAAAgHVAAAAAAACQdUAAAAAAAKB1QAAAAAAAsHVAAAAAAADAdUAAAAAAANB1QAAAAAAA4HVAAAAAAADwdUAAAAAAAAB2QAAAAAAAEHZAAAAAAAAgdkAAAAAAADB2QAAAAAAAQHZAAAAAAABQdkAAAAAAAGB2QAAAAAAAcHZAAAAAAACAdkAAAAAAAJB2QAAAAAAAoHZAAAAAAACwdkAAAAAAAMB2QAAAAAAA0HZAAAAAAADgdkAAAAAAAPB2QAAAAAAAAHdAAAAAAAAQd0AAAAAAACB3QAAAAAAAMHdAAAAAAABAd0AAAAAAAFB3QAAAAAAAYHdAAAAAAABwd0AAAAAAAIB3QAAAAAAAkHdAAAAAAACgd0AAAAAAALB3QAAAAAAAwHdAAAAAAADQd0AAAAAAAOB3QAAAAAAA8HdAAAAAAAAAeEAAAAAAABB4QAAAAAAAIHhAAAAAAAAweEAAAAAAAEB4QAAAAAAAUHhAAAAAAABgeEAAAAAAAHB4QAAAAAAAgHhAAAAAAACQeEAAAAAAAKB4QAAAAAAAsHhAAAAAAADAeEAAAAAAANB4QAAAAAAA4HhAAAAAAADweEAAAAAAAAB5QAAAAAAAEHlAAAAAAAAgeUAAAAAAADB5QAAAAAAAQHlAAAAAAABQeUAAAAAAAGB5QAAAAAAAcHlAAAAAAACAeUAAAAAAAJB5QAAAAAAAoHlAAAAAAACweUAAAAAAAMB5QAAAAAAA0HlAAAAAAADgeUAAAAAAAPB5QAAAAAAAAHpAAAAAAAAQekAAAAAAACB6QAAAAAAAMHpAAAAAAABAekAAAAAAAFB6QAAAAAAAYHpAAAAAAABwekAAAAAAAIB6QAAAAAAAkHpAAAAAAACgekAAAAAAALB6QAAAAAAAwHpAAAAAAADQekAAAAAAAOB6QAAAAAAA8HpAAAAAAAAAe0AAAAAAABB7QAAAAAAAIHtAAAAAAAAwe0AAAAAAAEB7QAAAAAAAUHtAAAAAAABge0AAAAAAAHB7QAAAAAAAgHtAAAAAAACQe0AAAAAAAKB7QAAAAAAAsHtAAAAAAADAe0AAAAAAANB7QAAAAAAA4HtAAAAAAADwe0AAAAAAAAB8QAAAAAAAEHxAAAAAAAAgfEAAAAAAADB8QAAAAAAAQHxAAAAAAABQfEAAAAAAAGB8QAAAAAAAcHxAAAAAAACAfEAAAAAAAJB8QAAAAAAAoHxAAAAAAACwfEAAAAAAAMB8QAAAAAAA0HxAAAAAAADgfEAAAAAAAPB8QAAAAAAAAH1AAAAAAAAQfUAAAAAAACB9QAAAAAAAMH1AAAAAAABAfUAAAAAAAFB9QAAAAAAAYH1AAAAAAABwfUAAAAAAAIB9QAAAAAAAkH1AAAAAAACgfUAAAAAAALB9QAAAAAAAwH1AAAAAAADQfUAAAAAAAOB9QAAAAAAA8H1AAAAAAAAAfkAAAAAAABB+QAAAAAAAIH5AAAAAAAAwfkAAAAAAAEB+QAAAAAAAUH5AAAAAAABgfkAAAAAAAHB+QAAAAAAAgH5AAAAAAACQfkAAAAAAAKB+QAAAAAAAsH5AAAAAAADAfkAAAAAAANB+QAAAAAAA4H5AAAAAAADwfkAAAAAAAAB\u002fQAAAAAAAEH9AAAAAAAAgf0AAAAAAADB\u002fQA=="},"y":{"dtype":"f8","bdata":"n4KEdpqO8z8M7HklziPkP73EoQT0CfE\u002fIQyG69qb5D9pbUfiMCLkv++ryii8LAjAZB9N7xWZ+r+itenYTPrZP0a1HUR10wdAaH1T745hEkBJOKquMSgDQGc3Qbj3VvS\u002foHST5uHxEMDnj0l5Bib7v2ULcmvBvwRAvYCattJPFkDJRyVUN7IJQBB5hQsk6Me\u002fuq3CQLIbDMC\u002fy9bWY1oSwGkwZhVZU\u002f2\u002fKgd9M7Ks5T\u002fk4lnyP8D5P4DsnqgjQeW\u002fTJDPJl6k1b+AZPLqKJ6wvzwIIZY\u002f0eu\u002fxC6ULlsp1780t48IYrjMv0A9TiqUm+C\u002f4On6X3ws3j8oeAG4T\u002ffmP3k1zCY2HdU\u002f\u002fJ67McKz4D+g7rY+Gie3v7TcskohH8M\u002fJH2s5WHRyz+oF5oo8MfmP2wF73Ubuti\u002fmAip+Q315L\u002fwTb6fILHqP5JbRhKVVAVA2+D4qC3E+j84oAtcvbLXP8pF3BWxNda\u002fgtG4e61T+r+KWhnUkGfwv+MeL4srSfi\u002fZLZl1Ckz9b8wBDIYwJfQP3gHlHASwABA3XG9rOVY+j80KnGCn+TWP6lzyr\u002fG0Pi\u002fdmDjWwIO+L\u002fcAyQF5RrxP6FPzeAgngVAkR+23T1T+T8YpwH8\u002frv0v3W3jHmanfq\u002f93+40FVYAcCFjMaZ47\u002flv8UyjNnLt+c\u002f4U5Lizo75D9+srGOFHHuPxFgA2rx9uC\u002fM8dDy5DY8r8GjXB1V1\u002fwv6jvyX2VasE\u002fACtz\u002ftGfiD+IE5KaekunvyZLZqKnsfK\u002fesoch0uV879z4iakR0Hkvx5JqnnKXfE\u002fzvxeyXqSCUBJGy0fNNsEQPi525x6Dqk\u002f7GsSrL5p+b\u002fDZmoCxEoAwOZjlWJsL\u002fS\u002fyhExQDBy5r9QKcmglC\u002f5PzmTHPQVlwJATMH0gsF11L9srcZtGDYFwNKIT5UbYO2\u002fIuaELcjX4T+RCanN4XzxP0riSWemRcY\u002fP5lzwlNj8T9AxZG7jxbNPyXqwiyepPA\u002fDhVS4jyo3b9\u002fLyiu91fpv604mbJ4Ud8\u002fHAR9zuiBBEDdELdH1dwTQA0nPeOaBQpALnk7aGtk8r+mHJbd5JsIwK5j87KMNwnAMGV\u002faj9JtD+N\u002fo6gX+UBQDkCuMTdS\u002f8\u002fkFaTm9lPdL\u002fZOquNfpf8v8B731TK\u002f\u002fq\u002fW3kBA92p0D+eYW6yQhzxP1imu8moare\u002fLitwkYfg4b9cGZ\u002fOWKDqv4lJy9jyVce\u002fTDoU67RX1z\u002f86zf0AaLnv57WxJXLLuA\u002f5l5PZT05\u002fT++2SVo87H7P2a3wXFIiPG\u002f1kPNC6kpCMC+XkdfhpYKwAJ6Hq1Mt9Q\u002fbjcZjIuXBkAOT9Iiii7wP4Wu\u002f4g9MAHAEVZtVY+UEcBGvcgS2J\u002f\u002fv2KhKWO7QPQ\u002fP84lQHWA9z8i1H72Bunvv0PVqjyPify\u002fMiyBH8rg7T\u002fepuCjVpMCQFvxX7\u002fLKQxAkktMub4GAkDRxJ42smfuv1C1dyezX\u002fy\u002f6BcL9cZHCMBzVQKmm1D+v5BQVhXok\u002fk\u002fELLvX45FBkALhIAFpLfqP6gcwwSv0N6\u002fCElOHWfl\u002fb9YtTac3rH0v5BmCvG7vs+\u002fW274w+Rp9D\u002fwHFTeF1zbv1NZACWv2ALAoiN0QO8j779MTWhiSjDavwYU9pnjQdY\u002fJfGZfpmj9j8oRhUu\u002fVAEQE+57QRX4whAZnpfPGHT4D8ooG1MLu3xv8rC2cVcB\u002f6\u002fZgS1lRmw9r\u002f6Q1fgs1fzPwUcQB9POwRAxPPbbAwhAkAnBHKigFDxP1SEwID5QdY\u002fkr8N6MiU4b+UoU8k7tkBwGRaWQKpRdG\u002fnrobDjb6CUAgnbBhjbYGQFQs+bGa8fC\u002fkMNTd91jCMD8wULsK4YFwDowSej0KbU\u002f8Tw99VlzDUCm5iNmTHgDQNg2BcUnh+W\u002fQBRrenxQDMDLcQcRKOoNwMfUX1mNSOy\u002f1vWMVjkH\u002fj+mlKMbBq0HQNZZLdwzsvI\u002fc0UHfKuP4L\u002ftBFyKwPf2v6yEOSar4fW\u002fACUowkSe9b9xUIakyZvlP59ntuObvAZAS2uAOyIwAkCu4ZvbnsnQP6PapAcTSwvANx\u002fm4cRF\u002fb8HC0zzHkcCQPOZZWZWNQ1AxuLCrcfKAEDoNMjmwg33v1ASbB0LowzAMEUujfDj\u002fL\u002f4zk0bxaEIQGxZxGsdjxFAcs190FP8AkBp71FGnoXnv6hC3ZqzKAnApKa2axRB9b9opjUwHrAEQM217aGglA5AALcTT7pIgL+EeKqEpiMSwMUbSYD9lhPAyoXh4SZV\u002fL8MuAaBOg4DQCcntem7RQxA3Jjvo2s\u002f\u002fD+Tjn1zNtXqv94oELXJwgXAqFM6keqYwL\u002f68pD02yUAQGfdOi7MNAFAkrIm9KLr3L97w9Clmab\u002fv7z\u002f0aRg0Q3ApZ8ZE+iTBcBojmj4DyPgvzJv5WSQTwtA5T3+FoM8F0DAkIMt0aYOQAcSFKAdQP6\u002fsJepf8TIFcCo8gJxzA3\u002fv1aNSBtErhFACTKKt+vKGEBNr6R7lzAJQJq3Tj\u002fEyf+\u002fYcZYHGp6DsBhuiCQS0\u002f\u002fv9hagp9VJdQ\u002frCevhgjHBED05wN\u002fENj6P1grMnAW176\u002fY5xTYV+V9r\u002fAuAO3AkK7v2rI3\u002f9i0AJAvMd1qUHiA0B4XQ\u002fwRnPlP95+wMayavm\u002fEtX41NKLBsC9oxXBS9Lrvxjeyl7CGhBALdAQTSAZFEDIZjfQ0EHAvxouie4cOhbAf\u002f3J9O7DFMCcJWxrB3zzP65JZHntWxFAerquMgqaDEAf1DEce74HwFY2UOAwUxnAN77thkf+CcDa1FFgyj0IQJ2\u002fh0esJhxAulJpy3CpE0BoALL0QrABwHsDT9hGcxjAK5DdikrCEcA8UHLJelMCQOBAtoujGxJAdzgFoKQzBkBevDGiWPjhv0zdzxzhbxDAa7+0AM4\u002fBcDISfsky\u002f\u002fav\u002fgrZsjEdwhAVV2izYLtBUCMZhRpLcd\u002fP17VwxqOnQfAkdMRniSOD8DjlvnAtzYBwJin84WQh9Y\u002f5SqjYqYZBECsKylqqR0PQGR8BNI1gto\u002flQ6hEBfqEsC3tzBJQ7QWwIFXlkehBOm\u002f7G17PyMCEEAjZYvKFzcTQDXGR46enwFA31fjCKUE8b98mX1xPioHwGqFPKvGbgbAvWed0Ada9r8KXkXWY2X6PyAyYfk0ABBALc7iuYhaBkDDE0j52xPhv4gDH5J1YwnAuffVag2sBsDKCxvqD4T0P5kAx\u002fRhghZAbN8XHtgsDkBRoCsr\u002foIJwFzCUIz5shrAuDWRLTxeCcCaQgHxYn0LQKMQ4Q0ztRhA0yhKrtFkCkA5WBJbHcYHwELnHprxfRXAzLIJpmrb7b+CM3QyR2ELQCzownnqWQ5AksBNJN\u002fX77+RWFnibV0VwNJQwjzmDBnAJCO2drG58b\u002fEUJQcJuATQIjV6nXmRxNAak03g+3j2b\u002f6\u002fUJ34wYSwK2s17HuYA7AYsfok5FI1L81ZGGNDlIFQAbAmlAXywdAuBwd4HA7tL+buP20y+z0v7yNxreHUQTA+SOsS\u002fPH9r\u002fo1nkppsPQP0ElnSDzTwRA9hdOuCw8\u002fD+6\u002f8dmtvvxv1t3esmS\u002fgPAQGkl2vWt0L8OPV0WalbiP5jng8Dl6M4\u002fOan8g6AYy78a3SQMPf3HP4ICmYwWPMk\u002f+N\u002f\u002f\u002f5Lm7D8Dj5vZG9MDQLDhpaAj4N8\u002fKJy7TG4\u002fx78d9PUxGjoAwBQyds2YXvK\u002fbMH5XJRE\u002fj8VNmOHwcvwP5JQgPFr8PG\u002fZh8VUEp0A8DCjMsdjhXbv5ML2h+YRgVAAGE2vagf+z8oGU1wTTj+v9LA8\u002fQkwQXA4PgHUfoQvj9ByjAVK1EEQJypiHALOA1AZ3YQTAGb+D+YvXOM31fJv5ZvItTowfW\u002fdbCKYjz89r81mkz\u002fzxT7P5ABg1TQygdAw0Czztkx9D+YeJukxhfzv1aYuXGytAbANCQGgt3N\u002f78ghrHI47O2vwHPvG4jhQVAr6CTljB3CUBU2tZVTF\u002fCv5IxW1TPBxTA\u002fm75FN9uEsCjpkI4jNL7P7Oc1Ic0QxpAwf9TgiI1EUDc11WzNxHwv5KpE1q9ZRvAi\u002fOuoD63GsCM6gCQfE\u002fTPwi4Oy9uWR1AVrwYgMEfGUAVO9fT3DL2vyZDErK0oBbAvrDQYy+rEMCeF1\u002fK903yP67Oy21Z1hRA8Cp1Y0hLEUCkECkJsEDMP+2yKaYzphDAIYVs2jOOAcB0qegS50DSP87VdUg0jARAOZpcy60NDUDe4SWYz6QAQMD2DLC6Aam\u002fWDzJSynh8b9g\u002f1c5IaXwvwXrJ4nniOA\u002fcBF\u002f0Gfr+j\u002f4WjsvcWcEQGjx5gEIg7c\u002fgEJCuRtoAMDANCxnpE4AwLublK1ibgDA9ooC1TsNyz\u002fr3rq6vyUDQMlTb9pBwABAqAAl2sSy5z+DSlFVPbXgv2FU3elRsuW\u002fSOmVvz7L6D\u002fsMGw6svvTv2F1xadoLua\u002fD1TF1uQ21T9u12LIc5DcP+g7ktrPzus\u002frEBshfqSsb9YchqX\u002fxXjv7O6hgz9OOS\u002f8inZEIYj9T\u002fOxCUjwQ3iP4Z\u002f3VaelvS\u002fYcyYP1OtBMDQ7\u002fIZVHG5v4SBrX7p1AJACDeJU4oeAEBXqGKIve\u002fVP7+WqtGfEOO\u002fIgfxgz4z978+dWkrUiT6v6kndnaGk\u002fM\u002fOMTwz\u002fakEkAZjiWnjwUNQGh0nbLZP8k\u002fSqC5lL1n9784bRZH6U0CwHqdZjvqdu+\u002f4ORkn6kyob\u002fSoZpxZYXwP3xYi+qfIwJApqZ6xckY9D\u002fgNgH5vMn3v7xlIBYjRAnAPQLZdwDoAcBiMf5B1fPpv8B6NTFsk7m\u002fMGGYsPMr9D9CcnbuhO4KQMsncSMzyfY\u002fuI\u002feExkr+r8QQnFJPSYBwMSaDxW6ewTAgsKgxOpf6b+qzWhPQPT+P1ekTJaysfU\u002fHWDjrpJYw79QBzL3oCbJP\u002fDLm5ZHGuC\u002fYitpSTHg37+Sldphr0rQv26YQ\u002fKibP8\u002fngPJPzzx4j9pvW+AlD\u002fuv7RYF6hNiP6\u002fiNQIlNoiEMCd5yYvDOwIwN4bVirBl\u002fq\u002fc5gygD1E\u002fT8Oc76k3hMHQGDR60gSZ\u002fo\u002fx5B495he+79gN5v9vZgDwNDBTPG8xcC\u002fdyyPR139C0CFb08SWikMQEJNTqxwFc8\u002fj6fOFIXuDMCs1VmiYp4FwHrFMJZPFvE\u002fgLn0HZYLDEBWYwuiU50NQOyahSXgJsO\u002fsheNreSOE8CHxs\u002f2vMwVwBNo2E7FZgDAhh0TfB\u002f4EkBSa0h1p0IZQM\u002fmqOdSn\u002fM\u002fm\u002f1vjTtoDcBlND6aXkkSwN1UNLwd0PC\u002fmcyTs3XWDkBU5HbTWeEUQMJaF9RIgwtAYF+Sws+F47\u002fCmFwYPiwRwBx5ZGHkGQfAOqtFtTeu9j9jKzfdQb8OQA=="},"type":"scatter"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermap":[{"type":"scattermap","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"}}},"xaxis":{"title":{"text":"Time (sec)"}},"yaxis":{"title":{"text":"x"}}},                        {"responsive": true}                    )                };            </script>        </div>
+</div>
+<br />
+<br /><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.133 seconds)</p>
+<div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-01-temporaltimeseriesanalysis-plot-autoregressiveexample-py">
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/245726e6941226a690d15604f82ebfca/plot_autoregressiveExample.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_autoregressiveExample.ipynb</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/200faec71f624512cf4a837ae934e4ec/plot_autoregressiveExample.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_autoregressiveExample.py</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-zip docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/ac238ae74008acc3d97ff32caef42b0b/plot_autoregressiveExample.zip"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">zipped:</span> <span class="pre">plot_autoregressiveExample.zip</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">statsNeuro2025</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Statistical Neuroscience 2025 Examples</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html#temporal-time-series-analysis">Temporal Time Series Analysis</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Temporal Time Series Analysis</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Statistical Neuroscience 2025 Examples</a><ul>
+  <li><a href="index.html">Temporal Time Series Analysis</a><ul>
+      <li>Previous: <a href="plot_whiteNoiseExample.html" title="previous chapter">Generation of Gaussian White Noise</a></li>
+      <li>Next: <a href="plot_movingAverageExample.html" title="next chapter">Generation of a moving average time series</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2025, Joaquin Rapela.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.1.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="../../_sources/auto_examples/01_temporalTimeSeriesAnalysis/plot_autoregressiveExample.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
