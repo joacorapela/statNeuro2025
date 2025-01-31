@@ -16,8 +16,8 @@
     | 01 | Jan 17 | [Probability for temporal time series analysis](https://github.com/joacorapela/statNeuro2025/blob/master/practicals/01_temporalTimeSeriesAnalysis/practical_temporalTimeSeriesAnalysis.pdf) | [Joaquin Rapela](https://www.gatsby.ucl.ac.uk/~rapela) | practical |
     | 02 | Jan 20 | [Statistics for temporal time series analysis](https://github.com/joacorapela/statNeuro2025/blob/master/lectures/02_temporalTimeSeriesAnalysis/temporalTimeSeriesAnalysis.pdf)| [Joaquin Rapela](https://www.gatsby.ucl.ac.uk/~rapela) | lecture |
     | 02 | Jan 24 | Statistics for temporal time series analysis | [Joaquin Rapela](https://www.gatsby.ucl.ac.uk/~rapela) | practical |
-    | 03 | Jan 27 | Spectrogram and non-stationary signals, Multiple time series | [Joaquin Rapela](https://www.gatsby.ucl.ac.uk/~rapela) | lecture |
-    | 03 | Jan 31 | [Spectrogram and coherence](https://github.com/joacorapela/neuroinformatics24/blob/master/practicals/03_spectralAnalysisForNonStationarySignals/nonStationarySpectralAnalysis.pdf) | [Joaquin Rapela](https://www.gatsby.ucl.ac.uk/~rapela) | practical |
+    | 03 | Jan 27 | [Spectral time series analysis](https://github.com/joacorapela/statNeuro2025/blob/master/lectures/03_spectralTimeSeriesAnalysis/spectralTimeSeriesAnalysis.pdf) | [Joaquin Rapela](https://www.gatsby.ucl.ac.uk/~rapela) | lecture |
+    | 03 | Jan 31 | Spectral time series analysis | [Joaquin Rapela](https://www.gatsby.ucl.ac.uk/~rapela) | practical |
     | 04 | Feb 03 | Dimensionality reduction | [Sina Tootoonian](https://www.linkedin.com/in/sina-tootoonian-99668838/) | lecture |
     | 04 | Feb 07 | [Singular Value Decomposition](practicals/05_singularValueDecomposition/singularValueDecomposition.pdf) | [Sina Tootoonian](https://www.linkedin.com/in/sina-tootoonian-99668838/) | practical |
     | 05 | Feb 10 | [Linear Regression](https://github.com/joacorapela/neuroinformatics24/blob/master/lectures/06_linearRegression/swc_neuroinformatics_linreg.pdf) | [Lior Fox](https://liorfox.github.io/) | lecture |
