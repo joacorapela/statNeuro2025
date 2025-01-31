@@ -1,0 +1,131 @@
+\documentclass[12pt]{article}
+
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage[shortlabels]{enumitem}
+\usepackage[colorlinks=]{hyperref}
+\usepackage[margin=2cm]{geometry}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+\title{Worksheet: spectral time series analysis}
+\author{Joaquin Rapela}
+
+\begin{document}
+
+\maketitle
+
+The first five problems will examine oscillatory activity in local field
+potentials recorded from infralimbic cortex and from the basolateral amygdala
+of rats. These recordings are available in this
+\href{https://github.com/tne-lab/cl-example-data}{repository}, and two
+publications related to this data are cited in the
+\href{https://github.com/tne-lab/cl-example-data/README.md}{README.md} from
+this repository.
+
+In the following exercises you will use a 45-minutes local field potential
+saved in the file
+\href{https://github.com/tne-lab/cl-example-data/blob/master/08102017/time_data_pre_45sec.mat}{08102017/time\_data\_pre\_45sec.mat}
+of the previous repository.
+To speed up its processing, I downsampled this file
+by a factor of ten.
+You can download the downsampled file from
+\href{https://www.gatsby.ucl.ac.uk/~rapela/statNeuro/2025/lectures/03_spectralTimeSeriesAnalysis/data/time_data_pre_45sec_ds10_v6.mat}{here}.
+
+\begin{enumerate}
+
+    \item Plot data from one channel in this recording. You can adapt the
+        Python script provided \href{}{here}.
+
+    \item Estimate and plot the correlation of the data plotted above.
+
+    \item Estimate the spectral density using this data and periodogram method,
+        as indicated in the section \emph{Step 4: Power spectral density, or
+        spectrum} of the lecture
+        \href{https://mark-kramer.github.io/Case-Studies-Python/03.html#step-4-power-spectral-density-or-spectrum}{The Power Spectrum (Part 1)}.
+
+    \item The periodogram is a noisy estimator of the spectral
+        density. Use the function
+        \href{https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.welch.html#scipy.signal.welch}{scipy.signal.welch} to re-estimate
+        the previous power spectrum, and check if the Welch estimate is better
+        than the periodogram one.
+
+    \item Both the periodogram and the Welch method assume that the time
+        series is static. Use the spectrogram, as described in the section
+        \emph{Step 6: The spectrogram} of the lecture
+        \href{https://hub.2i2c.mybinder.org/user/mark-kramer-case-studies-python-vd53gjx8/notebooks/03.ipynb#the-spectrogram}{The
+        Power Spectrum (Part 1)}, to bypass this assumption and check if the
+        spectral density changes with time.
+
+    \item (optional) We measure the LFP in human motor cortex with an Utah array. It is
+        known that this LFP only has an oscillation at 11~Hz (i.e.,
+        $LFP(t)=\cos(\omega_0\,t)$ with $\omega_0=2\pi\,f_0$~rad/sec,
+        $f_0=11$~Hz). However, when we sample this LFP at a frequency of 10~Hz
+        (i.e., $\omega_s=2\pi\,f_s$~rad/sec, $f_s=10$~Hz) we only observe an
+        oscillation at 1~Hz (Figure~\ref{fig:undersampledLFP}).
+
+        \begin{figure}
+            \begin{center}
+                \includegraphics[width=6in]{figures/undersampledLFP.png}
+
+                \caption{An LFP oscillating at 11~Hz (i.e., $LFP(t)=\cos(\omega_0\,t)$ with $\omega_0=2\pi\,f_0$~rad/sec,
+                $f_0=11$~Hz) when sampled at a frequency of 10~Hz (i.e.,
+                $\omega_s=2\pi\,f_s$~rad/sec, $f_s=10$~Hz) only displays an
+                oscillation at 1~Hz. Use the sampling theorem to explain this
+                observation.  Code to generate this figure appears
+                \href{https://github.com/joacorapela/neuroinformatics24/blob/master/worksheets/02_LFPs_spectralAnalysis/code/doExUndersampledLFP.py}{here}.}
+
+            \end{center}
+            \label{fig:undersampledLFP}
+        \end{figure}
+
+        \begin{enumerate}[(a)]
+
+            \item explain the appearance of the 1~Hz oscillation using the
+                sampling theorem.
+
+                Hints:
+
+                \begin{itemize}
+
+                    \item the Fourier transform of a cosine is
+                        $\mathcal{FT}\{\cos(\omega_0 t)\}=\frac{1}{2}[\delta(\omega-\omega_0)+\delta(\omega+\omega_0)]$
+                        and has the spectrum in the figure below.
+                        \input{figFTcos}
+
+                    \item replicate the above spectrum, as indicated
+                        by the sampling theorem, with replicas at multiples
+                        of the sampling frequency $\omega_s=2\pi\,f_s$
+                        ($f_s=\frac{1}{T_s}=10~Hz$).
+
+                    \item check if any of the above replicates adds signal at
+                        1~Hz (i.e., $\omega=2\pi\,f$~rad/sec, $f=1$~Hz).
+                \end{itemize}
+
+                Note: to avoid this type of problems where low-frequency
+                oscillations appear due to frequencies in the signal above the
+                Nyquist frequency (i.e., half of the sampling frequency),
+                signals are low pass filtered with an analog filter at the
+                Nyquist frequency before being sampled. This filter is called
+                an \textbf{antialiasing filter}. Analog filters do not
+                generate aliasing.
+
+            \item use a sampling frequency above the Nyquist rate (i.e.,
+                $f_s>2f_N$ where $f_N$ is the largest frequency in the signal)
+                and check that oscillations at 11~Hz appear in the sampled
+                signal. You may want to use
+                \href{https://github.com/joacorapela/neuroinformatics24/blob/master/worksheets/02_LFPs_spectralAnalysis/code/doExUndersampledLFP.py}{this}
+                code.
+
+            \item build another example of an LFP having an oscillation at a
+                high frequency that when sampled at a frequency below the
+                Nyquist rate generates an oscillation at a lower frequency. You
+                can use
+                \href{https://github.com/joacorapela/neuroinformatics24/blob/master/worksheets/02_LFPs_spectralAnalysis/code/doExUndersampledLFP.py}{this} code to verify that with your values of
+                the LFP frequency and the sampling frequency an oscillation
+                at a low frequency emerges.
+
+    \end{enumerate}
+\end{enumerate}
+
+\end{document}
