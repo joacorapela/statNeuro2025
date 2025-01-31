@@ -19,13 +19,12 @@ The first five problems will examine oscillatory activity in local field
 potentials recorded from infralimbic cortex and from the basolateral amygdala
 of rats. These recordings are available in this
 \href{https://github.com/tne-lab/cl-example-data}{repository}, and two
-publications related to this data are cited in the
-\href{https://github.com/tne-lab/cl-example-data/README.md}{README.md} from
-this repository.
+publications related to this data are cited in this
+\href{https://github.com/tne-lab/cl-example-data/README.md}{README.md}.
 
 In the following exercises you will use a 45-minutes local field potential
 saved in the file
-\href{https://github.com/tne-lab/cl-example-data/blob/master/08102017/time_data_pre_45sec.mat}{08102017/time\_data\_pre\_45sec.mat}
+\emph{08102017/time\_data\_pre\_45sec.mat}
 of the previous repository.
 To speed up its processing, I downsampled this file
 by a factor of ten.
@@ -35,14 +34,17 @@ You can download the downsampled file from
 \begin{enumerate}
 
     \item Plot data from one channel in this recording. You can adapt the
-        Python script provided \href{}{here}.
+        Python script provided
+        \href{https://github.com/joacorapela/statNeuro2025/blob/master/worksheets/03_spectralTimeSeriesAnalysis/doPlotData.py}{here}.
 
     \item Estimate and plot the correlation of the data plotted above.
 
     \item Estimate the spectral density using this data and periodogram method,
-        as indicated in the section \emph{Step 4: Power spectral density, or
-        spectrum} of the lecture
-        \href{https://mark-kramer.github.io/Case-Studies-Python/03.html#step-4-power-spectral-density-or-spectrum}{The Power Spectrum (Part 1)}.
+        as indicated in the section
+        \href{https://mark-kramer.github.io/Case-Studies-Python/03.html#step-4-power-spectral-density-or-spectrum}{Step
+        4: Power spectral density, or spectrum} of the lecture \emph{The Power
+        Spectrum (Part 1)}. You may want to complete the code provided
+        \href{https://github.com/joacorapela/statNeuro2025/blob/master/worksheets/03_spectralTimeSeriesAnalysis/doPeriodogram.py}{here}.
 
     \item The periodogram is a noisy estimator of the spectral
         density. Use the function
@@ -50,12 +52,12 @@ You can download the downsampled file from
         the previous power spectrum, and check if the Welch estimate is better
         than the periodogram one.
 
-    \item Both the periodogram and the Welch method assume that the time
-        series is static. Use the spectrogram, as described in the section
-        \emph{Step 6: The spectrogram} of the lecture
-        \href{https://hub.2i2c.mybinder.org/user/mark-kramer-case-studies-python-vd53gjx8/notebooks/03.ipynb#the-spectrogram}{The
-        Power Spectrum (Part 1)}, to bypass this assumption and check if the
-        spectral density changes with time.
+    \item Both the periodogram and the Welch method assume that the time series
+        is static. Use the spectrogram, as described in the section
+        \href{https://hub.2i2c.mybinder.org/user/mark-kramer-case-studies-python-vd53gjx8/notebooks/03.ipynb#the-spectrogram}{Step
+        6: The spectrogram} of the lecture \emph{The Power Spectrum (Part 1)},
+        to bypass this assumption and check if the spectral density changes
+        with time.
 
     \item (optional) We measure the LFP in human motor cortex with an Utah array. It is
         known that this LFP only has an oscillation at 11~Hz (i.e.,
