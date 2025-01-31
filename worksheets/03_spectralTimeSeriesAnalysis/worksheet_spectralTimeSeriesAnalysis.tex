@@ -16,18 +16,19 @@
 \maketitle
 
 The first five problems will examine oscillatory activity in local field
-potentials recorded from infralimbic cortex and from the basolateral amygdala
+potentials recorded from the infralimbic cortex and from the basolateral amygdala
 of rats. These recordings are available in this
 \href{https://github.com/tne-lab/cl-example-data}{repository}, and two
-publications related to this data are cited in this
+publications related to this data are cited in the repository's
 \href{https://github.com/tne-lab/cl-example-data/README.md}{README.md}.
 
 In the following exercises you will use a 45-minutes local field potential
-saved in the file
+recording
+saved at a temporal resolution of 30,000 samples per second, i.e., 30~kHz, in the file
 \emph{08102017/time\_data\_pre\_45sec.mat}
 of the previous repository.
 To speed up its processing, I downsampled this file
-by a factor of ten.
+to a resolution of 3,000 samples per second, i.e., 3~kHz.
 You can download the downsampled file from
 \href{https://www.gatsby.ucl.ac.uk/~rapela/statNeuro/2025/lectures/03_spectralTimeSeriesAnalysis/data/time_data_pre_45sec_ds10_v6.mat}{here}.
 
@@ -37,10 +38,16 @@ You can download the downsampled file from
         Python script provided
         \href{https://github.com/joacorapela/statNeuro2025/blob/master/worksheets/03_spectralTimeSeriesAnalysis/doPlotData.py}{here}.
 
-    \item Estimate and plot the correlation of the data plotted above.
+    \item Estimate and plot the sample mean and covariance function of the
+        data plotted above. Does the data appear to be wide-sense stationary?
 
-    \item Estimate the spectral density using this data and periodogram method,
-        as indicated in the section
+        Hint: you could estimate the sample mean and covariance function from
+        different section of the data. If these estimates change substantially
+        among different segments, the data is probably not wide-sense
+        stationary.
+
+    \item Estimate the spectral density using the periodogram method, as
+        indicated in the section
         \href{https://mark-kramer.github.io/Case-Studies-Python/03.html#step-4-power-spectral-density-or-spectrum}{Step
         4: Power spectral density, or spectrum} of the lecture \emph{The Power
         Spectrum (Part 1)}. You may want to complete the code provided
@@ -49,14 +56,14 @@ You can download the downsampled file from
     \item The periodogram is a noisy estimator of the spectral
         density. Use the function
         \href{https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.welch.html#scipy.signal.welch}{scipy.signal.welch} to re-estimate
-        the previous power spectrum, and check if the Welch estimate is better
+        the spectral density function using the Welch method, and check if this estimate is better
         than the periodogram one.
 
     \item Both the periodogram and the Welch method assume that the time series
-        is static. Use the spectrogram, as described in the section
+        is stationary. Use the spectrogram, as described in the section
         \href{https://hub.2i2c.mybinder.org/user/mark-kramer-case-studies-python-vd53gjx8/notebooks/03.ipynb#the-spectrogram}{Step
         6: The spectrogram} of the lecture \emph{The Power Spectrum (Part 1)},
-        to bypass this assumption and check if the spectral density changes
+        to bypass this assumption, and to check if the spectral density changes
         with time.
 
     \item (optional) We measure the LFP in human motor cortex with an Utah array. It is
