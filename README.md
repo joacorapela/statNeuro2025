@@ -1,4 +1,4 @@
-# Statistical Neuroscience 2025 repository Steve sucks
+# Statistical Neuroscience 2025 repository
 
 - lectures and practicals will take place at the Sainsbury Wellcome Centre lecture theatre. Lectures will be on Mondays from 1pm to 3pm and practicals on Fridays from 2pm to 3:30pm.
 
