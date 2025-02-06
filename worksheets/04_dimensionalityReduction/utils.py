@@ -2,17 +2,17 @@
 import plotly.graph_objs as go
 
 
-def getHovertext(times, clusters_ids, z,
-                 channels_for_clusters, regions_for_channels):
+def getHovertext(times, neurons_ids, z,
+                 channels_for_neurons, regions_for_channels):
     hovertext = []
-    for yi, yy in enumerate(clusters_ids):
-        channel_for_cluster = channels_for_clusters[yi]
-        region_for_cluster = regions_for_channels[channel_for_cluster]
+    for yi, yy in enumerate(neurons_ids):
+        channel_for_neuron = channels_for_neurons[yi]
+        region_for_neuron = regions_for_channels[channel_for_neuron]
         hovertext.append([])
         for xi, xx in enumerate(times):
-            hovertext[-1].append(f"time: {xx}<br />cluster_id: {yy}<br />"
+            hovertext[-1].append(f"time: {xx}<br />neuron_id: {yy}<br />"
                                  f"z-score: {z[yi][xi]}<br />"
-                                 f"loc: {region_for_cluster}")
+                                 f"loc: {region_for_neuron}")
     return hovertext
 
 
