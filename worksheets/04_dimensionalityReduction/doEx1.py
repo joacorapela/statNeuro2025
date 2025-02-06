@@ -2,7 +2,6 @@ import sys
 import argparse
 import numpy as np
 import scipy.stats
-import plotly.graph_objs as go
 
 import one.api
 import brainbox.io.one
@@ -22,7 +21,9 @@ def main(argv):
     parser.add_argument("--x_label", type=str, help="x_label",
                         default="Time (sec)")
     parser.add_argument("--y_label", type=str, help="x_label",
-                        default="Cluster ID")
+                        default="Neuron ID")
+    parser.add_argument("--colorbar_title", type=str, help="colorbar_title",
+                        default="Z-scored<br>spike rate")
     parser.add_argument("--fig_filename_pattern", type=str,
                         help="figure filename pattern",
                         default=("../../figures/binned_spikes_binSize_{:.02f}_"
@@ -34,6 +35,7 @@ def main(argv):
     probe_id = args.probe_id
     x_label = args.x_label
     y_label = args.y_label
+    colorbar_title = args.colorbar_title
     fig_filename_pattern = args.fig_filename_pattern
 
     aOne = one.api.ONE(base_url='https://openalyx.internationalbrainlab.org',
@@ -46,24 +48,26 @@ def main(argv):
     activity_array, edges = np.histogramdd(
         (spike_time_binary, spikes.clusters),
         bins=(spike_time_binary.max(), spikes.clusters.max()))
-    activity_arrayZ = scipy.stats.zscore(activity_array)
+    # after transposing the shape of activity_array is n_neurons x n_times
+    activity_arrayTZ = scipy.stats.zscore(activity_array.T, axis=1)
 
     times = (edges[0][1:] + edges[0][:-1])/2.0
-    clusters_ids = edges[1][:-1]
+    neurons_ids = edges[1][:-1]
 
-    zmin, zmax = np.percentile(activity_arrayZ, q=(1.0, 99.0))
+    zmin, zmax = np.percentile(activity_arrayTZ, q=(1.0, 99.0))
 
     hovertext = utils.getHovertext(
-        times=times, clusters_ids=clusters_ids, z=activity_arrayZ.T,
-        channels_for_clusters=clusters.channels,
+        times=times, neurons_ids=neurons_ids, z=activity_arrayTZ,
+        channels_for_neurons=clusters.channels,
         regions_for_channels=els[probe_id]["acronym"])
 
-    # orginal
-    fig = utils.getHeatmap(xs=times, ys=clusters_ids, zs=activity_arrayZ.T,
+    fig = utils.getHeatmap(xs=times, ys=neurons_ids, zs=activity_arrayTZ,
                            hovertext=hovertext, zmin=zmin, zmax=zmax,
-                           x_label=x_label, y_label=y_label)
+                           x_label=x_label, y_label=y_label,
+                           colorbar_title=colorbar_title)
     fig.write_image(fig_filename_pattern.format(bin_size, "original",  "png"))
     fig.write_html(fig_filename_pattern.format(bin_size, "original",  "html"))
+    fig.show()
 
     breakpoint()
 
