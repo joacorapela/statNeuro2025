@@ -1,0 +1,432 @@
+\documentclass[12pt]{article}
+
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage[shortlabels]{enumitem}
+\usepackage[colorlinks=]{hyperref}
+\usepackage[margin=2cm]{geometry}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{listings}
+\usepackage[title]{appendix}
+
+\newtheorem{definition}{Definition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{theorem}{Theorem}
+
+\lstset{
+    basicstyle=\fontsize{7}{9}\selectfont\ttfamily
+}
+
+\title{Worksheet: dimensionality reduction}
+\author{Joaquin Rapela}
+
+\begin{document}
+
+\maketitle
+
+This worksheet is a modification of a
+\href{https://drive.google.com/file/d/1r90rlJpFKilQmNj1h27gmZdyi-RJeCq_/view}{worksheet}
+from the 2023 edition of the
+\href{https://www.ucl.ac.uk/cortexlab/neuroinformatics-class-page}{NEUO019
+Foundations of Neuroinfomatics} course, taught by
+\href{https://profiles.ucl.ac.uk/31489}{Prof.~Kenneth Harris} at UCL.
+
+We are going to use the singular value decomposition (SVD) to uncover hidden
+structure in the firing rate of a population of neurons in a mouse motor cortex
+and striatum.
+%
+We will use data from the
+\href{https://www.internationalbrainlab.com/}{International Brain Laboratory}
+(IBL). To learn more IBL please go to \url{https://viz.internationalbrainlab.org}.
+
+\begin{enumerate}
+
+    \item First, install package needed for this worksheet by typing the
+        following in the command line. I recommend using conda environments. If
+        you are doing so, before running the next command, activate your conda
+        environment.
+
+        \begin{lstlisting}[backgroundcolor=\color{lightgray}]
+        pip install -r requirements.txt
+        \end{lstlisting}
+
+        Next use the script
+        \href{https://github.com/joacorapela/statNeuro2025/blob/master/worksheets/04_dimensionalityReduction/doEx1.py}{doEx1.py}
+        to plot the firing rates of a population of neurons, as in
+        Fig.~\ref{fig:ex1}.
+
+        \begin{figure}
+            \begin{center}
+                \includegraphics[width=6in]{../../figures/binned_spikes_binSize_1.00_original.png}
+                \caption{Z-scores of binned spikes times of all unsorted
+                neurons.}
+            \end{center}
+            \label{fig:ex1}
+        \end{figure}
+
+        In this script we first import libraries and open a connection IBL public data
+        server:
+
+        \begin{lstlisting}[backgroundcolor=\color{lightgray},language=Python]
+        import numpy as np
+        import matplotlib.pyplot as plt
+        import one.api
+        import scipy
+        \end{lstlisting}
+
+        Next, we load information about the spikes and trials for one
+        experiment. Each experiment has a unique experiment ID, which is a long
+        string identifying the experiment. This particular one is an experiment
+        made at New York University, where they recorded from the motor cortex
+        and striatum.  We load two data objects: dictionaries containing
+        information about the spikes, and about the trials.
+
+        \begin{lstlisting}[backgroundcolor=\color{lightgray},language=Python]
+        eID = 'ebe2efe3-e8a1-451a-8947-76ef42427cc9'
+        spikes = one.load_object(eID, 'spikes', 'alf/probe00/pykilosort')
+        trials = one.load_object(eID, 'trials')
+        \end{lstlisting}
+
+        We then group the spikes together into an array, using the function
+        \texttt{np.histogramdd}. Also we Z-score the activity of each cell (set
+        it to have mean 0 and std 1)
+
+        \begin{lstlisting}[backgroundcolor=\color{lightgray},language=Python]
+        eID = 'ebe2efe3-e8a1-451a-8947-76ef42427cc9'
+        bin_size = 1
+        spike_time_bin = np.floor(spikes.times/bin_size).astype(int)
+        activity_array, _ = np.histogramdd((spike_time_bin,spikes.clusters), bins=( spike_time_bin.max(), spikes.clusters.max()))
+        activity_array = activity_array.T % after transposing the shape of activity_array is n_neurons x n_times
+        activity_arrayZ = stats.zscore(activity_array)
+        \end{lstlisting}
+
+        Finally we plot a pseudocolor image of the array, but just sorted in
+        whatever order it came. The functions \texttt{getHeatmap} and
+        \texttt{getHovertext} are provided in module
+        \href{https://github.com/joacorapela/statNeuro2025/blob/master/worksheets/04_dimensionalityReduction/utils.py}{utils.py}.
+
+        \begin{lstlisting}[backgroundcolor=\color{lightgray},language=Python]
+        eID = 'ebe2efe3-e8a1-451a-8947-76ef42427cc9'
+        zmin, zmax = np.percentile(activity_arrayZ, q=(1.0, 99.0))
+        hovertext = utils.getHovertext(
+            times=times, clusters_ids=clusters_ids, z=activity_arrayZ.T,
+            channels_for_clusters=clusters.channels,
+            regions_for_channels=els[probe_id]["acronym"])
+        fig = utils.getHeatmap(xs=times, ys=clusters_ids, zs=activity_arrayZ.T,
+                            hovertext=hovertext, zmin=zmin, zmax=zmax,
+                            x_label=x_label, y_label=y_label,
+                            colorbar_title=colorbar_title)
+        fig.write_image(fig_filename_pattern.format(bin_size, "original",  "png"))
+        fig.write_html(fig_filename_pattern.format(bin_size, "original",  "html"))
+        fig.show()
+        \end{lstlisting}
+
+        \item We want to use the SVD to find the temporal activity pattern that
+            captures most of the variance in the population (i.e., the
+            population firing pattern), and sort the neurons in
+            Fig.~\ref{fig:ex2} according to the similarity of their firing
+            rates to the population firing pattern.
+
+            Take a matrix $M\in\mathbb{R}^{m\times n}$, we can use
+            the SVD to decompose $M$ into as a summation of $r=\min(m, n)$
+            rank one matrices (a rank one matrix $M$ is one that is the
+            product of a column vector $\mathbf{u}$ times a row vector
+            $\mathbf{v}^\intercal$; i.e.,
+            $M=\mathbf{u}\mathbf{v}^\intercal$). Eq.~\ref{eq:rank1Decomp}
+            gives the decomposition of $M$ into a sum of $r$ rank one
+            matrices, and Eq.~\ref{eq:rank1Approx} gives the best rank one
+            approximaton to $M$.
+
+            \begin{align}
+                M&=USV=\sum_{i=0}^{r-1}s_iU[:,i]V[:,i]^\intercal\label{eq:rank1Decomp}\\
+                &\simeq s_0U[:,0]V[:,0]^\intercal\label{eq:rank1Approx}
+            \end{align}
+
+            For the z-scored firing rates we are analyzing in this worksheet,
+            the vector $V[:,0]$ gives the population firing pattern. When
+            $U[0,i]$ is positive (negative) and has a large absolute value, the
+            z-scored firing rate of the ith neuron will be hightly correlated
+            (anticorrelated) with the population firing pattern.
+
+            Plot the z-scored firing rates, as in Fig.~\ref{fig:ex2}, but
+            sorting the neurons according to the correlation of their firing
+            pattern with population firing pattern.  You may want to complete
+            the script \href{}{doEx2.ph}. Add to this plot a vertical line at
+            the time of the last response of the subject. Fig.~\ref{fig:ex2}
+            plots the sorted spikes rates that I obtained.
+
+            \begin{figure}
+                \begin{center}
+                    \includegraphics[width=6in]{../../figures/binned_spikes_svd_binSize_1.00_u0Sorted.png}
+                    \caption{Z-scores of binned spikes times of all sorted
+                    neurons.}
+                \end{center}
+                \label{fig:ex2}
+            \end{figure}
+
+        \item Fig.~\ref{fig:ex2} suggest that the response of the neurons in
+            the population is related to the subjects response. To verify this,
+            plot the population firing rate and add to this plot vertical lines
+            indicating subject response times. You may want to complete the
+            script \href{}{doEx4.py}.
+
+        \item (optional) As proved in the Eckart-Young-Mirsky theorem
+            (Theorem~\ref{thm:eckart-young-mirsky}), the truncated rank $\nu$
+            singular value decomposition of matrix $M$
+            (Eq.~\ref{eq:truncatedSVD}), is the best rank $\nu$
+            approximation to $M$, among all possible rank $\nu$ matrices. In
+            addition, the Frobenius error of this best approximation can be
+            computed from the singular values of the SVD decomposition of
+            matrix $M$, without having to build assemble the best
+            approximation.
+
+            For $\nu=1,\ldots,5$, verify the above claim by assembling the
+            truncated SVD, $M_\nu$, of the matrix, $M$, in Fig.\ref{fig:ex2}, computing the
+            Frobenious norm of the difference betweeen $M$ and $M_\nu$, and
+            comparing this norm with the the sum of the first $\nu$ singular
+            values of matrix $M$. Plot $M_\nu$ and write in the title the
+            Frobenius error (i.e., empirical error) and sum of the squared
+            first $\nu$
+            singular values (i.e., the analytical error), as shown in
+            Fig.~\ref{fig:truncatedSVD-rank1} for $\nu=1$.
+
+            \begin{figure}
+                \begin{center}
+                    \includegraphics[width=5in]{../../figures/binned_spikes_truncatedSVD_binSize_1.00_nComponents_1.png}
+
+                    \caption{Low-rank approximation of the image in
+                    Figure~\ref{fig:ex2} using a truncated SVD or rank \i. The
+                    title reports the empirical and analytical errors of the
+                    reconstruction. The empirical error is the Frobenius norm
+                    of the difference between the low-rank approximation and
+                    the image in Figure~\ref{fig:ex2}. The analytical error is
+                    computed from the singular values of the image in
+                    Figure~\ref{fig:ex2} using Eq.~\ref{eq:errorFNorm}.  }
+                    \label{fig:truncatedSVD-rank1}
+                \end{center}
+            \end{figure}
+            \foreach \i in {2,5}{
+                \begin{figure}
+                    \begin{center}
+
+                        \href{http://www.gatsby.ucl.ac.uk/~rapela/neuroinformatics/2023/ws5/figures/binned_spikes_truncatedSVD_binSize_1.00_nComponents_\i.html}{\includegraphics[width=5in]{../../figures/binned_spikes_truncatedSVD_binSize_1.00_nComponents_\i.png}}
+
+                        \caption{Low-rank approximation of the image in
+                        Figure~\ref{fig:ex2} using a truncated SVD of rank
+                        \i. Same format as that in Figure~\ref{fig:truncatedSVD-rank1}.
+                        }
+
+                        \label{fig:truncatedSVD-rank\i}
+
+                    \end{center}
+                \end{figure}
+            }
+
+
+\end{enumerate}
+
+\pagebreak
+\begin{appendices}
+
+\section{Notes on the SVD}
+\label{sec:notesOnTheSVD}
+
+    \begin{definition}[The SVD]
+        Given $M\in\mathbb{C}^{m\times n}$, a singular value decomposition (SVD)
+        of $M$ is a factorisation:
+
+        \begin{align*}
+            M = USV^*
+        \end{align*}
+
+        where
+
+        \begin{align*}
+            U &\in \mathbb{C}^{m\times m}\quad\text{is unitary,}\\
+            V &\in \mathbb{C}^{n\times n}\quad\text{is unitary,}\\
+            S &\in \mathbb{C}^{m\times n}\quad\text{is diagonal.}
+        \end{align*}
+
+        In addition, it is assumed that the diagonal entries $s_k$ of $S$ are
+        nonnegative and in nonincreasing order; that is, $s_1\ge
+        s_2\ge\ldots\ge s_p\ge 0$, where $p=\min(m, n)$.
+    \end{definition}
+
+    \begin{definition}[Rank of a matrix]
+
+        The column rank of a matrix is the dimension of the space spanned by
+        its columns. Similarly, the row rank of a matrix is the dimension of
+        the space spanned by its rows. The column rank of a matrix is always
+        equal to its row rank. This is a corollary of the SVD. So we refer to
+        this number simply as the rank of a matrix.
+
+        \label{def:rank}
+    \end{definition}
+
+    The rank of a matrix can be interpreted as a measure of the complexity of
+    the matrix. Matrices with lower rank are simpler than those with larger
+    rank.
+
+    The SVD decomposes a matrix as a sum of rank-one (i.e., very simple)
+    matrices. 
+
+    \begin{align*}
+        M = \sum_{k=1}^rs_k\mathbf{u}_k\mathbf{v}_k^*
+    \end{align*}
+
+    There are multiple other decompositions as sums of rank-one matrices. If
+    $M\in\mathbb{C}^{m\times n}$, then it can be decomposed as a sum of $m$
+    rank-one matrices given by its rows (i.e.,
+    $M=\sum_{i=1}^m\mathbf{e}_i\mathbf{m}_{i,\cdot}^*$, where $\mathbf{e}_i$ is
+    the m-dimensional canonical unit vector, and $\mathbf{m}_{i,\cdot}$ is the ith row
+    of $M$), or as a sum of $n$ rank-one matrices given by its columns (i.e.,
+    $M=\sum_{j=1}^n\mathbf{m}_{\cdot,j}\mathbf{e}_j^*$, where $\mathbf{e}_j$ is
+    the n-dimensional canonical unit vector, and $\mathbf{m}_{\cdot,j}$ is the jth
+    column of $M$), or a sum of $mn$ rank-one matrices each containing only one
+    non-zero element (i.e., $M=\sum_{i=1}^m\sum_{j=1}^nm_{ij}E_{ij}$, where
+    $E_{ij}$ is the matrix with all entries equal to zero, except the $ij$
+    entry that is one, and $m_{ij}$ is the entry of $M$ at position ij).
+
+    A unique characteristic of the SVD compared to these other decompositions
+    is that, if the rank of a matrix is $r$, then its SVD yields optimal
+    approximations of lower rank $\nu$, for $\nu=1,\ldots,r$, as shown by
+    Theorem~\ref{thm:eckart-young-mirsky}.
+
+    \begin{definition}[Frobenius norm]
+        The Frobenius norm of matrix $M\in\mathbb{C}^{m\times n}$ is
+
+        \begin{align*}
+            \|M\|_F=\left(\sum_{i=1}^m\sum_{j=1}^nm_{ij}^2\right)^{1/2}
+        \end{align*}
+
+    \end{definition}
+
+    Note that
+
+    \begin{align}
+        \|M\|_F=\sqrt{tr(M^*M)}=\sqrt{tr(MM^*)}
+        \label{eq:frobeniusAsTrace}
+    \end{align}
+
+    \begin{lemma}[Orthogonal matrices preserve the Frobenius norm]
+        Let $M\in\mathbb{C}^{m\times n}$ and let $P\in\mathbb{C}^{m\times m}$
+        and $Q\in\mathbb{C}^{n\times n}$ be orthogonal matrices. Then
+
+        \begin{align*}
+            \|PMQ\|_F=\|M\|_F
+        \end{align*}
+
+        \label{lemma:orthogonalPreserveF}
+    \end{lemma}
+
+    \begin{proof}
+        \begin{align}
+            \|PMQ\|_F&=\sqrt{tr((PMQ)(PMQ)^*)}=\sqrt{tr(PMQQ^*M^*P^*)}=\sqrt{tr(PMM^*P^*)\label{eq:frobInvLine1}}\\
+                     &=\sqrt{tr(P^*PMM^*)}=\sqrt{tr(MM^*)}=\|M\|_F\label{eq:frobInvLine2}
+        \end{align}
+        Notes:
+        \begin{enumerate}
+            \item The first equality in Eq.~\ref{eq:frobInvLine1} follows
+                Eq.~\ref{eq:frobeniusAsTrace}.
+            \item The second equality in Eq.~\ref{eq:frobInvLine1} uses the fact
+                that $(AB)^*=B^*A^*$.
+            \item The third equality in Eq.~\ref{eq:frobInvLine1} holds because
+                $Q$ is orthogonal (i.e., $QQ^*=I$).
+            \item The first equality in Eq.~\ref{eq:frobInvLine2} uses the
+                cyclic property of the trace (i.e., tr(ABC)=tr(CAB)).
+            \item The first equality in Eq.~\ref{eq:frobInvLine2} holds by the
+                orthogonality of $P$.
+            \item The last equality in Eq.~\ref{eq:frobInvLine2} again applies
+                Eq.~\ref{eq:frobeniusAsTrace}.
+        \end{enumerate}
+    \end{proof}
+
+    A direct consequence of Lemma~\ref{lemma:orthogonalPreserveF} is that the
+    Frobenius norm of any matrix $M=USV^*$ is
+
+    \begin{align*}
+        \|M\|_F=\|USV^*\|_F=\|S\|_F=\sqrt{\sum_{k=1}^rs_k^2}
+    \end{align*}
+
+    Another consequence of Lemma~\ref{lemma:orthogonalPreserveF} is 
+    the error in approximating a matrix $M$ of rank $r$ with its truncated
+    SVD of rank $\nu$ (i.e., $M_\nu=\sum_{k=1}^\nu s_k\mathbf{u}_k\mathbf{v}_k^*$) is
+
+    \begin{align}
+        \|M-M_\nu\|_F=\|\sum_{k=1}^rs_k\mathbf{u}_k\mathbf{v}_k^*-\sum_{k=1}^\nu
+        s_k\mathbf{u}_k\mathbf{v}_k^*\|_F=\|\sum_{k={\nu+1}}^rs_k\mathbf{u}_k\mathbf{v}_k^*\|_F=\sqrt{\sum_{k=\nu+1}^rs_k^2}\label{eq:truncSVDerror}
+    \end{align}
+
+    \begin{theorem}[Eckart-Young-Mirsky]
+        Let $M\in\mathbb{C}^{m\times n}$ be of rank r with singular value
+        decomposition $M=\sum_{k=1}^rs_k\mathbf{u}_k\mathbf{v}_k^*$. For
+        any $\nu$ with $0\leq\nu\leq r$, define
+
+        
+        \begin{align}
+            M_\nu=\sum_{k=1}^\nu s_k\mathbf{u}_k\mathbf{v}_k^*
+            \label{eq:truncatedSVD}
+        \end{align}
+
+        Then
+
+        \begin{align}
+            \|M-M_\nu\|_F=\inf_{\substack{\tilde{M}\in\mathbb{C}^{m\times n}\\\text{rank}(\tilde{M})\leq\nu}}\|M-\tilde{M}\|_F=\sqrt{\sum_{k=\nu+1}^rs_k^2}\label{eq:errorFNorm}
+        \end{align}
+
+        \label{thm:eckart-young-mirsky}
+    \end{theorem}
+
+    \begin{proof}
+        We use the Weyl's inequality that relates the singular values of a sum
+        of two matrices to the singular values of each of these matrices.
+        Precisely, if $X,Y\in\mathbb{C}^{m\times n}$ and $s_i(X)$ is the ith
+        singular value of $X$, then
+
+        \begin{align}
+            s_{i+j-1}(X+Y)\leq s_i(X)+s_j(Y)
+            \label{eq:weylsInequality}
+        \end{align}
+
+        Let $\tilde{M}$ be a matrix of rank at most $\nu$. Applying
+        Eq.~\ref{eq:weylsInequality} to $X=M-\tilde{M}$, $Y=\tilde{M}$ and
+        $j-1=\nu$ we obtain
+
+        \begin{align}
+            s_{i+\nu}(M)\leq s_i(M-\tilde{M})+s_{\nu+1}(\tilde{M})=s_i(M-\tilde{M})\label{eq:svMandMerror}
+        \end{align}
+
+        The last equality in Eq.~\ref{eq:svMandMerror} holds because $\tilde{M}$
+        has rank less or equal to $\nu$, and therefore its $\nu+1$ singular value is zero.
+
+        \begin{align}
+            \|M-M_\nu\|_F^2&=\sum_{j=\nu+1}^rs_j^2(M)=\sum_{i=1}^{r-\nu}s_{i+\nu}^2(M)\leq\sum_{i=1}^{r-\nu}s_i^2(M-\tilde{M})\leq\sum_{i=1}^{\min(m,n)}s_i^2(M-\tilde{M})\label{eq:final1}\\
+                           &=\|M-\tilde{M}\|_F^2\label{eq:final2}
+        \end{align}
+
+        Notes:
+        \begin{enumerate}
+            \item The first equality in Eq.~\ref{eq:final1} holds by
+                Eq.~\ref{eq:truncSVDerror}.
+            \item The second equality in Eq.~\ref{eq:final1} used the change of
+                variables $i=j-\nu$.
+            \item The first inequality in Eq.~\ref{eq:final1} used
+                Eq.~\ref{eq:svMandMerror}
+            \item The last inequality in Eq.~\ref{eq:final1} is true because
+                $r-\nu\leq\min(m,n)$ and adding squared singular values to the sum in
+                the left hand side only increases this sum.
+            \item The equality in Eq.~\ref{eq:final2} again holds by
+                Eq.~\ref{eq:errorFNorm} and by the fact that singular values of
+                index larger than the rank of a matrix are zero.
+        \end{enumerate}
+
+        The last equality in Eq.~\ref{eq:errorFNorm} follows from
+        Eq.~\ref{eq:truncSVDerror}.
+
+    \end{proof}
+
+\end{appendices}
+
+\end{document}
