@@ -39,7 +39,7 @@ and striatum.
 %
 We will use data from the
 \href{https://www.internationalbrainlab.com/}{International Brain Laboratory}
-(IBL). To learn more IBL please go to \url{https://viz.internationalbrainlab.org}.
+(IBL). To learn more about the IBL please go to \url{https://viz.internationalbrainlab.org}.
 
 \begin{enumerate}
 
@@ -152,10 +152,14 @@ We will use data from the
 
             Plot the z-scored firing rates, as in Fig.~\ref{fig:ex2}, but
             sorting the neurons according to the correlation of their firing
-            pattern with population firing pattern.  You may want to complete
-            the script \href{}{doEx2.ph}. Add to this plot a vertical line at
-            the time of the last response of the subject. Fig.~\ref{fig:ex2}
-            plots the sorted spikes rates that I obtained.
+            pattern with population firing pattern.
+            Add to this plot a vertical line at the time of the last response
+            of the subject.
+            You may want to complete
+            the script
+            \href{https://github.com/joacorapela/statNeuro2025/blob/master/worksheets/04_dimensionalityReduction/doEx2.py}{doEx2.py}.
+            Fig.~\ref{fig:ex2} plots the sorted spikes rates
+            that I obtained.
 
             \begin{figure}
                 \begin{center}
@@ -168,9 +172,21 @@ We will use data from the
 
         \item Fig.~\ref{fig:ex2} suggest that the response of the neurons in
             the population is related to the subjects response. To verify this,
-            plot the population firing rate and add to this plot vertical lines
+            plot the population firing pattern and add to this plot vertical lines
             indicating subject response times. You may want to complete the
-            script \href{}{doEx4.py}.
+            script
+            \href{https://github.com/joacorapela/statNeuro2025/blob/master/worksheets/04_dimensionalityReduction/doEx3.py}{doEx3.py}.
+            Figure~\ref{fig:populationFiringPattern} shows the population firing
+            pattern that I obtained.
+
+            \begin{figure}
+                \begin{center}
+                    \includegraphics[width=6in]{../../figures/binned_spikes_svd_binSize_1.00_msTemporalPattern_segment.png}
+                    \caption{Segment of the population firing pattern (blue
+                    trace) and response times of the mice (vertical lines).}
+                \end{center}
+                \label{fig:populationFiringPattern}
+            \end{figure}
 
         \item (optional) As proved in the Eckart-Young-Mirsky theorem
             (Theorem~\ref{thm:eckart-young-mirsky}), the truncated rank $\nu$
@@ -191,6 +207,13 @@ We will use data from the
             first $\nu$
             singular values (i.e., the analytical error), as shown in
             Fig.~\ref{fig:truncatedSVD-rank1} for $\nu=1$.
+            You may want to complete the
+            script
+            \href{https://github.com/joacorapela/statNeuro2025/blob/master/worksheets/04_dimensionalityReduction/doEx4.py}{doEx4.py}.
+            The truncated SVDs for ranks 1, 2 and 5, with their empirical and
+            analyical approximation errors are shown inf
+            Figs.~\ref{fig:truncatedSVD-rank1}, \ref{fig:truncatedSVD-rank2},
+            and~\ref{fig:truncatedSVD-rank5}, respectively.
 
             \begin{figure}
                 \begin{center}
@@ -364,7 +387,6 @@ We will use data from the
         decomposition $M=\sum_{k=1}^rs_k\mathbf{u}_k\mathbf{v}_k^*$. For
         any $\nu$ with $0\leq\nu\leq r$, define
 
-        
         \begin{align}
             M_\nu=\sum_{k=1}^\nu s_k\mathbf{u}_k\mathbf{v}_k^*
             \label{eq:truncatedSVD}
