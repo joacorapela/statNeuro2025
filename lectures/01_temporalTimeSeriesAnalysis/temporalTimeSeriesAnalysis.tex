@@ -147,7 +147,7 @@
 {
 Gatsby Computational Neuroscience Unit\\University College London % Your institution for the title page
 }
-\date{\today} % Date, can be changed to a custom date
+\date{January 13, 2025} % Date, can be changed to a custom date
 
 \AtBeginSection[]
   {
@@ -581,15 +581,18 @@ Gatsby Computational Neuroscience Unit\\University College London % Your institu
 
         The random noise with drift model in Eq.~\ref{eq:randomWalkWithDrift} can be represented as
         \begin{align*}
-            x_t &= t \delta + \sum_{i=0}^tw_i
+            x_t &= t \delta + \sum_{i=1}^tw_i
         \end{align*}
 
+        For a proof see
+        \hyperlink{slide:alternativeRepRandomWalkWithDrif}{Alternative
+        representation of the random walk with drift} in the Appendix. Then
         \begin{align*}
-            E\{x_t\} &= \delta t + \sum_{i=0}^tE\{w_i\} = \delta t + \sum_{i=0}^t0 = \delta t
+            E\{x_t\} &= \delta t + \sum_{i=1}^tE\{w_i\} = \delta t + \sum_{i=1}^t0 = \delta t
         \end{align*}
 
-        See the \hyperlink{fig:randomWalkWithDrift}{figure} of samples of the random noise with
-        drift random process.
+        In the \hyperlink{fig:randomWalkWithDrift}{figure} of samples of the random noise with
+        drift random process the dotted lines plot the mean of the process.
 
     \end{exampleblock}
 
@@ -818,8 +821,8 @@ Gatsby Computational Neuroscience Unit\\University College London % Your institu
     \href{https://joacorapela.github.io/statNeuro2025/auto_examples/01_temporalTimeSeriesAnalysis/plot_movingAverageAutocovariance.html\#sphx-glr-auto-examples-01-temporaltimeseriesanalysis-plot-movingaverageautocovariance-py}{Solution}.
 
     \begin{center}
-        \href{http://www.gatsby.ucl.ac.uk/~rapela/statNeuro/2025/lectures/01_temporalTimeSeriesAnalysis/figures/movingAverageAutoCovN100.html}{\includegraphics[width=2.00in]{../../../mySolutions/01_temporalTimeSeriesAnalysis/figures/movingAverageAutoCovN100.png}}
-        \href{http://www.gatsby.ucl.ac.uk/~rapela/statNeuro/2025/lectures/01_temporalTimeSeriesAnalysis/figures/movingAverageAutoCovN10000.html}{\includegraphics[width=2.00in]{../../../mySolutions/01_temporalTimeSeriesAnalysis/figures/movingAverageAutoCovN10000.png}}
+        \href{http://www.gatsby.ucl.ac.uk/~rapela/statNeuro/2025/lectures/01_temporalTimeSeriesAnalysis/figures/movingAverageAutoCovN100.html}{\includegraphics[width=2.00in]{../../../solutions/worksheets/01_temporalTimeSeriesAnalysis/figures/movingAverageAutoCovN100.png}}
+        \href{http://www.gatsby.ucl.ac.uk/~rapela/statNeuro/2025/lectures/01_temporalTimeSeriesAnalysis/figures/movingAverageAutoCovN10000.html}{\includegraphics[width=2.00in]{../../../solutions/worksheets/01_temporalTimeSeriesAnalysis/figures/movingAverageAutoCovN10000.png}}
     \end{center}
 
 \end{frame}
@@ -833,8 +836,8 @@ Gatsby Computational Neuroscience Unit\\University College London % Your institu
     \hyperlink{slide:estAutocovar}{estimated} autocovariance function.
 
     \begin{center}
-        \href{http://www.gatsby.ucl.ac.uk/~rapela/statNeuro/2025/lectures/01_temporalTimeSeriesAnalysis/figures/autoregressiveAutoCovN100.html}{\includegraphics[width=2.00in]{../../../mySolutions/01_temporalTimeSeriesAnalysis/figures/autoregressiveAutoCovN100.png}}
-        \href{http://www.gatsby.ucl.ac.uk/~rapela/statNeuro/2025/lectures/01_temporalTimeSeriesAnalysis/figures/autoregressiveAutoCovN10000.html}{\includegraphics[width=2.00in]{../../../mySolutions/01_temporalTimeSeriesAnalysis/figures/autoregressiveAutoCovN10000.png}}
+        \href{http://www.gatsby.ucl.ac.uk/~rapela/statNeuro/2025/lectures/01_temporalTimeSeriesAnalysis/figures/autoregressiveAutoCovN100.html}{\includegraphics[width=2.00in]{../../../solutions/worksheets/01_temporalTimeSeriesAnalysis/figures/autoregressiveAutoCovN100.png}}
+        \href{http://www.gatsby.ucl.ac.uk/~rapela/statNeuro/2025/lectures/01_temporalTimeSeriesAnalysis/figures/autoregressiveAutoCovN10000.html}{\includegraphics[width=2.00in]{../../../solutions/worksheets/01_temporalTimeSeriesAnalysis/figures/autoregressiveAutoCovN10000.png}}
     \end{center}
 
 \end{frame}
@@ -897,7 +900,7 @@ Gatsby Computational Neuroscience Unit\\University College London % Your institu
         $n=10,000,m=500,h=1,\ldots,50$).
 
         \begin{center}
-            \href{http://www.gatsby.ucl.ac.uk/~rapela/statNeuro/2025/lectures/01_temporalTimeSeriesAnalysis/figures/forecastingAR7.html}{\includegraphics[width=2.00in]{../../../mySolutions/01_temporalTimeSeriesAnalysis/figures/forecastingAR7.png}}
+            \href{http://www.gatsby.ucl.ac.uk/~rapela/statNeuro/2025/lectures/01_temporalTimeSeriesAnalysis/figures/forecastingAR7.html}{\includegraphics[width=2.00in]{../../../solutions/worksheets/01_temporalTimeSeriesAnalysis/figures/forecastingAR7.png}}
         \end{center}
     \end{exampleblock}
 \end{frame}
@@ -967,6 +970,59 @@ Gatsby Computational Neuroscience Unit\\University College London % Your institu
 		}
 		\alt<3>{\qedhere}{\phantom\qedhere}
     \end{proof}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Alternative representation of the random walk with drift}
+	\label{slide:alternativeRepRandomWalkWithDrif}
+
+	\begin{claim}
+        For $t=1,2,\ldots$, the random noise with drift model in Eq.~\ref{eq:randomWalkWithDrift}
+        can be represented as
+		\begin{align*}
+            x_t &= \delta t +\sum_{i=1}^tw_i
+		\end{align*}
+	\end{claim}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Alternative representation of the random walk with drift}
+
+	\scriptsize
+    \begin{proof}
+            We prove this claim by induction. We define a property $P_t$, we
+            demonstrate the $P_1$ holds, and then we demonstrate that if $P_t$ holds
+            then $P_{t+1}$ also holds. This strategy then demonstrates that $P_t$ holds
+            for $t=1,2,\ldots$. Define
+            \vspace{0.1in}
+            \begin{align*}
+                P_t:\quad x_t=\delta t+\sum_{i=1}^tw_i
+            \end{align*}
+            We first prove $P_1$
+            \begin{align}
+                P_1:\quad x_1=\delta+x_0+w_1=\delta+w_1\label{eq:P1}
+            \end{align}
+            Next we assume that $P_t$ holds and prove that $P_{t+1}$ also holds
+            \begin{align}
+                P_t\rightarrow P_{t+1}:\quad x_{t+1}&=\delta+x_t+w_{t+1}=\delta+\left(\delta t+\sum_{i=1}^tw_i\right)+w_{t+1}\label{eq:PtIPtp1}\\
+                                                    &=\delta (t+1)+\sum_{i=1}^{t+1}w_i\qed\nonumber
+            \end{align}
+    \end{proof}
+
+\end{frame}
+
+\begin{frame}
+	\frametitle{Alternative representation of the random walk with drift}
+
+    \begin{block}{Note}
+        \begin{enumerate}
+            \item the first equality in Eq.~\ref{eq:P1} follows from the
+                definition of the random walk with drift in
+                Eq.~\ref{eq:randomWalkWithDrift}.
+            \item the last equality in Eq.~\ref{eq:PtIPtp1} uses the
+                hypothesized $P_t$.
+        \end{enumerate}
+    \end{block}
 \end{frame}
 
 \finishappendix
