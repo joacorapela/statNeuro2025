@@ -559,7 +559,7 @@ Gatsby Computational Neuroscience Unit\\University College London % Your institu
             x_t = \phi x_{t-1} + w_t\label{eq:ar1}
         \end{align}
 
-        An AR(1) model (Eq.~\ref{eq:ar1}) can be represented as a moving average of infinite order MA($\infty$).
+        For $|\phi|<1$, the AR(1) model in Eq.~\ref{eq:ar1} can be represented as a moving average of infinite order MA($\infty$).
         See \hyperlink{slide:ar1AsMaInfty}{MA($\infty$) representation of AR(1) random process} in Appendix. Then
         \begin{align*}
             x_t &= \sum_{i=0}^{\infty}\phi^iw_{t-i}
