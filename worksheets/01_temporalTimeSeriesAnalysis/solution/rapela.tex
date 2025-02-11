@@ -1,0 +1,101 @@
+\documentclass[12pt]{article}
+
+\usepackage{graphicx}
+\usepackage[shortlabels]{enumitem}
+\usepackage[colorlinks=]{hyperref}
+\usepackage[margin=2cm]{geometry}
+\usepackage{amsmath}
+\usepackage[dvipsnames]{xcolor}
+
+\title{Solution for the worksheet
+\href{https://github.com/joacorapela/statNeuro2025/blob/master/worksheets/01_temporalTimeSeriesAnalysis/worksheet_temporalTimeSeriesAnalysis.pdf}{temporal time series analysis}}
+\author{Joaquin Rapela}
+
+\begin{document}
+
+\maketitle
+
+\begin{enumerate}
+
+    \item The random process in Eq.~1 of the
+        \href{https://github.com/joacorapela/statNeuro2025/blob/master/worksheets/01_temporalTimeSeriesAnalysis/worksheet_temporalTimeSeriesAnalysis.pdf}
+        {worksheet} is an autoregressive model of order one, AR(1).
+
+        As show in the slide \textbf{Mean function} containing \textbf{Example
+        (Mean function of the autoregressive model of order 1)}, the mean of this AR(1)
+        model is zero.
+
+        When $|\phi|<1$, as show in the slide \textbf{Autovariance function}
+        containing \textbf{Example (Autocovariance function of AR(1))}, the
+        covariance of an AR(1) random process is $\gamma(t+h,
+        t)=\phi^h\sigma_w^2\frac{1}{1-\phi^2}$.
+        When $|\phi|\ge 1$, the summation $\sum_{i=0}^\infty\phi^{2i}$
+        does not converge, and the covariance $\gamma(t+h, t)$ is not well defined.
+        Therefore, only when $|\phi|<1$,  the variance of this AR(1) random process is
+        $\sigma^2=\sigma_w^2\frac{1}{1-\phi^2}$.
+
+        When $|\phi|<1$, because (1) its mean is constant, (2) its variance is also constant and
+        (3) its covariance does not depend on $t$, the AR(1) random process in
+        wide-sense stationary.
+
+    \item The code to generate the figures in the
+        \href{https://github.com/joacorapela/statNeuro2025/blob/master/lectures/01_temporalTimeSeriesAnalysis/temporalTimeSeriesAnalysis.pdf}{lecture}
+        slide titled \textbf{Analytical and estimated autocovariance function for AR(1)}, and the generated figures are available
+        \href{https://joacorapela.github.io/statNeuro2025/auto_examples/01_temporalTimeSeriesAnalysis/plot_autoregressiveAutocovariance.html#sphx-glr-auto-examples-01-temporaltimeseriesanalysis-plot-autoregressiveautocovariance-py}{here}.
+
+    \item For the random walk with drift model:
+
+        \begin{enumerate}[(a)]
+
+            \item The covariance function $\gamma(s, t)$ is
+                \begin{align*}
+                    \gamma(t,s)&=E\{(x_t-\mu_t)(x_s-\mu_s)\}=E\left\{
+                        \left(\left(\delta t+\sum_{i=0}^tw_i\right)-\delta t\right)
+                        \left(\left(\delta s+\sum_{j=0}^sw_j\right)-\delta s\right)
+                    \right\}\\
+                    &=E\left\{
+                        \left(\sum_{i=0}^tw_i\right)
+                        \left(\sum_{j=0}^sw_j\right)
+                    \right\}
+                    =E\left\{
+                        \sum_{i=0}^t\sum_{j=0}^sw_iw_j
+                    \right\}\\
+                &=\sum_{i=0}^t\sum_{j=0}^sE\{w_iw_j\}=\sum_{k=0}^{\min(t,s)}E\{w_k^2\}=\sum_{k=0}^{\min(t,s)}\sigma_w^2=\min(t,s)\;\sigma_w^2
+                \end{align*}
+
+                Then the variance function $var(t)$ is 
+                \begin{align*}
+                    var(t)=\gamma(t,t)&=t\sigma_w^2
+                \end{align*}
+
+            \item Figure~\ref{fig:randomWalkWithDriftSamples} plots 100 samples
+                of a random walk with drift model, its mean function and its
+                95\% confidence bounds. That approximately 5 samples escape the
+                confidence bounds at any time point suggest that the calculated
+                variance function is correct.
+
+                \begin{figure}
+                    \begin{center}
+                        \href{https://www.gatsby.ucl.ac.uk/~rapela/statNeuro/2025/lectures/01_temporalTimeSeriesAnalysis/figures/randomNoiseWithDriftSamples.html}{\includegraphics[width=4.00in]{../figures/randomNoiseWithDriftSamples.png}}
+                        \caption{One hundred samples of a random walk with
+                        drift process (colour traces). The solid line is the
+                        mean of the random process and the dotted lines mark
+                        the 95\% confidence interval. At any time point 95\% of
+                        the samples (i.e., 5 samples) should lie above or below
+                        the dotted lines. Click on the figure to see its
+                        interactive version.}
+                        \label{fig:randomWalkWithDriftSamples}
+                    \end{center}
+                \end{figure}
+
+            \item The random walk with drift process not wide-sense stationary
+                because (1) when $\delta\neq 0$ the mean is not constant, (2)
+                the variance is neither constant, and (3) the autocovariance
+                function does not depend only on the time separation of its
+                arguments.
+
+        \end{enumerate}
+
+\end{enumerate}
+
+\end{document}
