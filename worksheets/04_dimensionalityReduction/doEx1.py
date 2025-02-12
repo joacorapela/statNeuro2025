@@ -72,6 +72,7 @@ def main(argv):
     dirname = os.path.dirname(fig_filename)
     if not os.path.exists(dirname):
         os.mkdir(dirname)
+    #
 
     fig.write_image(fig_filename_pattern.format(bin_size, "original",  "png"))
     fig.write_html(fig_filename_pattern.format(bin_size, "original",  "html"))
