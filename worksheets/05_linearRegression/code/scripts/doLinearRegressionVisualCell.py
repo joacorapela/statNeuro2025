@@ -71,7 +71,7 @@ def main(argv):
     # compute basis functions and projections of images onto them
     ppr = skpp.ProjectionPursuitRegressor(r=n_RDs)
     ppr_res = ppr.fit(X=images, Y=Y)
-    alphas = ppr_res._alpha
+    alphas = ppr_res._alpha_
     rds = np.linalg.svd(alphas)[0]
     px = np.matmul(images, rds)  # projecting images onto RDs
 

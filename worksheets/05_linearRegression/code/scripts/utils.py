@@ -58,7 +58,7 @@ def buildDataMatrix(px, order, nRDs):
         return dataMatrix
 
     # second order terms
-    items = np.empty(shape=(2,), dtype=np.int)
+    items = np.empty(shape=(2,), dtype=int)
     for j0 in range(nRDs):
         items[0] = j0
         for j1 in range(j0, nRDs):
@@ -71,7 +71,7 @@ def buildDataMatrix(px, order, nRDs):
         return dataMatrix
 
     # third order terms
-    items = np.empty(shape=(3,), dtype=np.int)
+    items = np.empty(shape=(3,), dtype=int)
     for j0 in range(nRDs):
         items[0] = j0
         for j1 in (j0, nRDs):
@@ -86,7 +86,7 @@ def buildDataMatrix(px, order, nRDs):
         return dataMatrix
 
     # fourth order terms
-    items = np.empty(shape=(4,), dtype=np.int)
+    items = np.empty(shape=(4,), dtype=int)
     for j0 in range(nRDs):
         items[0] = j0
         for j1 in range(j0, nRDs):
