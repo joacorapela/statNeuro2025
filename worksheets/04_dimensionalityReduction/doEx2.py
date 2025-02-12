@@ -83,7 +83,7 @@ def main(argv):
     fig.write_image(fig_filename_pattern.format(bin_size, "u0Sorted",  "png"))
     fig.write_html(fig_filename_pattern.format(bin_size, "u0Sorted",  "html"))
 
-    fig.show()
+    # fig.show()
 
     breakpoint()
 
