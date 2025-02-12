@@ -76,7 +76,7 @@ def main(argv):
 
     fig.write_image(fig_filename_pattern.format(bin_size, "original",  "png"))
     fig.write_html(fig_filename_pattern.format(bin_size, "original",  "html"))
-    fig.show()
+    # fig.show()
 
     breakpoint()
 
