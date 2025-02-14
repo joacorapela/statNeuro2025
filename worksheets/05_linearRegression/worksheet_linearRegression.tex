@@ -1,0 +1,275 @@
+\documentclass[12pt]{article}
+
+\usepackage{graphicx}
+\usepackage{natbib}
+\usepackage{apalike}
+\usepackage{listings}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{xcolor}
+\usepackage{subcaption}
+\usepackage{float}
+\usepackage{bm}
+
+\usepackage[shortlabels]{enumitem}
+\usepackage[colorlinks]{hyperref}
+\usepackage[margin=2cm]{geometry}
+
+\newtheorem{definition}{Definition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{theorem}{Theorem}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=2
+}
+
+\lstset{style=mystyle}
+
+\title{Worksheet: Linear regression for the estimation of nonlinear receptive
+field models}
+\author{Joaquin Rapela}
+
+\begin{document}
+
+\maketitle
+
+Following~\citet{rapelaEtAl06}, to model responses of visual cell in animals to
+stimulation with natural images, we
+project these images into a small number of basis
+functions (learned using the projection pursuit regression
+algorithm~\citep{friedmanAndStuetzle81}), $\bm{\alpha}_1,\ldots,\bm{\alpha}_L$. Below we call \emph{relevant
+dimensions} to these basis functions. We denote the projections of the nth
+image, $\mathbf{v}_n$, into the lth relevant dimension, $\bm{\alpha}_l$, by
+$x_{nl}=\bm{\alpha}_l^\intercal\mathbf{v}_n$. Then we model the number of spikes produced by the cell
+in response to the nth image, $y_n$, with a multivariate polynomial of degree $D$.
+Equation~\ref{eq:2RDsOrder3} shows a model of the response of
+a cell to the nth image with
+two basis functions, $L=2$, and a
+multivariate polynomial of degree $D=3$.
+
+\begin{align}
+    y_n&=\beta_0+\beta_1x_{n1}+\beta_2x_{n2}+\nonumber\\
+       &\quad\beta_{11}x_{n1}^2+2\beta_{12}x_{n1}x_{n2}+\beta_{22}x_{n2}^2+\nonumber\\
+       &\quad\beta_{111}x_{n1}^3+3\beta_{112}x_{n1}^2x_{n2}+3\beta_{122}x_{n1}x_{n2}^2+\beta_{222}x_{n2}^3\nonumber\\
+       &=[1,x_{n1},x_{n2},x_{n1}^2,2x_{n1}x_{n2},x_{n2}^2,x_{n1}^3,3x_{n1}^2x_{n2},3x_{n1}x_{n2}^2,x_{n2}^3]
+         \raisebox{-5.6em}{$\left[\begin{array}{c}
+             \beta_0\\\beta_1\\\beta_2\\\beta_{11}\\\beta_{12}\\\beta_{22}\\\beta_{111}\\\beta_{112}\\\beta_{122}\\\beta_{222}
+                                \end{array}\right]$}
+    \label{eq:2RDsOrder3}
+\end{align}
+
+Thus the above model is nonlinear on the input images, but linear on the
+model parameters. To estimate these parameters we use the method of least squares.
+
+In this worksheet you will
+
+\begin{enumerate}
+
+    \item do cross-validation to learn the optimal number of relevant dimensions,
+        $L$, and the optimal degree of the multivariate polynomial, $D$.
+
+    \item plot residuals to check the goodness of fit of the model.
+
+    \item computer bootstrap confidence intervals to test the significance of
+        model coefficients.
+
+\end{enumerate}
+
+It is a good practice to first test your methods with simulated data, for which
+you know the ground truth. Thus, we will first perform this exercise on data from a
+simulated cell and then on data recorded from a complex cell in primary visual
+cortex of an anaesthetised cat~\citep{felsenEtAl05}.
+
+\section{Simulated complex cell}
+
+We simulated responses of a complex cell using the energy
+model~\citep{adelsonAndBergen85} in Eq.~\ref{eq:energyModel}. This model
+uses two identical Gabor relevant dimensions, $\bm{\alpha}_1$ and
+$\bm{\alpha}_2$, that are $180^\circ$ out of phase. The relevant dimensions used for this simulation appear in Figure~\ref{fig:rdsSim}.
+
+\begin{align}
+    y_n=(\bm{\alpha}_1^\intercal\mathbf{v}_n)^2+(\bm{\alpha}_2^\intercal\mathbf{v}_n)^2
+    \label{eq:energyModel}
+\end{align}
+
+\begin{figure}[H]
+    \begin{center}
+        \href{https://www.gatsby.ucl.ac.uk/~rapela/neuroinformatics/2023/ws6/figures/simCC.html}{\includegraphics[width=5.5in]{figures/simCC_rds.png}}
+
+        \caption{Relevant dimensions used for the complex cell simulation.}
+
+        \label{fig:rdsSim}
+    \end{center}
+\end{figure}
+
+All the code for this worksheet appears in the subdirectory
+\href{https://github.com/joacorapela/neuroinformatics24/blob/master/worksheets/06_linearRegression/code/scripts}{worksheets/06\_linearRegression/code/scripts} of the class
+\href{https://github.com/joacorapela/neuroinformatics24}{repo}. In particular,
+the code to simulate a complex cells is in script
+\href{https://github.com/joacorapela/neuroinformatics24/blob/master/worksheets/06_linearRegression/code/scripts/doSimulateComplexCell.py}{doSimulateComplexCell.py}.
+
+Prior to running this code install the required dependencies by running, from the subdirectory
+\href{https://github.com/joacorapela/neuroinformatics24/blob/master/worksheets/06_linearRegression/code/scripts}{worksheets/06\_linearRegression/code/scripts},
+the following commands:
+
+\noindent\texttt{pip install -r requirements.txt}\linebreak
+\noindent\texttt{pip install -r requirements2.txt}
+
+The script
+\href{https://github.com/joacorapela/neuroinformatics24/blob/master/worksheets/06_linearRegression/code/scripts/doLinearRegressionVisualCell.py}{doLinearRegressionVisualCell.py}
+implements all the functionality required for this worksheet, but it has a few
+lines that you will need to complete to make it work. In this exercise you will
+perform all the mathematical operations required to estimate the regression
+coefficients (e.g., matrix inversions, tranposes, and multiplications).
+However, it is better to use numerical packages (e.g.,
+\href{https://scipy.org/}{scipy}) as they take care of important numerical
+details.
+
+The first section you will have to complete is on file
+\href{https://github.com/joacorapela/neuroinformatics24/blob/master/worksheets/06_linearRegression/code/scripts/https://github.com/joacorapela/neuroinformatics24/blob/master/worksheets/06_linearRegression/code/scripts/doLinearRegressionVisualCell.py}{doLinearRegressionVisualCell.py}:
+
+\begin{lstlisting}[language=python]
+    # calculate regression coefficients with train data using L2 regularisation
+    X = utils.buildDataMatrix(px=px, order=order, nRDs=n_RDs)
+    X_train, X_test, Y_train, Y_test = \
+        sklearn.model_selection.train_test_split(X, Y,
+                                                 test_size=test_percentage)
+    I = np.eye(X.shape[1])
+    coefs = ...
+\end{lstlisting}
+
+Lines 3-5 partition the data into train and test sets. We will use the train
+set to estimate model parameters and the test set to asses the model predictive
+power without overfitting.
+
+You will need to complete line 7 to calculate the coefficients using the train
+set and the formula given in class to compute regression coefficients using
+L2 regularisation. You may want to use functions
+\href{https://numpy.org/doc/stable/reference/generated/numpy.matmul.html}{np.matmul} for
+matrix-matrix or matrix-vector multiplication,
+\href{https://numpy.org/doc/stable/reference/generated/numpy.transpose.html}{np.transpose}
+to transpose an array,
+\href{https://numpy.org/doc/stable/reference/generated/numpy.linalg.inv.html}{np.linalg.inv}
+for matrix inversion and/or
+\href{https://numpy.org/doc/stable/reference/generated/numpy.linalg.solve.html}{np.linalg.solve}
+to solve systems of equations.
+
+The second section you will have to complete is on file
+\href{https://github.com/joacorapela/neuroinformatics24/blob/master/worksheets/06_linearRegression/code/scripts/https://github.com/joacorapela/neuroinformatics24/blob/master/worksheets/06_linearRegression/code/scripts/doLinearRegressionVisualCell.py}{doLinearRegressionVisualCell.py}:
+
+\begin{lstlisting}[language=python]
+      # calculate residuals
+      fitted_train = ...
+      residuals_train = Y_train - fitted_train
+
+      # compute correlation coefficient on test data
+      fitted_test = ...
+      rho_test = np.corrcoef(Y_test, fitted_test)[0, 1]
+\end{lstlisting}
+
+Given the coefficients estimated above, here you need to compute the fitted
+response (or dependent variable) for the train and test segments. We use the
+fitted train response to calculate the residuals for the train data. We use the
+fitted test response to calculate their correlation coefficients with the
+observed test dependent variable.
+
+After you complete the missing parts of the code, you can run it with the
+parameters set for the simulated complex cell specified in the shell script
+\href{https://github.com/joacorapela/neuroinformatics24/blob/master/worksheets/06_linearRegression/code/scripts/doAnalyzeSimulatedComplexCell.csh}{doAnalyzeSimulatedComplexCell.csh}.
+In this script you can specify the number of relevant dimensions (parameter
+\texttt{--nRDs}) and the polynomial order (parameter \texttt{--order}) that you
+want to use. Running this script with two relevant dimensions and with a
+polynomial order 2 (i.e., parameters \texttt{--order=2 --nRDs=2}) I obtained the
+estimated relevant dimensions in Figure~\ref{fig:analysis_simCC_rds}, the coefficients
+in Figure~\ref{fig:analysis_simCC_coefs}, the histogram of residuals in
+Figure~\ref{fig:analysis_simCC_histResiduals} and the fitted responses in
+Figure~\ref{fig:analysis_simCC_fittedRes}.
+
+\begin{figure}[H]
+    \begin{center}
+        \href{https://www.gatsby.ucl.ac.uk/~rapela/neuroinformatics/2023/ws6/figures/simCC_order4_nRDs2_regCoef0.0_RDs.html}{\includegraphics[width=5.5in]{figures/simCC_order4_nRDs2_regCoef0.0_RDs.png}}
+
+        \caption{Relevant dimensions estimated for simulated data of a complex cell. Compare with Figure~\ref{fig:rdsSim}}.
+
+        \label{fig:analysis_simCC_rds}
+    \end{center}
+\end{figure}
+
+\begin{figure}[H]
+    \begin{center}
+        \href{https://www.gatsby.ucl.ac.uk/~rapela/neuroinformatics/2023/ws6/figures/simCC_order2_nRDs2_regCoef0.0_coefs.html}{\includegraphics[width=5.5in]{figures/simCC_order2_nRDs2_regCoef0.0_coefs.png}}
+
+        \caption{Coefficients estimated for simulated data of a complex cell.
+        Only the coefficients with indices 2 and 4 in the plot, corresponding to $\beta_{11}$ and
+        $\beta_{22}$ in Eq.~\ref{eq:2RDsOrder3}, are significantly different from
+        zero. This is the correct solution, as it can be seen from the model in
+        Eq.~\ref{eq:energyModel}}
+
+        \label{fig:analysis_simCC_coefs}
+    \end{center}
+\end{figure}
+
+\begin{figure}[H]
+    \begin{center}
+        \href{https://www.gatsby.ucl.ac.uk/~rapela/neuroinformatics/2023/ws6/figures/simCC_order2_nRDs2_regCoef0.0_residuals.html}{\includegraphics[width=5.5in]{figures/simCC_order2_nRDs2_regCoef0.0_residuals.png}}
+
+        \caption{Histogram of train residuals for the simulated complex cell (blue) and density of Normal distribution with the same mean and variance as that of the train residuals (red).}
+
+        \label{fig:analysis_simCC_histResiduals}
+    \end{center}
+\end{figure}
+
+\begin{figure}[H]
+    \begin{center}
+        \href{https://www.gatsby.ucl.ac.uk/~rapela/neuroinformatics/2023/ws6/figures/simCC_order2_nRDs2_regCoef0.0_predictions.html}{\includegraphics[width=5.5in]{figures/simCC_order2_nRDs2_regCoef0.0_predictions.png}}
+
+        \caption{Cell responses versus predictions for the simulated complex cell. Their correlation coefficient appears in the title.}
+
+        \label{fig:analysis_simCC_fittedRes}
+    \end{center}
+\end{figure}
+
+Vary the number of relevant dimensions (parameter \texttt{--nRDs} in
+\href{https://github.com/joacorapela/neuroinformatics24/blob/master/worksheets/06_linearRegression/code/scripts/doAnalyzeSimulatedComplexCell.csh}{doAnalyzeSimulatedComplexCell.csh})
+and model order (parameter \texttt{--order} in
+\href{https://github.com/joacorapela/neuroinformatics24/blob/master/worksheets/06_linearRegression/code/scripts/doAnalyzeSimulatedComplexCell.csh}{doAnalyzeSimulatedComplexCell.csh})
+to select their optimal values. Plot
+Figure~\ref{fig:analysis_simCC_rds}-\ref{fig:analysis_simCC_fittedRes} for the
+best and a poor set of parameters.
+
+\section{Real complex cell}
+
+The shell script
+\href{https://github.com/joacorapela/neuroinformatics24/blob/master/worksheets/06_linearRegression/code/scripts/doAnalyzeRealComplexCell.csh}{doAnalyzeRealComplexCell.csh}
+contains the parameters required to characterise a complex cell in primary
+visual cortex of an anaesthetised cat~\citep{felsenEtAl05}. Find the best set of
+parameters to characterise this cell. Plot
+Figure~\ref{fig:analysis_simCC_rds}-\ref{fig:analysis_simCC_fittedRes} for the
+best and a poor set of parameters.
+
+
+\bibliographystyle{plainnat}
+\bibliography{receptiveFields,stats}
+
+\end{document}

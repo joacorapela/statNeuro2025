@@ -11,6 +11,7 @@
 *.blg
 *.vrb
 .nfs*
+*.bib
 
 __pycache__/
 *.egg-info/
