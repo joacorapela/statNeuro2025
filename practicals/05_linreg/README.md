@@ -8,6 +8,6 @@ The predictions of the linear regression model to data not used to estimate its 
 The scale of the ECoG data is large (min value=-24,712, max value=22,496), and this large scale requires use very large regularization parameter values.
 
 To make the effect of the regularization parameter independent of the data scale, we standardized the predictors (i.e., removed the sample mean of each channel and divided by their sample standard deviation). We did so in the notebook
-[practical_regularised_scaled.ipynb](practical_regularised_scaled.ipynb), where we obtained a NMSE of 0.77 with a regularization parameter of 1e4. This notebooks also states, but does not prove, the equivalence between standarized and non-standarized linear regression models.
+[practical_regularised_scaled.ipynb](practical_regularised_scaled.ipynb), where we obtained a NMSE of 0.77 with a regularization parameter of 1e4. This notebooks also states, but does not prove (exercise), the equivalence between standarized and non-standarized linear regression models.
 
 These examples demonstrate a useful application of standardized linear regression models, and illustrate a beneficial effect of regularizationo.
