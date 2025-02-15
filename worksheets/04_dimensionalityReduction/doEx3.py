@@ -1,5 +1,6 @@
 import sys
 import argparse
+import os
 import numpy as np
 import scipy.stats
 import plotly.graph_objs as go
@@ -25,7 +26,7 @@ def main(argv):
                         default="Neuron ID")
     parser.add_argument("--fig_filename_pattern", type=str,
                         help="figure filename pattern",
-                        default=("../../figures/binned_spikes_svd_"
+                        default=("figures/binned_spikes_svd_"
                                  "binSize_{:.02f}_{:s}.{:s}"))
     args = parser.parse_args()
 
@@ -63,11 +64,20 @@ def main(argv):
         fig.add_vline(x=response_time)
     fig.update_xaxes(title_text=x_label)
     fig.update_yaxes(title_text="z-scored firing rate")
+
+
+    # create figure directory if it does not exist
+    fig_filename = fig_filename_pattern.format(bin_size, "msTemporalPattern",  "png")
+    dirname = os.path.dirname(fig_filename)
+    if not os.path.exists(dirname):
+        os.mkdir(dirname)
+    #
+
     fig.write_image(fig_filename_pattern.format(bin_size, "msTemporalPattern",
                                                 "png"))
     fig.write_html(fig_filename_pattern.format(bin_size, "msTemporalPattern",
                                                "html"))
-    fig.show()
+    # fig.show()
 
     breakpoint()
 

@@ -1,5 +1,6 @@
 import sys
 import argparse
+import os
 import numpy as np
 import scipy.stats
 
@@ -33,7 +34,7 @@ def main(argv):
                         default="Neuron ID")
     parser.add_argument("--fig_filename_pattern", type=str,
                         help="figure filename pattern",
-                        default=("../../figures/binned_spikes_truncatedSVD_"
+                        default=("figures/binned_spikes_truncatedSVD_"
                                  "binSize_{:.02f}_nComponetns_{:d}.{:s}"))
     args = parser.parse_args()
 
@@ -89,10 +90,18 @@ def main(argv):
     fig = utils.getHeatmap(xs=times, ys=neurons_ids, zs=z_truncated,
                            hovertext=hovertext, zmin=zmin, zmax=zmax,
                            x_label=x_label, y_label=y_label, title=title)
+
+    # create figure directory if it does not exist
+    fig_filename = fig_filename_pattern.format(bin_size, n_components,  "png")
+    dirname = os.path.dirname(fig_filename)
+    if not os.path.exists(dirname):
+        os.mkdir(dirname)
+    #
+
     fig.write_image(fig_filename_pattern.format(bin_size, n_components, "png"))
     fig.write_html(fig_filename_pattern.format(bin_size, n_components, "html"))
 
-    fig.show()
+    # fig.show()
 
     breakpoint()
 

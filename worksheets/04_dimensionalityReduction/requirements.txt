@@ -1,4 +1,4 @@
 ONE-api
-brainbox
+ibllib
 scipy
 matplotlib

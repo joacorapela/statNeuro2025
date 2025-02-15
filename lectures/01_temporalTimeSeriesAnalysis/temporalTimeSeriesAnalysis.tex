@@ -402,8 +402,9 @@ Gatsby Computational Neuroscience Unit\\University College London % Your institu
     The first step to generate time series is to generate \textbf{white noise process},
     $\{w_t\}$
     (i.e., independent Gaussian random variables with zero mean and fixed
-    variance, 
+    variance,
     \href{https://joacorapela.github.io/statNeuro2025/auto_examples/01_temporalTimeSeriesAnalysis/plot_whiteNoiseExample.html#sphx-glr-auto-examples-01-temporaltimeseriesanalysis-plot-whitenoiseexample-py}{example}).
+    For $t=0,\pm1,\pm2,\ldots$
     \scriptsize
     \begin{align*}
         E\{w_t\}&=0\\
@@ -446,8 +447,8 @@ Gatsby Computational Neuroscience Unit\\University College London % Your institu
 		\begin{align*}
 			x_t = w_t + \theta_1w_{t-1} + \theta_2w_{t-2} + \ldots + \theta_qw_{t-q}
 		\end{align*}
-		where $\{w_t\}$ is a white noise process and $\theta_1,\ldots,\theta_p$
-		are constants ($\theta_p\neq 0$).
+        for $t=0,\pm1,\pm2,\ldots$, where $\{w_t\}$ is a white noise process
+        and $\theta_1,\ldots,\theta_p$ are constants ($\theta_p\neq 0$).
 	\end{definition}
 
 \end{frame}
@@ -459,7 +460,6 @@ Gatsby Computational Neuroscience Unit\\University College London % Your institu
     oscillations of the type of sine waves. The \textbf{autoregressive model}
     generates oscillations
     (\href{https://joacorapela.github.io/statNeuro2025/auto_examples/01_temporalTimeSeriesAnalysis/plot_autoregressiveExample.html#sphx-glr-auto-examples-01-temporaltimeseriesanalysis-plot-autoregressiveexample-py}{example}).
-    \textcolor{red}{Lecture on linear dynamical systems}.
 
     \begin{align*}
         x_t = x_{t-1} - 0.9 x_{t-2} + w_t
@@ -479,7 +479,8 @@ Gatsby Computational Neuroscience Unit\\University College London % Your institu
 		\begin{align*}
 			x_t = \phi_1x_{t-1} + \phi_2x_{t-2} + \ldots + \phi_px_{t-p} + w_t
 		\end{align*}
-		where ${w_t}$ is a white noise process, $\phi_1,\ldots,\phi_p$ are constants ($\phi_p\neq 0$).
+        for $t=0,\pm1,\pm2,\ldots$, where ${w_t}$ is a white noise process,
+        $\phi_1,\ldots,\phi_p$ are constants ($\phi_p\neq 0$).
 	\end{definition}
 
 \end{frame}
@@ -519,8 +520,8 @@ Gatsby Computational Neuroscience Unit\\University College London % Your institu
         A\cos(2\pi\omega t+\phi)
     \end{align*}
 
-    where $A=2,\omega=1/50,\phi=2\pi 15/50$. \textcolor{red}{Lecture on
-    spectral analysis of time series}.
+    for $t=0,\pm1,\pm2,\ldots$, where $A=2,\omega=1/50,\phi=2\pi 15/50$.
+    \textcolor{red}{Lecture on spectral analysis of time series}.
 
     \begin{center}
         \href{http://www.gatsby.ucl.ac.uk/~rapela/statNeuro/2025/lectures/01_temporalTimeSeriesAnalysis/figures/signalPlusNoise.html}{\includegraphics[width=2.00in]{../../examples/sphinx_gallery/01_temporalTimeSeriesAnalysis/figures/signalPlusNoise.png}}
