@@ -30,7 +30,7 @@ This worksheet is a modification of a
 \href{https://drive.google.com/file/d/1r90rlJpFKilQmNj1h27gmZdyi-RJeCq_/view}{worksheet}
 from the 2023 edition of the
 \href{https://www.ucl.ac.uk/cortexlab/neuroinformatics-class-page}{NEUO019
-Foundations of Neuroinfomatics} course, taught by
+Foundations of Neuroinformatics} course, taught by
 \href{https://profiles.ucl.ac.uk/31489}{Prof.~Kenneth Harris} at UCL.
 
 We are going to use the singular value decomposition (SVD) to uncover hidden
@@ -61,9 +61,9 @@ We will use data from the
 
         \begin{figure}
             \begin{center}
-                \includegraphics[width=6in]{../../figures/binned_spikes_binSize_1.00_original.png}
+                \href{https://www.gatsby.ucl.ac.uk/~rapela/statNeuro/2025/worksheets/04_dimensionalityReduction/figures/binned_spikes_binSize_1.00_original.html}{\includegraphics[width=6in]{../../figures/binned_spikes_binSize_1.00_original.png}}
                 \caption{Z-scores of binned spikes times of all unsorted
-                neurons.}
+                neurons. Click on the image to see its interactive version.}
             \end{center}
             \label{fig:ex1}
         \end{figure}
@@ -128,7 +128,7 @@ We will use data from the
         \item We want to use the SVD to find the temporal activity pattern that
             captures most of the variance in the population (i.e., the
             population firing pattern), and sort the neurons in
-            Fig.~\ref{fig:ex2} according to the similarity of their firing
+            Fig.~\ref{fig:ex1} according to the similarity of their firing
             rates to the population firing pattern.
 
             Take a matrix $M\in\mathbb{R}^{m\times n}$, we can use
@@ -139,20 +139,20 @@ We will use data from the
             $M=\mathbf{u}\mathbf{v}^\intercal$). Eq.~\ref{eq:rank1Decomp}
             gives the decomposition of $M$ into a sum of $r$ rank one
             matrices, and Eq.~\ref{eq:rank1Approx} gives the best rank one
-            approximaton to $M$.
+            approximation to $M$.
 
             \begin{align}
                 M&=USV=\sum_{i=0}^{r-1}s_iU[:,i]V[:,i]^\intercal\label{eq:rank1Decomp}\\
-                &\simeq s_0U[:,0]V[:,0]^\intercal\label{eq:rank1Approx}
+                &\simeq s_0\,U[:,0]\,V[:,0]^\intercal\label{eq:rank1Approx}
             \end{align}
 
-            For the z-scored firing rates we are analyzing in this worksheet,
+            For the z-scored firing rates we are analysing in this worksheet,
             the vector $V[:,0]$ gives the population firing pattern. When
             $U[0,i]$ is positive (negative) and has a large absolute value, the
-            z-scored firing rate of the ith neuron will be hightly correlated
+            z-scored firing rate of the ith neuron will be highly correlated
             (anticorrelated) with the population firing pattern.
 
-            Plot the z-scored firing rates, as in Fig.~\ref{fig:ex2}, but
+            Plot the z-scored firing rates, as in Fig.~\ref{fig:ex1}, but
             sorting the neurons according to the correlation of their firing
             pattern with population firing pattern.
             Add to this plot a vertical line at the time of the last response
@@ -165,9 +165,12 @@ We will use data from the
 
             \begin{figure}
                 \begin{center}
-                    \includegraphics[width=6in]{../../figures/binned_spikes_svd_binSize_1.00_u0Sorted.png}
-                    \caption{Z-scores of binned spikes times of all sorted
-                    neurons.}
+                    \href{https://www.gatsby.ucl.ac.uk/~rapela/statNeuro/2025/worksheets/04_dimensionalityReduction/figures/binned_spikes_svd_binSize_1.00_u0Sorted.html}{\includegraphics[width=6in]{../../figures/binned_spikes_svd_binSize_1.00_u0Sorted.png}}
+                    \caption{Z-scores of binned spikes times of all neurons.
+                    Neurons have been sorted according to the similarity of
+                    their firing pattern to the population firing pattern in
+                    Fig.~\ref{fig:populationFiringPattern}. Click on the image to
+                    see its interactive version.}
                 \end{center}
                 \label{fig:ex2}
             \end{figure}
@@ -179,13 +182,15 @@ We will use data from the
             script
             \href{https://github.com/joacorapela/statNeuro2025/blob/master/worksheets/04_dimensionalityReduction/doEx3.py}{doEx3.py}.
             Figure~\ref{fig:populationFiringPattern} shows the population firing
-            pattern that I obtained.
+            pattern that I obtained. Note that the population firing rate
+            pattern, in most cases, peaks shortly after subject response times.
 
             \begin{figure}
                 \begin{center}
-                    \includegraphics[width=6in]{../../figures/binned_spikes_svd_binSize_1.00_msTemporalPattern_segment.png}
+                    \href{https://www.gatsby.ucl.ac.uk/~rapela/statNeuro/2025/worksheets/04_dimensionalityReduction/figures/binned_spikes_svd_binSize_1.00_msTemporalPattern.html}{\includegraphics[width=6in]{../../figures/binned_spikes_svd_binSize_1.00_msTemporalPattern_segment.png}}
                     \caption{Segment of the population firing pattern (blue
-                    trace) and response times of the mice (vertical lines).}
+                    trace) and response times of the mice (vertical
+                    lines). Click on the image to see its interactive version.}
                 \end{center}
                 \label{fig:populationFiringPattern}
             \end{figure}
@@ -193,16 +198,15 @@ We will use data from the
         \item (optional) As proved in the Eckart-Young-Mirsky theorem
             (Theorem~\ref{thm:eckart-young-mirsky}), the truncated rank $\nu$
             singular value decomposition of matrix $M$
-            (Eq.~\ref{eq:truncatedSVD}), is the best rank $\nu$
-            approximation to $M$, among all possible rank $\nu$ matrices. In
-            addition, the Frobenius error of this best approximation can be
-            computed from the singular values of the SVD decomposition of
-            matrix $M$, without having to build assemble the best
-            approximation.
+            (Eq.~\ref{eq:truncatedSVD}), is the best rank $\nu$ approximation
+            to $M$, among all possible rank $\nu$ matrices. In addition, the
+            Frobenius error of this best approximation can be computed from the
+            singular values of the SVD decomposition of matrix $M$, without
+            having to assemble the best approximation.
 
             For $\nu=1,\ldots,5$, verify the above claim by assembling the
             truncated SVD, $M_\nu$, of the matrix, $M$, in Fig.\ref{fig:ex2}, computing the
-            Frobenious norm of the difference betweeen $M$ and $M_\nu$, and
+            Frobenius norm of the difference between $M$ and $M_\nu$, and
             comparing this norm with the the sum of the first $\nu$ singular
             values of matrix $M$. Plot $M_\nu$ and write in the title the
             Frobenius error (i.e., empirical error) and sum of the squared
@@ -213,13 +217,13 @@ We will use data from the
             script
             \href{https://github.com/joacorapela/statNeuro2025/blob/master/worksheets/04_dimensionalityReduction/doEx4.py}{doEx4.py}.
             The truncated SVDs for ranks 1, 2 and 5, with their empirical and
-            analyical approximation errors are shown inf
+            analytical approximation errors are shown inf
             Figs.~\ref{fig:truncatedSVD-rank1}, \ref{fig:truncatedSVD-rank2},
             and~\ref{fig:truncatedSVD-rank5}, respectively.
 
             \begin{figure}
                 \begin{center}
-                    \includegraphics[width=5in]{../../figures/binned_spikes_truncatedSVD_binSize_1.00_nComponents_1.png}
+                    \href{https://www.gatsby.ucl.ac.uk/~rapela/statNeuro/2025/worksheets/04_dimensionalityReduction/figures/binned_spikes_truncatedSVD_binSize_1.00_nComponents_1.html}{\includegraphics[width=5in]{../../figures/binned_spikes_truncatedSVD_binSize_1.00_nComponents_1.png}}
 
                     \caption{Low-rank approximation of the image in
                     Figure~\ref{fig:ex2} using a truncated SVD or rank \i. The
@@ -228,7 +232,8 @@ We will use data from the
                     of the difference between the low-rank approximation and
                     the image in Figure~\ref{fig:ex2}. The analytical error is
                     computed from the singular values of the image in
-                    Figure~\ref{fig:ex2} using Eq.~\ref{eq:errorFNorm}.  }
+                    Figure~\ref{fig:ex2} using Eq.~\ref{eq:errorFNorm}. Click
+                    on the image to see its interactive version.}
                     \label{fig:truncatedSVD-rank1}
                 \end{center}
             \end{figure}
