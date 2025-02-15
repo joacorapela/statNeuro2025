@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Generation of a signal plus noise time series &#8212; statsNeuro2025  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../_static/basic.css?v=686e5160" />
+    <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=27fed22d" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Generation of a random walk with drift time series" href="plot_randomWalkWithDriftExample.html" />
+    <link rel="prev" title="White noise analytical and estimated autocorrelation, and 95% confidence interval" href="plot_whiteNoiseAutocorrelation.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p><a class="reference internal" href="#sphx-glr-download-auto-examples-01-temporaltimeseriesanalysis-plot-signalplusnoise-py"><span class="std std-ref">Go to the end</span></a>
+to download the full example code.</p>
+</div>
+<section class="sphx-glr-example-title" id="generation-of-a-signal-plus-noise-time-series">
+<span id="sphx-glr-auto-examples-01-temporaltimeseriesanalysis-plot-signalplusnoise-py"></span><h1>Generation of a signal plus noise time series<a class="headerlink" href="#generation-of-a-signal-plus-noise-time-series" title="Link to this heading">¶</a></h1>
+<section id="import-requirements">
+<h2>Import requirements<a class="headerlink" href="#import-requirements" title="Link to this heading">¶</a></h2>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">plotly.graph_objects</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">go</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">plotly.subplots</span>
+</pre></div>
+</div>
+</section>
+<section id="define-variables">
+<h2>Define variables<a class="headerlink" href="#define-variables" title="Link to this heading">¶</a></h2>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">srate</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">T</span> <span class="o">=</span> <span class="mi">200</span> <span class="c1"># sec</span>
+<span class="n">sigma_low</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="n">sigma_high</span> <span class="o">=</span> <span class="mf">25.0</span>
+<span class="n">A</span> <span class="o">=</span> <span class="mf">2.0</span>
+<span class="n">omega</span> <span class="o">=</span> <span class="mf">1.0</span><span class="o">/</span><span class="mi">50</span>
+<span class="n">phi</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="mi">15</span><span class="o">/</span><span class="mi">50</span>
+</pre></div>
+</div>
+</section>
+<section id="create-white-noise">
+<h2>Create white noise<a class="headerlink" href="#create-white-noise" title="Link to this heading">¶</a></h2>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">time</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="mf">1.0</span><span class="o">/</span><span class="n">srate</span><span class="p">)</span>
+<span class="n">N</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">time</span><span class="p">)</span>
+<span class="n">w_low</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="n">sigma_low</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">N</span><span class="p">)</span>
+<span class="n">w_high</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="n">sigma_high</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">N</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="create-signal-plus-noise-time-series">
+<h2>Create signal plus noise time series<a class="headerlink" href="#create-signal-plus-noise-time-series" title="Link to this heading">¶</a></h2>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">signal</span> <span class="o">=</span> <span class="n">A</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">omega</span><span class="o">*</span><span class="n">time</span><span class="o">+</span><span class="n">phi</span><span class="p">)</span>
+<span class="n">signalInNoise_low</span> <span class="o">=</span> <span class="n">signal</span> <span class="o">+</span> <span class="n">w_low</span>
+<span class="n">signalInNoise_high</span> <span class="o">=</span> <span class="n">signal</span> <span class="o">+</span> <span class="n">w_high</span>
+</pre></div>
+</div>
+</section>
+<section id="plot-signal-plus-noise-time-series">
+<h2>Plot signal plus noise time series<a class="headerlink" href="#plot-signal-plus-noise-time-series" title="Link to this heading">¶</a></h2>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plotly</span><span class="o">.</span><span class="n">subplots</span><span class="o">.</span><span class="n">make_subplots</span><span class="p">(</span>
+    <span class="n">rows</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">cols</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">subplot_titles</span><span class="o">=</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$2\cos(2\pi t + 0.6\pi)$&#39;</span><span class="p">,</span>
+                    <span class="sa">r</span><span class="s1">&#39;$2\cos(2\pi t + 0.6\pi)+N(0,1)$&#39;</span><span class="p">,</span>
+                    <span class="sa">r</span><span class="s1">&#39;$2\cos(2\pi t + 0.6\pi)+N(0,25)$&#39;</span><span class="p">))</span>
+
+<span class="n">trace</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Scatter</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">time</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">signal</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;lines+markers&quot;</span><span class="p">,</span>
+                   <span class="n">line</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">),</span> <span class="n">showlegend</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span><span class="n">trace</span><span class="p">,</span> <span class="n">row</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">trace</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Scatter</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">time</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">signalInNoise_low</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;lines+markers&quot;</span><span class="p">,</span>
+                   <span class="n">line</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">),</span> <span class="n">showlegend</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span><span class="n">trace</span><span class="p">,</span> <span class="n">row</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">trace</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Scatter</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">time</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">signalInNoise_high</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;lines+markers&quot;</span><span class="p">,</span>
+                   <span class="n">line</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">),</span> <span class="n">showlegend</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span><span class="n">trace</span><span class="p">,</span> <span class="n">row</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">update_xaxes</span><span class="p">(</span><span class="n">title_text</span><span class="o">=</span><span class="s2">&quot;Time (sec)&quot;</span><span class="p">,</span> <span class="n">row</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s2">&quot;figures&quot;</span><span class="p">):</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="s2">&quot;figures&quot;</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">write_html</span><span class="p">(</span><span class="s2">&quot;figures/signalPlusNoise.html&quot;</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">write_image</span><span class="p">(</span><span class="s2">&quot;figures/signalPlusNoise.png&quot;</span><span class="p">)</span>
+
+<span class="n">fig</span>
+</pre></div>
+</div>
+<div class="output_subarea output_html rendered_html output_result">
+<div>                        <script type="text/javascript">window.PlotlyConfig = {MathJaxConfig: 'local'};</script>
+        <script charset="utf-8" src="https://cdn.plot.ly/plotly-3.0.0.min.js"></script>                <div id="166d7458-a255-46ff-b7f6-b40960ff29ba" class="plotly-graph-div" style="height:100%; width:100%;"></div>            <script type="text/javascript">                window.PLOTLYENV=window.PLOTLYENV || {};                                if (document.getElementById("166d7458-a255-46ff-b7f6-b40960ff29ba")) {                    Plotly.newPlot(                        "166d7458-a255-46ff-b7f6-b40960ff29ba",                        [{"line":{"color":"black"},"mode":"lines+markers","showlegend":false,"x":{"dtype":"f8","bdata":"AAAAAAAAAAAAAAAAAADwPwAAAAAAAABAAAAAAAAACEAAAAAAAAAQQAAAAAAAABRAAAAAAAAAGEAAAAAAAAAcQAAAAAAAACBAAAAAAAAAIkAAAAAAAAAkQAAAAAAAACZAAAAAAAAAKEAAAAAAAAAqQAAAAAAAACxAAAAAAAAALkAAAAAAAAAwQAAAAAAAADFAAAAAAAAAMkAAAAAAAAAzQAAAAAAAADRAAAAAAAAANUAAAAAAAAA2QAAAAAAAADdAAAAAAAAAOEAAAAAAAAA5QAAAAAAAADpAAAAAAAAAO0AAAAAAAAA8QAAAAAAAAD1AAAAAAAAAPkAAAAAAAAA\u002fQAAAAAAAAEBAAAAAAACAQEAAAAAAAABBQAAAAAAAgEFAAAAAAAAAQkAAAAAAAIBCQAAAAAAAAENAAAAAAACAQ0AAAAAAAABEQAAAAAAAgERAAAAAAAAARUAAAAAAAIBFQAAAAAAAAEZAAAAAAACARkAAAAAAAABHQAAAAAAAgEdAAAAAAAAASEAAAAAAAIBIQAAAAAAAAElAAAAAAACASUAAAAAAAABKQAAAAAAAgEpAAAAAAAAAS0AAAAAAAIBLQAAAAAAAAExAAAAAAACATEAAAAAAAABNQAAAAAAAgE1AAAAAAAAATkAAAAAAAIBOQAAAAAAAAE9AAAAAAACAT0AAAAAAAABQQAAAAAAAQFBAAAAAAACAUEAAAAAAAMBQQAAAAAAAAFFAAAAAAABAUUAAAAAAAIBRQAAAAAAAwFFAAAAAAAAAUkAAAAAAAEBSQAAAAAAAgFJAAAAAAADAUkAAAAAAAABTQAAAAAAAQFNAAAAAAACAU0AAAAAAAMBTQAAAAAAAAFRAAAAAAABAVEAAAAAAAIBUQAAAAAAAwFRAAAAAAAAAVUAAAAAAAEBVQAAAAAAAgFVAAAAAAADAVUAAAAAAAABWQAAAAAAAQFZAAAAAAACAVkAAAAAAAMBWQAAAAAAAAFdAAAAAAABAV0AAAAAAAIBXQAAAAAAAwFdAAAAAAAAAWEAAAAAAAEBYQAAAAAAAgFhAAAAAAADAWEAAAAAAAABZQAAAAAAAQFlAAAAAAACAWUAAAAAAAMBZQAAAAAAAAFpAAAAAAABAWkAAAAAAAIBaQAAAAAAAwFpAAAAAAAAAW0AAAAAAAEBbQAAAAAAAgFtAAAAAAADAW0AAAAAAAABcQAAAAAAAQFxAAAAAAACAXEAAAAAAAMBcQAAAAAAAAF1AAAAAAABAXUAAAAAAAIBdQAAAAAAAwF1AAAAAAAAAXkAAAAAAAEBeQAAAAAAAgF5AAAAAAADAXkAAAAAAAABfQAAAAAAAQF9AAAAAAACAX0AAAAAAAMBfQAAAAAAAAGBAAAAAAAAgYEAAAAAAAEBgQAAAAAAAYGBAAAAAAACAYEAAAAAAAKBgQAAAAAAAwGBAAAAAAADgYEAAAAAAAABhQAAAAAAAIGFAAAAAAABAYUAAAAAAAGBhQAAAAAAAgGFAAAAAAACgYUAAAAAAAMBhQAAAAAAA4GFAAAAAAAAAYkAAAAAAACBiQAAAAAAAQGJAAAAAAABgYkAAAAAAAIBiQAAAAAAAoGJAAAAAAADAYkAAAAAAAOBiQAAAAAAAAGNAAAAAAAAgY0AAAAAAAEBjQAAAAAAAYGNAAAAAAACAY0AAAAAAAKBjQAAAAAAAwGNAAAAAAADgY0AAAAAAAABkQAAAAAAAIGRAAAAAAABAZEAAAAAAAGBkQAAAAAAAgGRAAAAAAACgZEAAAAAAAMBkQAAAAAAA4GRAAAAAAAAAZUAAAAAAACBlQAAAAAAAQGVAAAAAAABgZUAAAAAAAIBlQAAAAAAAoGVAAAAAAADAZUAAAAAAAOBlQAAAAAAAAGZAAAAAAAAgZkAAAAAAAEBmQAAAAAAAYGZAAAAAAACAZkAAAAAAAKBmQAAAAAAAwGZAAAAAAADgZkAAAAAAAABnQAAAAAAAIGdAAAAAAABAZ0AAAAAAAGBnQAAAAAAAgGdAAAAAAACgZ0AAAAAAAMBnQAAAAAAA4GdAAAAAAAAAaEAAAAAAACBoQAAAAAAAQGhAAAAAAABgaEAAAAAAAIBoQAAAAAAAoGhAAAAAAADAaEAAAAAAAOBoQA=="},"y":{"dtype":"f8","bdata":"SukvN+\u002fG47+WgSXJ9z\u002frv08rGDx+JfG\u002fuQG1\u002fsZl9L8UuNIDtlP3v6f0l5t34\u002fm\u002fV8CBTrQK\u002fL\u002fkWu+dusD9v98eEB2i\u002fv6\u002fAtmAVGe\u002f\u002f78AAAAAAAAAwAPZgFRnv\u002f+\u002f4R4QHaL+\u002fr\u002fmWu+dusD9v1rAgU60Cvy\u002fqfSXm3fj+b8WuNIDtlP3v7oBtf7GZfS\u002fVSsYPH4l8b+hgSXJ9z\u002frv1LpLzfvxuO\u002feXoDZRz8179tk+AbChPAv1KT4BsKE8A\u002fbHoDZRz81z9M6S8378bjP5uBJcn3P+s\u002fUisYPH4l8T++AbX+xmX0PxO40gO2U\u002fc\u002fp\u002fSXm3fj+T9ZwIFOtAr8P+Va7526wP0\u002f4R4QHaL+\u002fj8D2YBUZ7\u002f\u002fPwAAAAAAAABAA9mAVGe\u002f\u002fz\u002fgHhAdov7+P+Ra7526wP0\u002fV8CBTrQK\u002fD+p9Jebd+P5Pxa40gO2U\u002fc\u002fuwG1\u002fsZl9D9PKxg8fiXxP5WBJcn3P+s\u002fRekvN+\u002fG4z99egNlHPzXP3WT4BsKE8A\u002fiZPgGwoTwL+HegNlHPzXv0rpLzfvxuO\u002fi4Elyfc\u002f679RKxg8fiXxv7cBtf7GZfS\u002fGLjSA7ZT97+m9Jebd+P5v1zAgU60Cvy\u002f5VrvnbrA\u002fb\u002ffHhAdov7+vwPZgFRnv\u002f+\u002fAAAAAAAAAMAC2YBUZ7\u002f\u002fv+AeEB2i\u002fv6\u002f51rvnbrA\u002fb9YwIFOtAr8v6r0l5t34\u002fm\u002fErjSA7ZT97+8AbX+xmX0v0krGDx+JfG\u002fl4Elyfc\u002f679X6S8378bjv2J6A2Uc\u002fNe\u002ffpPgGwoTwL\u002fAk+AbChPAP4N6A2Uc\u002fNc\u002fSOkvN+\u002fG4z+mgSXJ9z\u002frP1ArGDx+JfE\u002fwgG1\u002fsZl9D8XuNIDtlP3P6X0l5t34\u002fk\u002fXMCBTrQK\u002fD\u002fkWu+dusD9P+IeEB2i\u002fv4\u002fA9mAVGe\u002f\u002fz8AAAAAAAAAQALZgFRnv\u002f8\u002f4R4QHaL+\u002fj\u002fhWu+dusD9P1jAgU60Cvw\u002fofSXm3fj+T8SuNIDtlP3P70Btf7GZfQ\u002fSisYPH4l8T+ZgSXJ9z\u002frPzrpLzfvxuM\u002fZ3oDZRz81z+Hk+AbChPAP7iT4BsKE8C\u002ffnoDZRz8179k6S8378bjv6SBJcn3P+u\u002fTysYPH4l8b\u002fCAbX+xmX0vxe40gO2U\u002fe\u002frvSXm3fj+b9bwIFOtAr8v+Ra7526wP2\u002f4h4QHaL+\u002fr8D2YBUZ7\u002f\u002fvwAAAAAAAADAAtmAVGe\u002f\u002f7\u002fdHhAdov7+v+Ja7526wP2\u002fWcCBTrQK\u002fL+r9Jebd+P5vx640gO2U\u002fe\u002fsQG1\u002fsZl9L9LKxg8fiXxv5uBJcn3P+u\u002fW+kvN+\u002fG47+qegNlHPzXvxCT4BsKE8C\u002fr5PgGwoTwD96egNlHPzXP0TpLzfvxuM\u002fhYElyfc\u002f6z9cKxg8fiXxP8EBtf7GZfQ\u002fFrjSA7ZT9z+k9Jebd+P5P2LAgU60Cvw\u002f6VrvnbrA\u002fT\u002fiHhAdov7+PwPZgFRnv\u002f8\u002fAAAAAAAAAEAA2YBUZ7\u002f\u002fP90eEB2i\u002fv4\u002f4lrvnbrA\u002fT9ZwIFOtAr8P6z0l5t34\u002fk\u002fCbjSA7ZT9z+yAbX+xmX0P0wrGDx+JfE\u002fnYElyfc\u002f6z9d6S8378bjPzB6A2Uc\u002fNc\u002fGZPgGwoTwD+mk+AbChPAv3Z6A2Uc\u002fNe\u002fQukvN+\u002fG47+9gSXJ9z\u002frv1srGDx+JfG\u002fwAG1\u002fsZl9L8VuNIDtlP3v6P0l5t34\u002fm\u002fYsCBTrQK\u002fL\u002fpWu+dusD9v+IeEB2i\u002fv6\u002fAtmAVGe\u002f\u002f78AAAAAAAAAwADZgFRnv\u002f+\u002f3h4QHaL+\u002fr\u002fjWu+dusD9v1rAgU60Cvy\u002fmvSXm3fj+b8KuNIDtlP3v7MBtf7GZfS\u002fTSsYPH4l8b+fgSXJ9z\u002frvyLpLzfvxuO\u002fNXoDZRz8178ik+AbChPAv52T4BsKE8A\u002fcXoDZRz81z986S8378bjP7uBJcn3P+s\u002fWisYPH4l8T+\u002fAbX+xmX0PxS40gO2U\u002fc\u002ftvSXm3fj+T9hwIFOtAr8P+ha7526wP0\u002f4R4QHaL+\u002fj8C2YBUZ7\u002f\u002fPwAAAAAAAABAANmAVGe\u002f\u002fz\u002feHhAdov7+P+Na7526wP0\u002fWsCBTrQK\u002fD+a9Jebd+P5Pwq40gO2U\u002fc\u002ftAG1\u002fsZl9D9OKxg8fiXxP6GBJcn3P+s\u002fJOkvN+\u002fG4z85egNlHPzXPyuT4BsKE8A\u002flJPgGwoTwL9tegNlHPzXvw=="},"type":"scatter","xaxis":"x","yaxis":"y"},{"line":{"color":"black"},"mode":"lines+markers","showlegend":false,"x":{"dtype":"f8","bdata":"AAAAAAAAAAAAAAAAAADwPwAAAAAAAABAAAAAAAAACEAAAAAAAAAQQAAAAAAAABRAAAAAAAAAGEAAAAAAAAAcQAAAAAAAACBAAAAAAAAAIkAAAAAAAAAkQAAAAAAAACZAAAAAAAAAKEAAAAAAAAAqQAAAAAAAACxAAAAAAAAALkAAAAAAAAAwQAAAAAAAADFAAAAAAAAAMkAAAAAAAAAzQAAAAAAAADRAAAAAAAAANUAAAAAAAAA2QAAAAAAAADdAAAAAAAAAOEAAAAAAAAA5QAAAAAAAADpAAAAAAAAAO0AAAAAAAAA8QAAAAAAAAD1AAAAAAAAAPkAAAAAAAAA\u002fQAAAAAAAAEBAAAAAAACAQEAAAAAAAABBQAAAAAAAgEFAAAAAAAAAQkAAAAAAAIBCQAAAAAAAAENAAAAAAACAQ0AAAAAAAABEQAAAAAAAgERAAAAAAAAARUAAAAAAAIBFQAAAAAAAAEZAAAAAAACARkAAAAAAAABHQAAAAAAAgEdAAAAAAAAASEAAAAAAAIBIQAAAAAAAAElAAAAAAACASUAAAAAAAABKQAAAAAAAgEpAAAAAAAAAS0AAAAAAAIBLQAAAAAAAAExAAAAAAACATEAAAAAAAABNQAAAAAAAgE1AAAAAAAAATkAAAAAAAIBOQAAAAAAAAE9AAAAAAACAT0AAAAAAAABQQAAAAAAAQFBAAAAAAACAUEAAAAAAAMBQQAAAAAAAAFFAAAAAAABAUUAAAAAAAIBRQAAAAAAAwFFAAAAAAAAAUkAAAAAAAEBSQAAAAAAAgFJAAAAAAADAUkAAAAAAAABTQAAAAAAAQFNAAAAAAACAU0AAAAAAAMBTQAAAAAAAAFRAAAAAAABAVEAAAAAAAIBUQAAAAAAAwFRAAAAAAAAAVUAAAAAAAEBVQAAAAAAAgFVAAAAAAADAVUAAAAAAAABWQAAAAAAAQFZAAAAAAACAVkAAAAAAAMBWQAAAAAAAAFdAAAAAAABAV0AAAAAAAIBXQAAAAAAAwFdAAAAAAAAAWEAAAAAAAEBYQAAAAAAAgFhAAAAAAADAWEAAAAAAAABZQAAAAAAAQFlAAAAAAACAWUAAAAAAAMBZQAAAAAAAAFpAAAAAAABAWkAAAAAAAIBaQAAAAAAAwFpAAAAAAAAAW0AAAAAAAEBbQAAAAAAAgFtAAAAAAADAW0AAAAAAAABcQAAAAAAAQFxAAAAAAACAXEAAAAAAAMBcQAAAAAAAAF1AAAAAAABAXUAAAAAAAIBdQAAAAAAAwF1AAAAAAAAAXkAAAAAAAEBeQAAAAAAAgF5AAAAAAADAXkAAAAAAAABfQAAAAAAAQF9AAAAAAACAX0AAAAAAAMBfQAAAAAAAAGBAAAAAAAAgYEAAAAAAAEBgQAAAAAAAYGBAAAAAAACAYEAAAAAAAKBgQAAAAAAAwGBAAAAAAADgYEAAAAAAAABhQAAAAAAAIGFAAAAAAABAYUAAAAAAAGBhQAAAAAAAgGFAAAAAAACgYUAAAAAAAMBhQAAAAAAA4GFAAAAAAAAAYkAAAAAAACBiQAAAAAAAQGJAAAAAAABgYkAAAAAAAIBiQAAAAAAAoGJAAAAAAADAYkAAAAAAAOBiQAAAAAAAAGNAAAAAAAAgY0AAAAAAAEBjQAAAAAAAYGNAAAAAAACAY0AAAAAAAKBjQAAAAAAAwGNAAAAAAADgY0AAAAAAAABkQAAAAAAAIGRAAAAAAABAZEAAAAAAAGBkQAAAAAAAgGRAAAAAAACgZEAAAAAAAMBkQAAAAAAA4GRAAAAAAAAAZUAAAAAAACBlQAAAAAAAQGVAAAAAAABgZUAAAAAAAIBlQAAAAAAAoGVAAAAAAADAZUAAAAAAAOBlQAAAAAAAAGZAAAAAAAAgZkAAAAAAAEBmQAAAAAAAYGZAAAAAAACAZkAAAAAAAKBmQAAAAAAAwGZAAAAAAADgZkAAAAAAAABnQAAAAAAAIGdAAAAAAABAZ0AAAAAAAGBnQAAAAAAAgGdAAAAAAACgZ0AAAAAAAMBnQAAAAAAA4GdAAAAAAAAAaEAAAAAAACBoQAAAAAAAQGhAAAAAAABgaEAAAAAAAIBoQAAAAAAAoGhAAAAAAADAaEAAAAAAAOBoQA=="},"y":{"dtype":"f8","bdata":"lFaK51OFzD\u002fWSfw+EsvnvyQiGHYGLOm\u002fcnZC\u002fftR07+Su7PoXFYDwDCUS41mzfW\u002fg6uepOk08b9qbHWa5FTyv1iZRtDp3ALAXGp\u002fPfP5\u002fr+oZWTH0eH1vz4bnwKm9\u002fi\u002fS7XRlmcgBsASdiU0LvDwvy4WM\u002fQ5uua\u002fCst6yhszA8BPM4kyIib3v8SAe\u002fBJw+6\u002f3jEn4eAKDMAb7g+enQb5v1ojVvh1Yti\u002ftRXPyx2e8b9JVoXp6I\u002fvP6LCf0Jg2\u002fW\u002fTmdKq83i6T94ifrAAV3cv8nocRQft\u002fw\u002fLzCAfNO1+z9gykZz3ijRv+WLN8KeovY\u002fEk6wmnLI+T9QTmsU\u002fF74P5DeZxTKKghAzluM3Wey+j8AVg8pcoiTP6trNExBfwNAlEMj5k6i3L\u002fRUXM8jbkAQI+vyWmdbgBAKEJ+nvlL8D9Du4Ow0iHyP7rTPdrGmQZApN9TkO25AEBuDgpN7mMBQMqOYFdrtwJA6+cSeRm65L9EKfMzLlfiv9Gwfi+eLeY\u002fIoxWlkUW\u002fL9mZx0O3TDlv3D7wrYNF9A\u002fA1\u002ftq07s8b8xdi9KxuLxv9tWCqqtfPu\u002fcB7YxMFgvj+sPm2aywn5v8z5XbIX5fe\u002fSiS3gAG\u002f7L9GHAmzmrUIwGYHOTmzFPq\u002fFfjbjbhU97\u002fGIc+EQtkGwBxJAh3tswLABElBvQ9v+b+RPdUpXxQAwOS\u002fEoLYzgXAzK2iub5V0L\u002f+tVcBRsMEwAxjRdxWSt+\u002fVm41T2vN9D+C4YpcR+n3v7pLUnlT5P+\u002fBzimr4rr878EyNSLiCXuv8przDkZyuM\u002fILvFdq3dAMDSCOIkbHbuP5G5QuIYyfk\u002fDN6XS3Gw\u002fj91dF7vVrgAQKcwbZKwP\u002fw\u002fxRhPmms59z9w4rOx6Ymyv6jIpaZjnwpAPP68iIN3A0BezY2PFTECQARBP+NdmAtASuWeauFO9j++2z5aFqf+P7AygANmhrO\u002fNJQ0KtGp2j820jPPbJf4Pw9VPNttB+U\u002f2r7LP5U35z8zGRjHicPgvzCe\u002fQ7GdOo\u002fKmEII9i+2j8qApFy5W\u002f0P3pBrYdMuvQ\u002fdQkDGuIX678UqNFUUbkDwMdHRwMYXOC\u002fUq43\u002fFH0AMAuuhf4merev2YirpftXOi\u002ffttUz2Ld879AAgvvjML4v5p\u002fjvZH0PO\u002fiqZjv+9l87\u002fDEi7pCZf\u002fv7h1F08JBQbA\u002fsfo95Au87+TjZYnxGf3P9D0K3hHjPK\u002ftIIfjYzgAsAA6413hmCsv2asjPtVFe6\u002f0KyU8HAF2j8MRsCoCEUCwLA\u002ftpXOn++\u002fPcBkBobU4D+evMMyAIPYP+alg2Rcz9Q\u002fSmMl4qP11T\u002fA1fvWwdHWv2IBIzN\u002fw+I\u002fyK3ceSCAvT81eVpQLScCQFC\u002fEAx4ZLE\u002ffPO1nSDFAUBgrkkC42v0P6GhCKZvWQ9AXsOFBcBQB0Ckr3KvDPj2PyjlnmEwZQpAFLSN6X67BUA4BmcxIIr9P7JGvVsA4fM\u002fAJ0RuMmUor+MOlNDBX4AQK82Swf5xPk\u002fxC+gfnM5BkAC2WR2qSj4P+gmsa77avM\u002fuelspkdV6j\u002fHhkoRT9v0P+rPqUhhmvI\u002fRLybtrhKBMBcwULH7BjhP7vL+quVXtq\u002fGoxvz0FZ17+gaMjfZ0KvP6wlVoexK+O\u002fI\u002fqn4Ao1BcDzi9U3ZKgEwCEz0M2PuATAR28pLiuGBcBQZ5wWd+\u002fpv9wE2sHxNui\u002frvdC5QPo8r9V8jvYu0r5v0bgoLvZ0vC\u002fUGNqbS6uCcBiyXFZESwDwMRFdUPQQvi\u002fMebOMSmZ5L+MMTSbwcj\u002fv7odKyRCzPK\u002fvMTCp0zs3L9A6zYN2Z64v4tgPs2c1\u002fu\u002f77azTZFf0j8P+pnA9tv4v7Lka9LHwOa\u002fjmLWUIMtxb\u002fwkJ4ktTyvPzbVh26CV94\u002fA0Etea3a8T9C59vjGlDuP0xJT+ystfE\u002fhNEV46RF8j83pgzHds33PwbbPWVm7vY\u002fIP6ZdWY90j84hU6WmcgJQKx4ibw0J\u002fg\u002fJ+MSTsabAUDY3c1t\u002fOv0PwK8FfwnpBBAMgKn2nbm\u002fz8IWxcpZjTLvy51WQwl9+g\u002fJnZOWs9B8T\u002fT9mCPQzT5P\u002fqrL2EEY+M\u002fviMQY\u002fg34T\u002f+BpX1bwfGv6jLZpiahta\u002fQlge2eIg8z+gx8VuT5vmPw=="},"type":"scatter","xaxis":"x2","yaxis":"y2"},{"line":{"color":"black"},"mode":"lines+markers","showlegend":false,"x":{"dtype":"f8","bdata":"AAAAAAAAAAAAAAAAAADwPwAAAAAAAABAAAAAAAAACEAAAAAAAAAQQAAAAAAAABRAAAAAAAAAGEAAAAAAAAAcQAAAAAAAACBAAAAAAAAAIkAAAAAAAAAkQAAAAAAAACZAAAAAAAAAKEAAAAAAAAAqQAAAAAAAACxAAAAAAAAALkAAAAAAAAAwQAAAAAAAADFAAAAAAAAAMkAAAAAAAAAzQAAAAAAAADRAAAAAAAAANUAAAAAAAAA2QAAAAAAAADdAAAAAAAAAOEAAAAAAAAA5QAAAAAAAADpAAAAAAAAAO0AAAAAAAAA8QAAAAAAAAD1AAAAAAAAAPkAAAAAAAAA\u002fQAAAAAAAAEBAAAAAAACAQEAAAAAAAABBQAAAAAAAgEFAAAAAAAAAQkAAAAAAAIBCQAAAAAAAAENAAAAAAACAQ0AAAAAAAABEQAAAAAAAgERAAAAAAAAARUAAAAAAAIBFQAAAAAAAAEZAAAAAAACARkAAAAAAAABHQAAAAAAAgEdAAAAAAAAASEAAAAAAAIBIQAAAAAAAAElAAAAAAACASUAAAAAAAABKQAAAAAAAgEpAAAAAAAAAS0AAAAAAAIBLQAAAAAAAAExAAAAAAACATEAAAAAAAABNQAAAAAAAgE1AAAAAAAAATkAAAAAAAIBOQAAAAAAAAE9AAAAAAACAT0AAAAAAAABQQAAAAAAAQFBAAAAAAACAUEAAAAAAAMBQQAAAAAAAAFFAAAAAAABAUUAAAAAAAIBRQAAAAAAAwFFAAAAAAAAAUkAAAAAAAEBSQAAAAAAAgFJAAAAAAADAUkAAAAAAAABTQAAAAAAAQFNAAAAAAACAU0AAAAAAAMBTQAAAAAAAAFRAAAAAAABAVEAAAAAAAIBUQAAAAAAAwFRAAAAAAAAAVUAAAAAAAEBVQAAAAAAAgFVAAAAAAADAVUAAAAAAAABWQAAAAAAAQFZAAAAAAACAVkAAAAAAAMBWQAAAAAAAAFdAAAAAAABAV0AAAAAAAIBXQAAAAAAAwFdAAAAAAAAAWEAAAAAAAEBYQAAAAAAAgFhAAAAAAADAWEAAAAAAAABZQAAAAAAAQFlAAAAAAACAWUAAAAAAAMBZQAAAAAAAAFpAAAAAAABAWkAAAAAAAIBaQAAAAAAAwFpAAAAAAAAAW0AAAAAAAEBbQAAAAAAAgFtAAAAAAADAW0AAAAAAAABcQAAAAAAAQFxAAAAAAACAXEAAAAAAAMBcQAAAAAAAAF1AAAAAAABAXUAAAAAAAIBdQAAAAAAAwF1AAAAAAAAAXkAAAAAAAEBeQAAAAAAAgF5AAAAAAADAXkAAAAAAAABfQAAAAAAAQF9AAAAAAACAX0AAAAAAAMBfQAAAAAAAAGBAAAAAAAAgYEAAAAAAAEBgQAAAAAAAYGBAAAAAAACAYEAAAAAAAKBgQAAAAAAAwGBAAAAAAADgYEAAAAAAAABhQAAAAAAAIGFAAAAAAABAYUAAAAAAAGBhQAAAAAAAgGFAAAAAAACgYUAAAAAAAMBhQAAAAAAA4GFAAAAAAAAAYkAAAAAAACBiQAAAAAAAQGJAAAAAAABgYkAAAAAAAIBiQAAAAAAAoGJAAAAAAADAYkAAAAAAAOBiQAAAAAAAAGNAAAAAAAAgY0AAAAAAAEBjQAAAAAAAYGNAAAAAAACAY0AAAAAAAKBjQAAAAAAAwGNAAAAAAADgY0AAAAAAAABkQAAAAAAAIGRAAAAAAABAZEAAAAAAAGBkQAAAAAAAgGRAAAAAAACgZEAAAAAAAMBkQAAAAAAA4GRAAAAAAAAAZUAAAAAAACBlQAAAAAAAQGVAAAAAAABgZUAAAAAAAIBlQAAAAAAAoGVAAAAAAADAZUAAAAAAAOBlQAAAAAAAAGZAAAAAAAAgZkAAAAAAAEBmQAAAAAAAYGZAAAAAAACAZkAAAAAAAKBmQAAAAAAAwGZAAAAAAADgZkAAAAAAAABnQAAAAAAAIGdAAAAAAABAZ0AAAAAAAGBnQAAAAAAAgGdAAAAAAACgZ0AAAAAAAMBnQAAAAAAA4GdAAAAAAAAAaEAAAAAAACBoQAAAAAAAQGhAAAAAAABgaEAAAAAAAIBoQAAAAAAAoGhAAAAAAADAaEAAAAAAAOBoQA=="},"y":{"dtype":"f8","bdata":"vFEwoqZqGcA1D+yJ4RswwOm7sRq2rjBA1BXxnlF9PMDjPuLWbpMwwA008xl9azHAuG1Yv8MHGkApeHOBJFs5wNVMp0mXnUlAmXE+OxOWOMClPkz8PSFDwIgAlCkloMS\u002fjCaojzaiPMBnXIrlG0oiwHP8rPkYli9AwH3HuySBRcBpS1GnaCJDQG8iV5FvkChA86yumc6LREAzqp4pn3AiQF9j2cS\u002fjz\u002fA08aTGz\u002fzEcAypT4LJg4wwDq0Ye80fxzAEMDnLbPhKUAknyiitkjHvwp4m4NimghA4TYHHp1pOUBBDV+oSlYnwFFvfloh8jLAGga2fYUUIsDOpoDAwV84wGEM5Q4EPExAJjRzlJWEMEBWL\u002fzWDNg8wIRrkGHwYh7AWvfo602LJUBxMR94aYo6wHQDUjGA2yTANYE99fLJM0CnXrmOAY4\u002fwJ91zkPFdDTAvzB7n5CePUCfAROevqBMwGYpnWjeNUxAjWqMbvl\u002fQsC8aEJXtoQDQD5uV\u002fIVTQlAWSVIbJHcR0AhqrAY1XP6v1PANTuhnzLAioXHX2cmNcBSJsmcn6A5QPyHnuPjxAhADT7PeYf0QcDoDeLQaiRBwCK99HsWJAxAacXCK\u002f1DREB\u002fpgxB+00bwJZE+pwYYy1AZhGPRFQJM0At0JLmv+YhQG2k+6EmSCBA0p560qhlG0BBy3VH\u002fxojQCnxlMpWgyhA\u002fnHnZUapI0C3ipcCXVdDwKZEBqjnIz\u002fAx\u002fJc0mJlUcACaOXrbwUsQE3Dx4UCy0jATFLYBmLhIMDXK8GamlIrQO4QmIJJFx3AV+4WdphJM0BWk65RrdgPwFi9Fo7TOzZAQsVjIcwRR8AQGfZLNoM2QOr8bfOGSh1AGnoafVFKNUDPIc\u002ficc04QH80tHESqDjAx5MgYm2r9b9LZ7FgG0pCwNiXic3yRN8\u002fmNZw+lx7GsDa9Nixy2zlvzTgn1twK0vA2jmHw5\u002fLH0DyQnwP5OI0QL6ERG0jmUtAX+p+VYWVPMDMAAMTmTA3QDtfILQyqUBA2Kyk6k8ORkDg9ljyWtgZQGyui6EI5hnA6Hd8XmkxScCR2BDFpskiwMz6UObAdy7A3zvnSgMTIUA+bP7orK0zwBo0eFRGTgtAJBanOS1PKcC9VlGiyUghQJDxI\u002fhhvBfAOo3+HLwVNsCwhts8yoYlQFrS6GdXzhfAhJe+2xMiQUBmym8ucRAuwGptDH8N\u002fD5A4M4LBAYIQcAp24oDgLcwwAej5bjxSzJAK+Jpg\u002f4R87\u002fAlUm4y6VAQHdNZObKPjLA1Yw\u002fY7X3C0Dh4pGfugMzQBcvxiqFED5A8wq1maz2KcAyNDs9FMsxwIemfK1VMjdA0WtDysNCIUAfYx2gYcM1wH6hAYCViT1Aw4ZwzSeBP8A2fb3RAW8lwLQjDcbllilAu4hq4PRMNcDMHY+pryZAQNeFSc6aERZAppDMd+AIGcDi3MG\u002fFFMvwCITjcZxxkLAeghbykH7KsDkQSuxTP4rQDJ95a1t7EjAmHKDz7ro9j9coCeQJTMiQLavdidFoiRAttnuMxEANUB8PMeAJlkdQNmXpEKPIx7A6LZtIZwKMsCWTDIgI8c7QI12xTEGXjzAlvnx1+dVyL9\u002fN\u002fTmHe8nwJ37DMjfxCxA4dOsCKt4KEDKV3nVKpRBwA8vzh5L\u002fibACSmRWm+TD8DZQ6dD1ZVFQJylinVL3TVARGRugWsd9D+IebUzt30+QCqr5JPoekLA8becPacz87\u002fphsKRbss8wISSHbRz4RZARsjiNrzoIkB+XqAWrBoeQO+orpHAeSpAWfDpkHTiOsAaonhw954yQNlZmGsnQiLA+EP+66g56T9iuMYs6l4owJjkFiCGpj3ANoLY8E2lNsACS+hGvv1AQFmQNdHamAvAO7WC9RURPcCTHzjZ2wA9QLLhErXo1zpA42BzZ2n\u002fQsD4M2v9wMY+wDWfVPWBgihA8H6fQVSYMkD2YTrFN7Q1QCneM\u002fIl\u002fTTAd8QNOO6KJUBM0+8i0UQuQLIs8AxbEi1APwC63kAmQcAudOfXIlgKQBqYWrgW3ve\u002flo2EdzLMLcBPk0ujObYiQGcVJGNpjCXAploa8ihGMkAvIMvrbTlAwO9va5dVPEdAEsmTO9sAMEDITXu56JT8vw=="},"type":"scatter","xaxis":"x3","yaxis":"y3"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermap":[{"type":"scattermap","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"}}},"xaxis":{"anchor":"y","domain":[0.0,1.0]},"yaxis":{"anchor":"x","domain":[0.7777777777777778,1.0]},"xaxis2":{"anchor":"y2","domain":[0.0,1.0]},"yaxis2":{"anchor":"x2","domain":[0.3888888888888889,0.6111111111111112]},"xaxis3":{"anchor":"y3","domain":[0.0,1.0],"title":{"text":"Time (sec)"}},"yaxis3":{"anchor":"x3","domain":[0.0,0.22222222222222224]},"annotations":[{"font":{"size":16},"showarrow":false,"text":"$2\\cos(2\\pi t + 0.6\\pi)$","x":0.5,"xanchor":"center","xref":"paper","y":1.0,"yanchor":"bottom","yref":"paper"},{"font":{"size":16},"showarrow":false,"text":"$2\\cos(2\\pi t + 0.6\\pi)+N(0,1)$","x":0.5,"xanchor":"center","xref":"paper","y":0.6111111111111112,"yanchor":"bottom","yref":"paper"},{"font":{"size":16},"showarrow":false,"text":"$2\\cos(2\\pi t + 0.6\\pi)+N(0,25)$","x":0.5,"xanchor":"center","xref":"paper","y":0.22222222222222224,"yanchor":"bottom","yref":"paper"}]},                        {"responsive": true}                    )                };            </script>        </div>
+</div>
+<br />
+<br /><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.291 seconds)</p>
+<div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-01-temporaltimeseriesanalysis-plot-signalplusnoise-py">
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/a8cb23f559c010077566c452fdc4df70/plot_signalPlusNoise.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_signalPlusNoise.ipynb</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/02dcf809789ea0a03aae0d42168eacb8/plot_signalPlusNoise.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_signalPlusNoise.py</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-zip docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/04c2ff2f3b80b482d507834862b54015/plot_signalPlusNoise.zip"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">zipped:</span> <span class="pre">plot_signalPlusNoise.zip</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">statsNeuro2025</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Statistical Neuroscience 2025 Examples</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html#temporal-time-series-analysis">Temporal Time Series Analysis</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Temporal Time Series Analysis</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Statistical Neuroscience 2025 Examples</a><ul>
+  <li><a href="index.html">Temporal Time Series Analysis</a><ul>
+      <li>Previous: <a href="plot_whiteNoiseAutocorrelation.html" title="previous chapter">White noise analytical and estimated autocorrelation, and 95% confidence interval</a></li>
+      <li>Next: <a href="plot_randomWalkWithDriftExample.html" title="next chapter">Generation of a random walk with drift time series</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2025, Joaquin Rapela.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.1.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="../../_sources/auto_examples/01_temporalTimeSeriesAnalysis/plot_signalPlusNoise.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

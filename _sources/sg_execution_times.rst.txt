@@ -1,0 +1,64 @@
+
+:orphan:
+
+.. _sphx_glr_sg_execution_times:
+
+
+Computation times
+=================
+**00:12.504** total execution time for 10 files **from all galleries**:
+
+.. container::
+
+  .. raw:: html
+
+    <style scoped>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
+    </style>
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+    <script type="text/javascript" class="init">
+    $(document).ready( function () {
+        $('table.sg-datatable').DataTable({order: [[1, 'desc']]});
+    } );
+    </script>
+
+  .. list-table::
+   :header-rows: 1
+   :class: table table-striped sg-datatable
+
+   * - Example
+     - Time
+     - Mem (MB)
+   * - :ref:`sphx_glr_auto_examples_01_temporalTimeSeriesAnalysis_plot_samplesHarmonicProcess.py` (``../../../examples/sphinx_gallery/01_temporalTimeSeriesAnalysis/plot_samplesHarmonicProcess.py``)
+     - 00:07.684
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_01_temporalTimeSeriesAnalysis_plot_whiteNoiseExample.py` (``../../../examples/sphinx_gallery/01_temporalTimeSeriesAnalysis/plot_whiteNoiseExample.py``)
+     - 00:01.730
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_01_temporalTimeSeriesAnalysis_plot_harmonicAutocovariance.py` (``../../../examples/sphinx_gallery/01_temporalTimeSeriesAnalysis/plot_harmonicAutocovariance.py``)
+     - 00:01.302
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_01_temporalTimeSeriesAnalysis_plot_autoregressiveAutocovariance.py` (``../../../examples/sphinx_gallery/01_temporalTimeSeriesAnalysis/plot_autoregressiveAutocovariance.py``)
+     - 00:00.932
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_01_temporalTimeSeriesAnalysis_plot_signalPlusNoise.py` (``../../../examples/sphinx_gallery/01_temporalTimeSeriesAnalysis/plot_signalPlusNoise.py``)
+     - 00:00.291
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_01_temporalTimeSeriesAnalysis_plot_movingAverageAutocovariance.py` (``../../../examples/sphinx_gallery/01_temporalTimeSeriesAnalysis/plot_movingAverageAutocovariance.py``)
+     - 00:00.127
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_01_temporalTimeSeriesAnalysis_plot_autoregressiveExample.py` (``../../../examples/sphinx_gallery/01_temporalTimeSeriesAnalysis/plot_autoregressiveExample.py``)
+     - 00:00.119
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_01_temporalTimeSeriesAnalysis_plot_randomWalkWithDriftExample.py` (``../../../examples/sphinx_gallery/01_temporalTimeSeriesAnalysis/plot_randomWalkWithDriftExample.py``)
+     - 00:00.113
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_01_temporalTimeSeriesAnalysis_plot_movingAverageExample.py` (``../../../examples/sphinx_gallery/01_temporalTimeSeriesAnalysis/plot_movingAverageExample.py``)
+     - 00:00.109
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_01_temporalTimeSeriesAnalysis_plot_whiteNoiseAutocorrelation.py` (``../../../examples/sphinx_gallery/01_temporalTimeSeriesAnalysis/plot_whiteNoiseAutocorrelation.py``)
+     - 00:00.096
+     - 0.0

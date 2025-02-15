@@ -1,0 +1,208 @@
+
+
+.. _sphx_glr_auto_examples_01_temporalTimeSeriesAnalysis:
+
+Temporal Time Series Analysis
+=============================
+
+
+
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbnails">
+
+.. thumbnail-parent-div-open
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Generation of Gaussian White Noise">
+
+.. only:: html
+
+  .. image:: /auto_examples/01_temporalTimeSeriesAnalysis/images/thumb/sphx_glr_plot_whiteNoiseExample_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_01_temporalTimeSeriesAnalysis_plot_whiteNoiseExample.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Generation of Gaussian White Noise</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Generation of a autoregressive time series">
+
+.. only:: html
+
+  .. image:: /auto_examples/01_temporalTimeSeriesAnalysis/images/thumb/sphx_glr_plot_autoregressiveExample_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_01_temporalTimeSeriesAnalysis_plot_autoregressiveExample.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Generation of a autoregressive time series</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Generation of a moving average time series">
+
+.. only:: html
+
+  .. image:: /auto_examples/01_temporalTimeSeriesAnalysis/images/thumb/sphx_glr_plot_movingAverageExample_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_01_temporalTimeSeriesAnalysis_plot_movingAverageExample.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Generation of a moving average time series</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="White noise analytical and estimated autocorrelation, and 95% confidence interval">
+
+.. only:: html
+
+  .. image:: /auto_examples/01_temporalTimeSeriesAnalysis/images/thumb/sphx_glr_plot_whiteNoiseAutocorrelation_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_01_temporalTimeSeriesAnalysis_plot_whiteNoiseAutocorrelation.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">White noise analytical and estimated autocorrelation, and 95% confidence interval</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Generation of a signal plus noise time series">
+
+.. only:: html
+
+  .. image:: /auto_examples/01_temporalTimeSeriesAnalysis/images/thumb/sphx_glr_plot_signalPlusNoise_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_01_temporalTimeSeriesAnalysis_plot_signalPlusNoise.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Generation of a signal plus noise time series</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Generation of a random walk with drift time series">
+
+.. only:: html
+
+  .. image:: /auto_examples/01_temporalTimeSeriesAnalysis/images/thumb/sphx_glr_plot_randomWalkWithDriftExample_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_01_temporalTimeSeriesAnalysis_plot_randomWalkWithDriftExample.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Generation of a random walk with drift time series</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="AR(1) analytical and estimated autocovariance">
+
+.. only:: html
+
+  .. image:: /auto_examples/01_temporalTimeSeriesAnalysis/images/thumb/sphx_glr_plot_autoregressiveAutocovariance_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_01_temporalTimeSeriesAnalysis_plot_autoregressiveAutocovariance.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">AR(1) analytical and estimated autocovariance</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Moving average analytical and estimated autocovariance">
+
+.. only:: html
+
+  .. image:: /auto_examples/01_temporalTimeSeriesAnalysis/images/thumb/sphx_glr_plot_movingAverageAutocovariance_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_01_temporalTimeSeriesAnalysis_plot_movingAverageAutocovariance.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Moving average analytical and estimated autocovariance</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Plotting samples from harmonic process">
+
+.. only:: html
+
+  .. image:: /auto_examples/01_temporalTimeSeriesAnalysis/images/thumb/sphx_glr_plot_samplesHarmonicProcess_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_01_temporalTimeSeriesAnalysis_plot_samplesHarmonicProcess.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Plotting samples from harmonic process</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Harmonic process analytical and estimated autocovariance">
+
+.. only:: html
+
+  .. image:: /auto_examples/01_temporalTimeSeriesAnalysis/images/thumb/sphx_glr_plot_harmonicAutocovariance_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_01_temporalTimeSeriesAnalysis_plot_harmonicAutocovariance.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Harmonic process analytical and estimated autocovariance</div>
+    </div>
+
+
+.. thumbnail-parent-div-close
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /auto_examples/01_temporalTimeSeriesAnalysis/plot_whiteNoiseExample
+   /auto_examples/01_temporalTimeSeriesAnalysis/plot_autoregressiveExample
+   /auto_examples/01_temporalTimeSeriesAnalysis/plot_movingAverageExample
+   /auto_examples/01_temporalTimeSeriesAnalysis/plot_whiteNoiseAutocorrelation
+   /auto_examples/01_temporalTimeSeriesAnalysis/plot_signalPlusNoise
+   /auto_examples/01_temporalTimeSeriesAnalysis/plot_randomWalkWithDriftExample
+   /auto_examples/01_temporalTimeSeriesAnalysis/plot_autoregressiveAutocovariance
+   /auto_examples/01_temporalTimeSeriesAnalysis/plot_movingAverageAutocovariance
+   /auto_examples/01_temporalTimeSeriesAnalysis/plot_samplesHarmonicProcess
+   /auto_examples/01_temporalTimeSeriesAnalysis/plot_harmonicAutocovariance
+
