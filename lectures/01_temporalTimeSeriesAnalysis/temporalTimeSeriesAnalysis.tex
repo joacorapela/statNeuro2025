@@ -671,7 +671,6 @@ Gatsby Computational Neuroscience Unit\\University College London % Your institu
     \frametitle{Autocovariance function}
 
     \begin{exampleblock}{Example (Autocovariance function of AR(1))}
-		\only<1>{
         Calculate the autocovariance function of the autoregressive model
         of order 1 in Eq.~\ref{eq:ar}.
 
@@ -680,17 +679,46 @@ Gatsby Computational Neuroscience Unit\\University College London % Your institu
         \begin{align*}
             x_t &= \sum_{i=0}^{\infty}\phi^iw_{t-i}
         \end{align*}
-        }
-        \only<2>{
-        \scriptsize
-        \begin{align*}
-            \label{slide:autocovarAR1}
-            \gamma(t-h,t)&=E\{(x_{t-h}-\mu_{t-h})(x_t-\mu_t)\}=E\{x_{t-h}x_t\}=E\left\{\left(\sum_{i=0}^{\infty}\phi^iw_{t-h-i}\right)\left(\sum_{j=0}^{\infty}\phi^jw_{t-j}\right)\right\}\\
-                       &=E\left\{\sum_{i=0}^{\infty}\sum_{j=0}^{\infty}\phi^i\phi^jw_{t-h-i}w_{t-j}\right\}=\sum_{i=0}^{\infty}\sum_{j=0}^{\infty}\phi^i\phi^jE\{w_{t-h-i}w_{t-j}\}\\
-                       &=\sum_{i=0}^{\infty}\phi^i\phi^{i+h}E\{w_{t-h-i}^2\}=\phi^h\sigma^2_w\sum_{i=0}^{\infty}\phi^{2i}=\phi^h\sigma^2_w\frac{1}{1-\phi^2},\quad\text{if}\;|\phi|<1
-        \end{align*}
         \normalsize
-        }
+    \end{exampleblock}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Autocovariance function}
+
+    \begin{exampleblock}{Example (Autocovariance function of AR(1))}
+        \label{slide:autocovarAR1}
+        \scriptsize
+        \begin{align}
+            \gamma(t-h,t)&=E\{(x_{t-h}-\mu_{t-h})(x_t-\mu_t)\}=E\{x_{t-h}x_t\}=E\left\{\left(\sum_{i=0}^{\infty}\phi^iw_{t-h-i}\right)\left(\sum_{j=0}^{\infty}\phi^jw_{t-j}\right)\right\}\label{eq:autocovarAR1_l1}\\
+                       &=E\left\{\sum_{i=0}^{\infty}\sum_{j=0}^{\infty}\phi^i\phi^jw_{t-h-i}w_{t-j}\right\}=\sum_{i=0}^{\infty}\sum_{j=0}^{\infty}\phi^i\phi^jE\{w_{t-h-i}w_{t-j}\}\label{eq:autocovarAR1_l2}\\
+                       &=\sum_{i=0}^{\infty}\phi^i\phi^{i+h}E\{w_{t-h-i}^2\}=\phi^h\sigma^2_w\sum_{i=0}^{\infty}\phi^{2i}=\phi^h\sigma^2_w\frac{1}{1-\phi^2}\label{eq:autocovarAR1_l3}\qed
+        \end{align}
+    \end{exampleblock}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Autocovariance function}
+
+    \begin{exampleblock}{Example (Autocovariance function of AR(1))}
+        \begin{block}{Note}
+            \begin{enumerate}
+                \item the last equality in Eq.~\ref{eq:autocovarAR1_l1}
+                    requires $|\phi|<1$ to use the
+                    \hyperlink{slide:ar1AsMaInfty}{MA($\infty$) representation
+                    of AR(1) random process}, which guarantees that
+                    $\sum_{i=0}^\infty\phi^{2i}=\frac{1}{1-\phi^2}$ in
+                    Eq.~\ref{eq:autocovarAR1_l3}.
+                \item because the noise $w_t$ is uncorrelated, the expectation
+                    in the right hand side of 
+                    Eq.~\ref{eq:autocovarAR1_l2} will be different from zero
+                    only when $t-h-i=t-j$, or when $j=h+i$. Thus, the double
+                    summation in this equation will reduce to a single
+                    summation replacing $j$ by $h+i$ in the lefmost summation
+                    in Eq.~\ref{eq:autocovarAR1_l3}.
+            \end{enumerate}
+        \end{block}
+        \normalsize
     \end{exampleblock}
 \end{frame}
 

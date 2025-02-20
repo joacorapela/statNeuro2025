@@ -21,26 +21,34 @@
         \href{https://github.com/joacorapela/statNeuro2025/blob/master/worksheets/01_temporalTimeSeriesAnalysis/worksheet_temporalTimeSeriesAnalysis.pdf}
         {worksheet} is an autoregressive model of order one, AR(1).
 
-        As show in the slide \textbf{Mean function} containing \textbf{Example
+        When $|\phi|<1$, as show in the \href{https://github.com/joacorapela/statNeuro2025/blob/master/lectures/01_temporalTimeSeriesAnalysis/temporalTimeSeriesAnalysis.pdf}{lecture} slide \textbf{Mean function} containing \textbf{Example
         (Mean function of the autoregressive model of order 1)}, the mean of this AR(1)
         model is zero.
 
-        When $|\phi|<1$, as show in the slide \textbf{Autovariance function}
+        When $|\phi|<1$, as show in the \href{https://github.com/joacorapela/statNeuro2025/blob/master/lectures/01_temporalTimeSeriesAnalysis/temporalTimeSeriesAnalysis.pdf}{lecture} slide \textbf{Autovariance function}
         containing \textbf{Example (Autocovariance function of AR(1))}, the
         covariance of an AR(1) random process is $\gamma(t+h,
         t)=\phi^h\sigma_w^2\frac{1}{1-\phi^2}$.
-        When $|\phi|\ge 1$, the summation $\sum_{i=0}^\infty\phi^{2i}$
-        does not converge, and the covariance $\gamma(t+h, t)$ is not well defined.
-        Therefore, only when $|\phi|<1$,  the variance of this AR(1) random process is
+        Therefore, the variance of this AR(1) random process is
         $\sigma^2=\sigma_w^2\frac{1}{1-\phi^2}$.
 
         When $|\phi|<1$, because (1) its mean is constant, (2) its variance is also constant and
         (3) its covariance does not depend on $t$, the AR(1) random process in
-        wide-sense stationary.
+        wide-sense stationary (WSS).
+
+        When $|\phi|\ge 1$, assume $\{x_t\}$ is WSS, then, because the variance
+        of the sum of indepenndent random variables is the sum of their
+        variances, and because $x_{t-1}$ and $w_t$ are uncorrelated Gaussian
+        random variables, and therefore independent random variables,
+        $\sigma^2_x=var\{x_t\}=\phi^2var\{x_{t-1}\}+var\{w_t\}=\phi^2\sigma^2_x+\sigma^2_w$
+        or $\sigma^2_x=\frac{\sigma^2_w}{1-\phi^2}$. The last equality states
+        that $\sigma^2_x<0$, because $|\phi|\ge 1$, which cannot be. This wrong
+        result arose from our assumption that, when $|\phi|\ge 1$, $\{x_t\}$ was
+        WSS. Therefore, when $|\phi|\ge 1$, $\{x_t\}$ cannot be WSS.
 
     \item The code to generate the figures in the
         \href{https://github.com/joacorapela/statNeuro2025/blob/master/lectures/01_temporalTimeSeriesAnalysis/temporalTimeSeriesAnalysis.pdf}{lecture}
-        slide titled \textbf{Analytical and estimated autocovariance function for AR(1)}, and the generated figures are available
+        slide titled \textbf{Analytical and estimated autocovariance function for AR(1)} and the generated figures are available
         \href{https://joacorapela.github.io/statNeuro2025/auto_examples/01_temporalTimeSeriesAnalysis/plot_autoregressiveAutocovariance.html#sphx-glr-auto-examples-01-temporaltimeseriesanalysis-plot-autoregressiveautocovariance-py}{here}.
 
     \item For the random walk with drift model:
@@ -76,7 +84,7 @@
 
                 \begin{figure}
                     \begin{center}
-                        \href{https://www.gatsby.ucl.ac.uk/~rapela/statNeuro/2025/lectures/01_temporalTimeSeriesAnalysis/figures/randomNoiseWithDriftSamples.html}{\includegraphics[width=4.00in]{../figures/randomNoiseWithDriftSamples.png}}
+                        \href{https://www.gatsby.ucl.ac.uk/~rapela/statNeuro/2025/lectures/01_temporalTimeSeriesAnalysis/figures/randomNoiseWithDriftSamples.html}{\includegraphics[width=4.00in]{../../../../solutions/worksheets/01_temporalTimeSeriesAnalysis/figures/randomNoiseWithDriftSamples.png}}
                         \caption{One hundred samples of a random walk with
                         drift process (colour traces). The solid line is the
                         mean of the random process and the dotted lines mark
@@ -88,7 +96,7 @@
                     \end{center}
                 \end{figure}
 
-            \item The random walk with drift process not wide-sense stationary
+            \item The random walk with drift process is not wide-sense stationary
                 because (1) when $\delta\neq 0$ the mean is not constant, (2)
                 the variance is neither constant, and (3) the autocovariance
                 function does not depend only on the time separation of its

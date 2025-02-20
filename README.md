@@ -19,9 +19,9 @@
     | 03 | Jan 27 | [Spectral time series analysis](https://github.com/joacorapela/statNeuro2025/blob/master/lectures/03_spectralTimeSeriesAnalysis/spectralTimeSeriesAnalysis.pdf) | [Joaquin Rapela](https://www.gatsby.ucl.ac.uk/~rapela) | lecture |
     | 03 | Jan 31 | Spectral time series analysis | [Joaquin Rapela](https://www.gatsby.ucl.ac.uk/~rapela) | practical |
     | 04 | Feb 03 | [Dimensionality reduction](https://github.com/joacorapela/statNeuro2025/blob/master/lectures/04_dimensionalityReduction/dimension-reduction-pca.pdf) | [Sina Tootoonian](https://sinatootoonian.com) | lecture |
-    | 04 | Feb 07 | [Singular Value Decomposition](practicals/05_singularValueDecomposition/singularValueDecomposition.pdf) | [Sina Tootoonian](https://www.linkedin.com/in/sina-tootoonian-99668838/) | practical |
+    | 04 | Feb 07 | [Dimensionality reduction](https://github.com/joacorapela/statNeuro2025/tree/master/practicals/04_dimensionalityReduction) | [Sina Tootoonian](https://www.linkedin.com/in/sina-tootoonian-99668838/) | practical |
     | 05 | Feb 10 | [Linear Regression](https://github.com/joacorapela/neuroinformatics24/blob/master/lectures/06_linearRegression/swc_neuroinformatics_linreg.pdf) | [Lior Fox](https://liorfox.github.io/) | lecture |
-    | 05 | Feb 14 | Linear Regression | [Lior Fox](https://liorfox.github.io/) | practical |
+    | 05 | Feb 14 | [Linear Regression](https://github.com/joacorapela/statNeuro2025/tree/master/practicals/05_linearRegression) | [Lior Fox](https://liorfox.github.io/) | practical |
     | 06 | Feb 17 | [Circular (directional) statistics](https://github.com/joacorapela/statNeuro2025/blob/master/lectures/06_cicularStatistics/circular_statistics.pdf) | [Kira D&#252;sterwald](https://scholar.google.com/citations?user=U7NxV-MAAAAJ&hl=en) | lecture |
     | 06 | Feb 21 | [Circular (directional) statistics](https://github.com/joacorapela/statNeuro2025/blob/master/practicals/06_circularStatistics/directional_statistics_practical.ipynb) | [Kira D&#252;sterwald](https://scholar.google.com/citations?user=U7NxV-MAAAAJ&hl=en) | practical |
     | 07 | Feb 24 | [Linear Dynamical Systems](https://github.com/joacorapela/neuroinformatics24/blob/master/lectures/07_linearDynamicalSystems) | [Kris Jensen](https://krisjensen.github.io/)| lecture |
