@@ -24,8 +24,8 @@
     | 05 | Feb 14 | [Linear Regression](https://github.com/joacorapela/statNeuro2025/tree/master/practicals/05_linearRegression) | [Lior Fox](https://liorfox.github.io/) | practical |
     | 06 | Feb 17 | [Circular (directional) statistics](https://github.com/joacorapela/statNeuro2025/blob/master/lectures/06_cicularStatistics/circular_statistics.pdf) | [Kira D&#252;sterwald](https://scholar.google.com/citations?user=U7NxV-MAAAAJ&hl=en) | lecture |
     | 06 | Feb 21 | [Circular (directional) statistics](https://github.com/joacorapela/statNeuro2025/blob/master/practicals/06_circularStatistics/directional_statistics_practical.ipynb) | [Kira D&#252;sterwald](https://scholar.google.com/citations?user=U7NxV-MAAAAJ&hl=en) | practical |
-    | 07 | Feb 24 | [Linear Dynamical Systems](https://github.com/joacorapela/neuroinformatics24/blob/master/lectures/07_linearDynamicalSystems) | [Kris Jensen](https://krisjensen.github.io/)| lecture |
-    | 07 | Feb 28 | [Linear Dynamical Systems](https://github.com/joacorapela/neuroinformatics24/blob/master/practicals/06_linearDynamicalSystems/README.md) | | practical |
+    | 07 | Feb 24 | [Linear Dynamical Systems](lectures/07_linearDynamicalSytems/LDS_Jensen_2025.pdf) | [Kris Jensen](https://krisjensen.github.io/)| lecture |
+    | 07 | Feb 28 | [Linear Dynamical Systems](https://colab.research.google.com/drive/1kVDxgEw_aG9HgVp7-5OzE-OPzCtw1dov?usp=sharing) | | practical |
     | 08 | Mar 03 | [Artificial Neural Networks](https://slides.com/eringrant/2024-03-07-swc-neural-nets-lecture/fullscreen?token=Gq60IrMy) | [Erin Grant](https://eringrant.github.io/) | lecture |
     | 08 | Mar 07 | Artificial Neural Networks | [Erin Grant](https://eringrant.github.io/) | practical |
     | 09 | Mar 10 | [Reinforcement learning](lectures/10_reinforcementLearning/RLinTheBrain_SWC_2024.pdf) | [Jesse Geerts](https://scholar.google.com/citations?user=4xusDVAAAAAJ&hl=en) | lecture |
