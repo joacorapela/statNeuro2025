@@ -77,8 +77,7 @@ class CircularLoss():
         """
         input_radians = torch.deg2rad(input)
         target_radians = torch.deg2rad(target)
-        answer = torch.mean(torch.abs(torch.exp(1j * input_radians) -
-                                      torch.exp(1j * target_radians)))
+        answer = ...
         return answer
 
 
