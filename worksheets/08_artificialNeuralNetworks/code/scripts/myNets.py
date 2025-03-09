@@ -138,5 +138,4 @@ def train(net, optimizer, train_loss_fn, test_loss_fn, train_data, train_labels,
                   f"train loss: {train_loss_value.item():.3f} | "
                   f"test loss: {test_loss_value.item():.3f}")
 
-    breakpoint()
     return train_loss, test_loss
