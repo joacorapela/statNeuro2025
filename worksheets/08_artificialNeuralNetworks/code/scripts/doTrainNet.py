@@ -19,7 +19,7 @@ def main(args):
                         type=int, default=10)
     parser.add_argument("--prop_train", help="data proportion for training",
                         type=float, default=0.6)
-    parser.add_argument("--optimizer_type", help="optimizer type (SGD, LBFGS)",
+    parser.add_argument("--optim_type", help="optimizer type (SGD, LBFGS)",
                         type=str, default="SGD")
     parser.add_argument("--n_epochs", help="number of epochs", type=int, default=50)
     parser.add_argument("--learning_rate", help="learning rate", type=float,
@@ -41,7 +41,7 @@ def main(args):
     expected_md5 = args.expected_md5
     n_hidden = args.n_hidden
     prop_train = args.prop_train
-    optimizer_type = args.optimizer_type
+    optim_type = args.optim_type
     n_epochs = args.n_epochs
     learning_rate = args.learning_rate
     train_loss_fn_type = args.train_loss_fn_type
@@ -89,15 +89,15 @@ def main(args):
             f"Invalid test_loss_fn_type={test_loss_fn_type}"
         )
 
-    if optimizer_type == "SGD":
+    if optim_type == "SGD":
         # Initialize PyTorch SGD optimizer
         optimizer = torch.optim.SGD(net.parameters(), lr=learning_rate)
-    elif optimizer_type == "Adam":
+    elif optim_type == "Adam":
         # Initialize PyTorch Adam optimizer
         optimizer = torch.optim.Adam(net.parameters(), lr=learning_rate)
     else:
         raise InvalidArgumentException(
-            f"Invalid optimizer_type={optimizer_type}"
+            f"Invalid optim_type={optim_type}"
         )
 
     # Move network and data to GPU, if available
@@ -121,7 +121,7 @@ def main(args):
 
     # save results
     results_filename = results_filename_pattern.format(n_hidden, prop_train,
-                                                       n_epochs, optimizer_type,
+                                                       n_epochs, optim_type,
                                                        learning_rate,
                                                        train_loss_fn_type,
                                                        test_loss_fn_type,
