@@ -27,7 +27,7 @@
     | 07 | Feb 24 | [Linear Dynamical Systems](lectures/07_linearDynamicalSytems/LDS_Jensen_2025.pdf) | [Kris Jensen](https://krisjensen.github.io/) | lecture |
     | 07 | Feb 28 | [Linear Dynamical Systems](https://colab.research.google.com/drive/1kVDxgEw_aG9HgVp7-5OzE-OPzCtw1dov?usp=sharing) | [Kris Jensen](https://krisjensen.github.io/) | practical |
     | 08 | Mar 03 | [Artificial Neural Networks](https://slides.com/eringrant/2024-03-07-swc-neural-nets-lecture/fullscreen?token=Gq60IrMy) | [Erin Grant](https://eringrant.github.io/) | lecture |
-    | 08 | Mar 07 | Artificial Neural Networks | [Erin Grant](https://eringrant.github.io/) | practical |
+    | 08 | Mar 07 | [Artificial Neural Networks](https://compneuro.neuromatch.io/tutorials/W1D5_DeepLearning/student/W1D5_Tutorial1.html) | [Erin Grant](https://eringrant.github.io/) | practical |
     | 09 | Mar 10 | [Reinforcement learning](lectures/10_reinforcementLearning/RLinTheBrain_SWC_2024.pdf) | [Jesse Geerts](https://scholar.google.com/citations?user=4xusDVAAAAAJ&hl=en) | lecture |
     | 10 | Mar 14 | Reinforcement learning | [Jesse Geerts](https://scholar.google.com/citations?user=4xusDVAAAAAJ&hl=en) | practical |
     | 09 | Mar 17 | [Experimental Control with Bonsai](https://neurogears.org/neuroinformatics-2024/) | [Goncalo Lopez](https://neurogears.org/about-us/) [Nick Guilbeault](https://www.linkedin.com/in/ncguilbeault/) | lecture |
