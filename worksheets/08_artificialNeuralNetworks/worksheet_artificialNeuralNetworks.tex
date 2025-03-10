@@ -82,7 +82,7 @@ Here we will:
 Partition the data into a train and a test set. For example, the train set can
 contain 60\% of the total data and the test set the remaining part. Use the
 train set to estimate the model parameters. For each epoch in the training loop
-use the mean-squared error (MSE) loss function on the train set and on the test set.
+compute the mean-squared error (MSE) on the train set and on the test set.
 Plot these two errors as a function of iteration, as in
 Figure~\ref{fig:trainMSETestMSE}.
 
@@ -90,7 +90,7 @@ Figure~\ref{fig:trainMSETestMSE}.
     \begin{center}
         \href{https://www.gatsby.ucl.ac.uk/~rapela/statNeuro/2025/worksheets/08_artificialNeuralNetworks/figures/trainTestLosses_nHidden200_propTrain0.60_nEpochs20000_optimTypeSGD_learningRate0.000010_trainLossFn_MSE_testLosFnMSE_randomSeed4.html}{\includegraphics[width=5.5in]{figures/trainTestLosses_nHidden200_propTrain0.60_nEpochs20000_optimTypeSGD_learningRate0.000010_trainLossFn_MSE_testLosFnMSE_randomSeed4.png}}
 
-        \caption{Train MSE and test MSE as a function of iteration. Click on
+        \caption{Train and test MSE as a function of iteration. Click on
         the figure to see its interactive version.}
 
         \label{fig:trainMSETestMSE}
@@ -109,43 +109,50 @@ with the parameters in the script
 
 \section{Circular variable loss function}
 
-Orientation is a circular variable. The MSE is not suited for circular
-variables. Create a loss function for circular variables. Use it to estimate a
-model using this new loss function on the train and test data. Build a figure
-as Fig.~\ref{fig:trainMSETestMSE}, but using the new loss function instead of
-the MSE loss function.
+Orientation is a circular variable. The MSE is not well suited for circular
+variables. Create a loss function for circular variables. Estimate a model
+using this new loss function on the train and test data. Build a figure as
+Fig.~\ref{fig:trainMSETestMSE}, but using the new loss function instead of the
+MSE one.
 
 You may want to complete function in function
-\href{https://github.com/joacorapela/statNeuro2025/blob/90b240fe0c8dc1f0bb0a48a0c5cc7e56754001a2/worksheets/08_artificialNeuralNetworks/code/scripts/myNets.py#L71}{loss}
+\href{https://github.com/joacorapela/statNeuro2025/blob/90b240fe0c8dc1f0bb0a48a0c5cc7e56754001a2/worksheets/08_artificialNeuralNetworks/code/scripts/myNets.py#L71}{loss},
 of class
-\href{https://github.com/joacorapela/statNeuro2025/blob/90b240fe0c8dc1f0bb0a48a0c5cc7e56754001a2/worksheets/08_artificialNeuralNetworks/code/scripts/myNets.py#L66}{CircularLoss}.
+\href{https://github.com/joacorapela/statNeuro2025/blob/90b240fe0c8dc1f0bb0a48a0c5cc7e56754001a2/worksheets/08_artificialNeuralNetworks/code/scripts/myNets.py#L66}{CircularLoss},
+of module
+\href{https://github.com/joacorapela/statNeuro2025/blob/master/worksheets/08_artificialNeuralNetworks/code/scripts/myNets.py}{myNets.py}.
 %
 Then you can estimate a model with this loss function using the script
 \href{https://github.com/joacorapela/statNeuro2025/blob/master/worksheets/08_artificialNeuralNetworks/code/scripts/doTrainNet.py}{doTrainNet.py}
 using parameters \texttt{train\_loss\_fn\_type=Circular} and
-\texttt{test\_loss\_fn\_type=Circular}. Also, adjust the parameter
+\texttt{test\_loss\_fn\_type=Circular}. Adjust the parameter
 \texttt{learning\_rate} to obtain best results.
 
 To test which of the MSE or Circular loss is better, estimate a first model with
 the MSE loss for the train data and the Circular loss for the test data,
 and a second model with the Circular loss for the train data and the Circular
-loss for the test data. The model giving the minimum loss with the test data is
-better. Use the same random seed for both estimations.
+loss for the test data. The model giving the minimum loss with the test data
+should be the best one. Use the same random seed for both estimations.
 
 \section{Model selection}
 
 Estimate models with different number of hidden units, compare their test
-errors and report the best number of hidden units that you found. Use train and
-test circular loss functions
+errors, and report the best number of hidden units that you found. Use train and
+test Circular loss functions
 
 Optionally:
 
 \begin{enumerate}
 
     \item test if using a nonlinear model yields substantially better results
-        than using a linear one. Tip: replace \texttt{net =
-        myNets.DeepNetReLU(n\_neurons, n\_hidden)} with \texttt{net =
-        myNets.DeepNetLinear(n\_neurons, n\_hidden)} in
+        than using a linear one.
+
+        Hint: replace \texttt{net =
+        myNets.DeepNetReLU(n\_neurons, n\_hidden)}
+
+        with \texttt{net = myNets.DeepNetLinear(n\_neurons, n\_hidden)}
+
+        in
         \href{https://github.com/joacorapela/statNeuro2025/blob/master/worksheets/08_artificialNeuralNetworks/code/scripts/doTrainNet.py}{doTrainNet.py}.
 
     \item vary the depth of the network.
@@ -175,7 +182,7 @@ other cells.
 
 You may want to use the script
 \href{https://github.com/joacorapela/statNeuro2025/blob/master/worksheets/08_artificialNeuralNetworks/code/scripts/doPlotTunningCurves.py}{doPlotTunningCurves.py}
-and set the parameter \texttt{--rank\_1st\_neuron}.
+and set the parameter \texttt{rank\_1st\_neuron}.
 
 \section{Train the model in a GPU}
 
@@ -191,11 +198,11 @@ At the SWC you can run this script in the cluster by:
 
         \texttt{ssh ssh.swc.ucl.ac.uk}
 
-    \item \textbf{allocating an interactive job in the cluster}
+    \item \textbf{allocate an interactive job in the cluster}
 
         \texttt{srun -p fast -t 2:00:00 --gres=gpu:1 --pty bash -i}
 
-    \item \textbf{running the script}
+    \item \textbf{run a script}
 
         \texttt{./trainCircularTestCircularSGD.csh}
 
