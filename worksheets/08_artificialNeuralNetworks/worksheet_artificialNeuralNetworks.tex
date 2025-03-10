@@ -1,0 +1,204 @@
+\documentclass[12pt]{article}
+
+\usepackage{graphicx}
+\usepackage{natbib}
+\usepackage{apalike}
+\usepackage{listings}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{xcolor}
+\usepackage{subcaption}
+\usepackage{float}
+\usepackage{bm}
+\usepackage{verbatim}
+
+\usepackage[shortlabels]{enumitem}
+\usepackage[colorlinks]{hyperref}
+\usepackage[margin=2cm]{geometry}
+
+\newtheorem{definition}{Definition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{theorem}{Theorem}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=2
+}
+
+\lstset{style=mystyle}
+
+\title{Worksheet: artificial neural networks}
+\author{Joaquin Rapela}
+
+\begin{document}
+
+\maketitle
+
+This worksheet is a continuation of the
+\href{https://compneuro.neuromatch.io/tutorials/W1D5_DeepLearning/student/W1D5_Tutorial1.html}{Neuromatch
+tutorial on decoding neural responses} that we covered in the practical session
+on artificial neural networks.
+
+Here we will:
+
+\begin{enumerate}
+
+    \item evaluate the performance of the neural network model on test
+        data,
+
+    \item use a circular variable loss function,
+
+    \item perform model selection (i.e., select optimal number of layers and
+        layer width),
+
+    \item visualise the tuning curve of the most relevant neurons,
+
+    \item train the model in a GPU.
+
+\end{enumerate}
+
+\section{Evaluate the model on test data}
+
+Partition the data into a train and a test set. For example, the train set can
+contain 60\% of the total data and the test set the remaining part. Use the
+train set to estimate the model parameters. For each epoch in the training loop
+use the mean-squared error (MSE) loss function on the train set and on the test set.
+Plot these two errors as a function of iteration, as in
+Figure~\ref{fig:trainMSETestMSE}.
+
+\begin{figure}[H]
+    \begin{center}
+        \href{https://www.gatsby.ucl.ac.uk/~rapela/statNeuro/2025/worksheets/08_artificialNeuralNetworks/figures/trainTestLosses_nHidden200_propTrain0.60_nEpochs20000_optimTypeSGD_learningRate0.000010_trainLossFn_MSE_testLosFnMSE_randomSeed4.html}{\includegraphics[width=5.5in]{figures/trainTestLosses_nHidden200_propTrain0.60_nEpochs20000_optimTypeSGD_learningRate0.000010_trainLossFn_MSE_testLosFnMSE_randomSeed4.png}}
+
+        \caption{Train MSE and test MSE as a function of iteration. Click on
+        the figure to see its interactive version.}
+
+        \label{fig:trainMSETestMSE}
+    \end{center}
+\end{figure}
+
+To train the mode you may want to use the script
+\href{https://github.com/joacorapela/statNeuro2025/blob/master/worksheets/08_artificialNeuralNetworks/code/scripts/doTrainNet.py}{doTrainNet.py}
+with the parameters in the script
+\href{https://github.com/joacorapela/statNeuro2025/blob/master/worksheets/08_artificialNeuralNetworks/code/scripts/trainMSETestMSESGD.csh}{trainMSETestMSESGD.csh}.
+
+To plot the train and test loss function you may want to use the script
+\href{https://github.com/joacorapela/statNeuro2025/blob/master/worksheets/08_artificialNeuralNetworks/code/scripts/doPlotTrainTestLosses.py}{doPlotTrainTestLosses.py}
+with the parameters in the script
+\href{https://github.com/joacorapela/statNeuro2025/blob/master/worksheets/08_artificialNeuralNetworks/code/scripts/plotLossesTrainMSETestMSE.csh}{plotLossesTrainMSETestMSE.csh}.
+
+\section{Circular variable loss function}
+
+Orientation is a circular variable. The MSE is not suited for circular
+variables. Create a loss function for circular variables. Use it to estimate a
+model using this new loss function on the train and test data. Build a figure
+as Fig.~\ref{fig:trainMSETestMSE}, but using the new loss function instead of
+the MSE loss function.
+
+You may want to complete function in function
+\href{https://github.com/joacorapela/statNeuro2025/blob/90b240fe0c8dc1f0bb0a48a0c5cc7e56754001a2/worksheets/08_artificialNeuralNetworks/code/scripts/myNets.py#L71}{loss}
+of class
+\href{https://github.com/joacorapela/statNeuro2025/blob/90b240fe0c8dc1f0bb0a48a0c5cc7e56754001a2/worksheets/08_artificialNeuralNetworks/code/scripts/myNets.py#L66}{CircularLoss}.
+%
+Then you can estimate a model with this loss function using the script
+\href{https://github.com/joacorapela/statNeuro2025/blob/master/worksheets/08_artificialNeuralNetworks/code/scripts/doTrainNet.py}{doTrainNet.py}
+using parameters \texttt{train\_loss\_fn\_type=Circular} and
+\texttt{test\_loss\_fn\_type=Circular}. Also, adjust the parameter
+\texttt{learning\_rate} to obtain best results.
+
+To test which of the MSE or Circular loss is better, estimate a first model with
+the MSE loss for the train data and the Circular loss for the test data,
+and a second model with the Circular loss for the train data and the Circular
+loss for the test data. The model giving the minimum loss with the test data is
+better. Use the same random seed for both estimations.
+
+\section{Model selection}
+
+Estimate models with different number of hidden units, compare their test
+errors and report the best number of hidden units that you found. Use train and
+test circular loss functions
+
+Optionally:
+
+\begin{enumerate}
+
+    \item test if using a nonlinear model yields substantially better results
+        than using a linear one. Tip: replace \texttt{net =
+        myNets.DeepNetReLU(n\_neurons, n\_hidden)} with \texttt{net =
+        myNets.DeepNetLinear(n\_neurons, n\_hidden)} in
+        \href{https://github.com/joacorapela/statNeuro2025/blob/master/worksheets/08_artificialNeuralNetworks/code/scripts/doTrainNet.py}{doTrainNet.py}.
+
+    \item vary the depth of the network.
+
+\end{enumerate}
+
+\section{Visualise the tuning curve of the most relevant neurons}
+
+Not all neurons are equally informative for the decoding task. Neurons with
+largest weights into the hidden layer should be more relevant. Plot the tuning
+function of the first 50 neurons with largest weights to the hidden layer, as
+in Figure~\ref{fig:tunningFunctionsFirst50}. Then plot the 50 next neurons with largest weight. See if
+you observe a pattern in the most relevant cells that is different from the
+other cells.
+
+\begin{figure}[H]
+    \begin{center}
+        \href{https://www.gatsby.ucl.ac.uk/~rapela/statNeuro/2025/worksheets/08_artificialNeuralNetworks/figures/tunningCurves_rank1stNeuron0_nNeurons50_nHidden200_propTrain0.60_nEpochs20000_optimTypeSGD_learningRate0.010000_trainLossFn_Circular_testLossFnCircular_randomSeed4.html}{\includegraphics[width=5.5in]{figures/tunningCurves_rank1stNeuron0_nNeurons50_nHidden200_propTrain0.60_nEpochs20000_optimTypeSGD_learningRate0.010000_trainLossFn_Circular_testLossFnCircular_randomSeed4.png}}
+
+        \caption{Tuning functions of the 50 neurons with largest weights to the
+        hidden layer. Click on the figure to see its interactive version.}
+
+        \label{fig:tunningFunctionsFirst50}
+    \end{center}
+\end{figure}
+
+
+You may want to use the script
+\href{https://github.com/joacorapela/statNeuro2025/blob/master/worksheets/08_artificialNeuralNetworks/code/scripts/doPlotTunningCurves.py}{doPlotTunningCurves.py}
+and set the parameter \texttt{--rank\_1st\_neuron}.
+
+\section{Train the model in a GPU}
+
+If a GPU is available in your system, the script
+\href{https://github.com/joacorapela/statNeuro2025/blob/master/worksheets/08_artificialNeuralNetworks/code/scripts/doTrainNet.py}{doTrainNet.py}
+will run on the GPU.
+
+At the SWC you can run this script in the cluster by:
+
+\begin{enumerate}
+
+    \item \textbf{ssh into the bastion node}
+
+        \texttt{ssh ssh.swc.ucl.ac.uk}
+
+    \item \textbf{allocating an interactive job in the cluster}
+
+        \texttt{srun -p fast -t 2:00:00 --gres=gpu:1 --pty bash -i}
+
+    \item \textbf{running the script}
+
+        \texttt{./trainCircularTestCircularSGD.csh}
+
+\end{enumerate}
+
+\end{document}
