@@ -134,6 +134,25 @@ loss for the test data. The model giving the lowest loss in the test data
 should be the best one. Use the same random seed for both estimations. Is the
 circular loss better?
 
+Notes:
+
+\begin{enumerate}
+
+    \item Try using a circular loss function for the train set and a MSE loss
+        function for the test set. You should observe that as training
+        progresses the train loss decreases steadily, but the test less
+        increases. Can you explain why this could happen?
+
+    \item In the practical session we suggested that constraining the outputs
+        of the network to be in the range $[0, 2\pi]$ could be a good
+        processing strategy for circular variables. However, I think it is not,
+        since the linear problem persist that 0 and $2\pi$ are numerically very
+        different numbers, but circularly they are the same number. Can you
+        demonstrate numerically that this solution performs poorly compared
+        with using a circular loss?
+
+\end{enumerate}
+
 \section{Model selection}
 
 Estimate models with different number of hidden units, compare their test
@@ -162,7 +181,6 @@ Optionally:
         \href{https://github.com/joacorapela/statNeuro2025/blob/master/worksheets/08_artificialNeuralNetworks/code/scripts/doTrainNet.py}{doTrainNet.py}
         to different values. If you obtain very different losses with different
         random seeds, then the loss landscape may have many local minima.
-
 
 \end{enumerate}
 
