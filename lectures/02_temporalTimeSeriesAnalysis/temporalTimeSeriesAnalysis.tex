@@ -464,8 +464,8 @@ equations}
         observations $\{x_1,\ldots,x_N\}$ is
 
         \begin{align*}
-            \log\mathcal{L}(\phi,\sigma^2)=&-\frac{N-1}{2}\log(2\pi\sigma^2)-\frac{1}{2\sigma^2}\sum_{n-2}^N(x_n-\phi x_{n-1})^2\\
-                                           &-\frac{1}{2}\log(2\pi\gamma(0))-\frac{x_i^2}{2\gamma(0)}
+            \log\mathcal{L}(\phi,\sigma^2)=&-\frac{N-1}{2}\log(2\pi\sigma^2)-\frac{1}{2\sigma^2}\sum_{n=2}^N(x_n-\phi x_{n-1})^2\\
+                                           &-\frac{1}{2}\log(2\pi\sigma^2)-\frac{x_1^2}{2\sigma^2}
         \end{align*}
 
     \end{claim}
@@ -493,8 +493,8 @@ equations}
         Simulate a time series of length $N=10,000$ from an AR(1) random
         process with $\phi=0.3$ and $\sigma=1$. Calculate the log-likelihood
         function on the simulated time series in the grid of parameters
-        $0.85\le\sigma\le 1.10$ (spacing $\delta_\sigma=0.01$ and
-        $-0.95\le\phi\le 0.95$ (spacing $\delta_\phi=0.05$. Verify that the
+        $0.85\le\sigma\le 1.10$ (spacing $\delta_\sigma=0.01$) and
+        $-0.95\le\phi\le 0.95$ (spacing $\delta_\phi=0.05$). Verify that the
         calculated log likelihood is maximised at the simulated parameter
         values.
     \end{example}
