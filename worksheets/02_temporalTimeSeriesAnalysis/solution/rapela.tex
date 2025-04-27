@@ -77,7 +77,7 @@ def estimateCoefsAndNoiseVarARpYW(acov, p, N):
     Gammap = buildGamma(acov=acov, m=p)
     gammaph = acov[1:]
     phiHat = np.linalg.solve(Gammap, gammaph)
-    sigma2Hat = acov[0] - np.inner(phiHat, acov[1:])
+    sigma2Hat = acov[0] - np.inner(phiHat, gammaph)
     phiCovHat = sigma2Hat/N * np.linalg.inv(Gammap)
     return phiHat, phiCovHat, sigma2Hat 
         \end{lstlisting}
