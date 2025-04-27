@@ -1,0 +1,73 @@
+\documentclass[12pt]{article}
+
+\usepackage{graphicx}
+\usepackage[shortlabels]{enumitem}
+\usepackage[colorlinks=]{hyperref}
+\usepackage[margin=2cm]{geometry}
+\usepackage{amsmath}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{listings}
+
+\title{Solution for the worksheet\\
+\href{https://github.com/joacorapela/statNeuro2025/blob/master/worksheets/02_temporalTimeSeriesAnalysis/worksheet_temporalTimeSeriesAnalysis2.pdf}{temporal
+time series analysis part II}}
+\author{Joaquin Rapela}
+
+\begin{document}
+
+\maketitle
+
+\begin{enumerate}
+
+    \item Listing~\ref{lst:forecast} shows the completed function
+        \emph{forecat} and Figure~\ref{fig:forecastAR7} shows the forecasting
+        results for an AR(7) model.
+
+        \begin{lstlisting}[language=Python,caption={completed \emph{forecast} function}\label{lst:forecast}]
+def forecast(x, acov, mu, m, max_h):
+    Gamma_m = buildGamma(acov=acov, m=m)
+   	forecasts_means = np.empty(max_h, dtype=np.double)
+    forecasts_vars = np.empty(max_h, dtype=np.double)
+    xMinusMu_mR = (x-mu)[::-1][:m]
+    for h in range(1, max_h+1):
+       	gamma_mh = acov[h:(h+m)]
+        a_m = np.linalg.solve(Gamma_m, gamma_mh)
+        forecasts_means[h-1] = mu + np.inner(a_m, xMinusMu_mR)
+        forecasts_vars[h-1] = acov[0] - np.inner(a_m, gamma_mh)
+    return forecasts_means, forecasts_vars
+        \end{lstlisting}
+
+        \begin{figure}
+            \begin{center}
+                \href{}{\includegraphics[width=5in]{../../../../solutions/examples/sphinx-gallery/02_temporalTimeSeriesAnalysis/figures/forecastingAR7.png}}
+            \end{center}
+            \caption{Forecasting result for an AR(7) model}
+            \label{fig:forecastAR7}
+        \end{figure}
+
+    \item Listing~\ref{lst:estimateCoefsAndNoisVarARpYW} shows the completed
+        function \emph{estimateCoefsAndNoisVarARpYW} and
+        Figure~\ref{fig:coefsAR3} shows the estimated coefficients of an AR(3)
+        model.
+
+        \begin{lstlisting}[language=Python,caption={completed \emph{estimateCoefsAndNoisVarARpYW} function}\label{lst:estimateCoefsAndNoisVarARpYW}]
+def estimateCoefsAndNoiseVarARpYW(acov, p, N):
+    Gammap = buildGamma(acov=acov, m=p)
+    gammaph = acov[1:]
+    phiHat = np.linalg.solve(Gammap, gammaph)
+    sigma2Hat = acov[0] - np.inner(phiHat, acov[1:])
+    phiCovHat = sigma2Hat/N * np.linalg.inv(Gammap)
+    return phiHat, phiCovHat, sigma2Hat 
+        \end{lstlisting}
+
+        \begin{figure}
+            \begin{center}
+                \includegraphics[width=5in]{../../../../solutions/examples/sphinx-gallery/02_temporalTimeSeriesAnalysis/figures/coefficientsAR3N10000.png}
+            \end{center}
+            \caption{True and estimated coefficients for an AR(3) model.}
+            \label{fig:coefsAR3}
+        \end{figure}
+
+\end{enumerate}
+
+\end{document}
