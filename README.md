@@ -30,7 +30,7 @@
     | 08 | Mar 07 | [Artificial Neural Networks](https://compneuro.neuromatch.io/tutorials/W1D5_DeepLearning/student/W1D5_Tutorial1.html) | [Erin Grant](https://eringrant.github.io/) | practical |
     | 09 | Mar 10 | [Reinforcement learning](lectures/10_reinforcementLearning/RLinTheBrain_SWC_2024.pdf) | [Jesse Geerts](https://scholar.google.com/citations?user=4xusDVAAAAAJ&hl=en) | lecture |
     | 09 | Mar 14 | [Reinforcement learning](https://github.com/joacorapela/statNeuro2025/tree/master/practicals/09_reinforcementLearning) | [Jesse Geerts](https://scholar.google.com/citations?user=4xusDVAAAAAJ&hl=en) | practical |
-    | 10 | Mar 17 | [Experimental Control with Bonsai](https://neurogears.org/neuroinformatics-2024/) | [Goncalo Lopez](https://neurogears.org/about-us/) [Nick Guilbeault](https://www.linkedin.com/in/ncguilbeault/) | lecture |
+    | 10 | Mar 17 | [Experimental Control with Bonsai](https://neurogears.org/neuroinformatics-2025/) | [Goncalo Lopez](https://neurogears.org/about-us/) [Nick Guilbeault](https://www.linkedin.com/in/ncguilbeault/) | lecture |
     | 10 | Mar 21 | Experimental Control with Bonsai | [Goncalo Lopez](https://neurogears.org/about-us/) [Nick Guilbeault](https://www.linkedin.com/in/ncguilbeault/) | practical |
 
 - running scripts: we recommend that you run the provided scripts in a conda environment. Before running any script do (only once):
